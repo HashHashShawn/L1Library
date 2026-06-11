@@ -1,0 +1,157 @@
+---
+name: "Bitcoin"
+ticker: "BTC"
+tagline: "The original peer-to-peer electronic cash system. Proof of Work, fixed supply, UTXO model."
+letter: "B"
+launched: "January 3, 2009"
+consensus: "Proof of Work (SHA-256)"
+language: "C++"
+tps: "~7"
+blockTime: "~10 minutes"
+marketCapRank: "1"
+nativeToken: "BTC"
+supply: "21,000,000 (hard cap)"
+website: "https://bitcoin.org"
+explorer: "https://mempool.space"
+category: "layer-1"
+consensusType: "pow"
+evmCompatible: false
+compareTo: ["litecoin", "bitcoin-cash", "monero"]
+relatedChains: ["litecoin", "bitcoin-cash", "dogecoin", "ethereum"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Modules 1-2"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Bitcoin is the first and largest blockchain network, launched in January 2009 by the pseudonymous Satoshi Nakamoto. It introduced the concept of a decentralized, peer-to-peer electronic cash system that operates without trusted intermediaries — no banks, no payment processors, no central authority.
+
+The core innovation is combining cryptographic proof (Proof of Work) with economic incentives (block rewards) to create a self-sustaining network where participants are rewarded for honest behavior and penalized for dishonesty. This is described in the original Bitcoin whitepaper as solving the "double-spend problem" without a trusted third party.
+
+Bitcoin's monetary policy is fixed in code: 21 million coins maximum, with new supply issued through mining at a rate that halves every ~4 years. This predictable, disinflationary supply schedule is one of its most distinctive properties.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Bitcoin is a shared ledger that everyone can read and anyone can write to — if they follow the rules. When you send bitcoin, your transaction is broadcast to the network. Miners collect pending transactions into blocks, compete to solve a cryptographic puzzle, and the winner adds their block to the chain. Every ~10 minutes, a new block is added.
+
+Your bitcoin isn't stored "in" a wallet — it exists as unspent transaction outputs (UTXOs) on the blockchain. Your wallet holds the private key that proves you own those outputs.
+
+### Intermediate
+
+Bitcoin uses the **UTXO model**: every transaction consumes previous unspent outputs and creates new ones. This differs from account-based systems (like Ethereum) where balances are tracked directly. UTXOs enable parallel transaction validation and provide inherent privacy benefits — each output is independent.
+
+Transactions are signed using **ECDSA** (Elliptic Curve Digital Signature Algorithm) with the secp256k1 curve. Blocks are linked by including the SHA-256 hash of the previous block header, forming the chain. The Merkle tree of transactions in each block enables efficient proof that a specific transaction was included.
+
+### Builder
+
+Block structure: version (4 bytes) + previous block hash (32 bytes) + Merkle root (32 bytes) + timestamp (4 bytes) + difficulty bits (4 bytes) + nonce (4 bytes) = 80-byte header. Max block weight: 4M weight units (SegWit). Coinbase transaction maturity: 100 blocks.
+
+Script system: Bitcoin uses a stack-based scripting language (Bitcoin Script) that is intentionally not Turing-complete. Standard transaction types: P2PKH, P2SH, P2WPKH, P2WSH, P2TR (Taproot). Taproot (activated Nov 2021) enables Schnorr signatures and MAST for improved privacy and smart contract capability.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Bitcoin uses [Proof of Work](/concepts/proof-of-work) — miners compete to find a SHA-256 hash below a target difficulty. The difficulty adjusts every 2,016 blocks (~2 weeks) to maintain a ~10-minute block interval.
+
+**Key parameters:**
+- Block reward: 3.125 BTC (post-April 2024 halving)
+- Next halving: ~2028
+- Difficulty adjustment: Every 2,016 blocks
+- Confirmation standard: 6 blocks (~1 hour) for high-value transactions
+
+*Read the full concept: [Proof of Work →](/concepts/proof-of-work)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Store of value** — "Digital gold" narrative. Fixed supply + decentralization + 15-year track record.
+- **Censorship-resistant payments** — Permissionless transactions that no entity can block or reverse.
+- **Remittances** — Cross-border value transfer without correspondent banking fees or delays.
+- **Lightning Network payments** — Layer 2 enables fast, low-cost micropayments for everyday use.
+- **Treasury reserve** — Publicly traded companies (MicroStrategy, Tesla, etc.) hold BTC on balance sheet.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Sparrow** — Desktop, privacy-focused, UTXO management
+- **BlueWallet** — Mobile, Lightning support
+- **Coldcard** — Hardware, air-gapped signing
+
+### Layer 2
+- **Lightning Network** — Payment channels for instant, low-fee transactions
+- **Liquid Network** — Federated sidechain for faster settlement and confidential transactions
+
+### Infrastructure
+- **Bitcoin Core** — Reference node implementation
+- **mempool.space** — Open-source block explorer and fee estimator
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2008** — Satoshi Nakamoto publishes the Bitcoin whitepaper
+- **2009** — Genesis block mined (January 3). First transaction to Hal Finney.
+- **2010** — First real-world transaction: 10,000 BTC for two pizzas
+- **2012** — First halving: block reward drops from 50 to 25 BTC
+- **2017** — SegWit activation. Bitcoin Cash fork. Price reaches ~$20K.
+- **2021** — Taproot upgrade. El Salvador adopts BTC as legal tender.
+- **2024** — Fourth halving: reward drops to 3.125 BTC. Spot Bitcoin ETFs approved in US.
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Bitcoin | Litecoin | Monero |
+|---|---|---|---|
+| **Consensus** | SHA-256 PoW | Scrypt PoW | RandomX PoW |
+| **Block time** | ~10 min | ~2.5 min | ~2 min |
+| **Supply cap** | 21M | 84M | Uncapped (tail emission) |
+| **Privacy** | Pseudonymous | Pseudonymous | Private by default |
+| **Smart contracts** | Limited (Script) | Limited | None |
+| **ASIC mining** | Dominant | Dominant | Resistant (by design) |
+| **Primary use** | Store of value | Payments | Private transactions |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Ethereum](/chains/ethereum)** — Account-based model, smart contracts, PoS. The other pillar.
+- **Litecoin** — "Silver to Bitcoin's gold." Scrypt PoW, faster blocks.
+- **Bitcoin Cash** — 2017 fork. Larger blocks, payment-focused.
+- **Dogecoin** — Merged-mining with Litecoin. Community-driven.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- MIT BLC Module 1: Introduction to Blockchain (Bitcoin origin)
+- MIT BLC Module 2: Maintaining Blockchain Integrity (PoW, mining, security)
+- Nakamoto, S. "Bitcoin: A Peer-to-Peer Electronic Cash System" (2008) — [bitcoin.org/bitcoin.pdf](https://bitcoin.org/bitcoin.pdf)
+- *Concept pages:* [Proof of Work](/concepts/proof-of-work) · [UTXO Model](/concepts/utxo-model) · [Hash Functions](/concepts/hash-functions)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Nakamoto, S. (2008). "Bitcoin: A Peer-to-Peer Electronic Cash System."
+2. MIT BLC Modules 1-2 (2020-2021). Blockchain and Cryptocurrency course materials.
+3. Bitcoin Core documentation — [bitcoincore.org](https://bitcoincore.org)
+4. Halving and supply data — [bitcoinblockhalf.com](https://bitcoinblockhalf.com)
+5. Network statistics — [mempool.space](https://mempool.space)
+
+*Freshness note: Block reward and halving data current as of April 2024. Market cap rank and mining pool distribution should be verified quarterly.*
+
+*Last updated: June 10, 2026*

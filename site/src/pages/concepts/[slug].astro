@@ -1,0 +1,173 @@
+---
+// Concept Page Template — 7 sections (L1-011, validated with Proof of Work)
+// PATCH: depth tabs (Beginner / Intermediate / Builder) are now interactive —
+// a client script upgrades the static h3 groups under "How It Works" into
+// tabs. Progressive enhancement: no JS (or print) shows all three as headings.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const concepts = await getCollection('concepts');
+  return concepts.map(concept => ({
+    params: { slug: concept.slug },
+    props: { concept },
+  }));
+}
+
+const { concept } = Astro.props;
+const { Content } = await concept.render();
+
+// JSON-LD structured data for rich search results
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTerm',
+  name: concept.data.title,
+  description: concept.data.definition,
+  url: new URL(`/concepts/${concept.slug}`, Astro.site).href,
+  inDefinedTermSet: {
+    '@type': 'DefinedTermSet',
+    name: 'L1 Library Blockchain Concepts',
+    url: new URL('/concepts', Astro.site).href,
+  },
+};
+
+// Sections for TOC
+const sections = [
+  { id: 'definition', label: '1. Definition' },
+  { id: 'why-it-matters', label: '2. Why It Matters' },
+  { id: 'how-it-works', label: '3. How It Works' },
+  { id: 'examples', label: '4. Examples' },
+  { id: 'tradeoffs', label: '5. Tradeoffs' },
+  { id: 'related-concepts', label: '6. Related Concepts' },
+  { id: 'sources--last-updated', label: '7. Sources' },
+];
+---
+
+<BaseLayout title={concept.data.title} description={concept.data.definition} type="article">
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <!-- Breadcrumb -->
+  <div class="max-w-6xl mx-auto px-4 pt-4">
+    <nav class="agate">
+      <a href="/" class="hover:text-l1-black">Home</a>
+      <span class="mx-1">/</span>
+      <a href="/concepts" class="hover:text-l1-black">Concepts</a>
+      <span class="mx-1">/</span>
+      <span class="text-l1-black">{concept.data.title}</span>
+    </nav>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8">
+
+      <!-- Sticky TOC sidebar -->
+      <aside class="hidden md:block">
+        <nav class="sticky top-8 space-y-2">
+          <p class="kicker mb-3">On this page</p>
+          {sections.map(s => (
+            <a href={`#${s.id}`} class="toc-link block py-0.5">{s.label}</a>
+          ))}
+        </nav>
+      </aside>
+
+      <!-- Main content area -->
+      <article class="relative">
+        <div class="l1-watermark -top-20 -right-20 text-[12rem]">L1</div>
+
+        <div class="relative z-10">
+          <!-- Eyebrow -->
+          <span class="eyebrow mb-3">CONCEPT · {concept.data.category.toUpperCase()}</span>
+          <h1 class="font-mono text-4xl md:text-5xl font-bold mt-3 mb-6">{concept.data.title}</h1>
+
+          <!-- Pull-quote definition — concept page signature element -->
+          <div class="definition-block mb-3" id="definition">
+            {concept.data.definition}
+          </div>
+
+          <p class="agate">Last updated: {concept.data.lastUpdated.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+
+        <!-- MDX content renders all 7 sections -->
+        <div class="relative z-10 prose prose-neutral max-w-none mt-2">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script>
+    // ——— Depth tabs: upgrade h3 Beginner/Intermediate/Builder into tabs ———
+    const DEPTHS = ['Beginner', 'Intermediate', 'Builder'];
+    const prose = document.querySelector('article .prose');
+    if (prose) {
+      const howItWorks = [...prose.querySelectorAll('h2')].find(
+        (h) => /how it works/i.test(h.textContent || '')
+      );
+      if (howItWorks) {
+        // Collect h3 groups between "How It Works" and the next h2
+        const groups = [];
+        let node = howItWorks.nextElementSibling;
+        let current = null;
+        while (node && node.tagName !== 'H2') {
+          if (node.tagName === 'H3') {
+            current = { label: (node.textContent || '').trim(), heading: node, nodes: [] };
+            groups.push(current);
+          } else if (current) {
+            current.nodes.push(node);
+          }
+          node = node.nextElementSibling;
+        }
+        if (groups.length >= 2 && groups.every((g) => DEPTHS.includes(g.label))) {
+          const bar = document.createElement('div');
+          bar.className = 'depth-tabs';
+          bar.setAttribute('role', 'tablist');
+          const select = (idx) => {
+            bar.querySelectorAll('.depth-tab').forEach((b, j) => {
+              b.classList.toggle('active', j === idx);
+              b.setAttribute('aria-selected', j === idx ? 'true' : 'false');
+            });
+            groups.forEach((g, j) => {
+              g.heading.style.display = 'none';
+              g.nodes.forEach((n) => { n.style.display = j === idx ? '' : 'none'; });
+            });
+          };
+          groups.forEach((g, i) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'depth-tab';
+            btn.setAttribute('role', 'tab');
+            btn.textContent = g.label;
+            btn.addEventListener('click', () => select(i));
+            bar.appendChild(btn);
+          });
+          howItWorks.after(bar);
+          select(0);
+        }
+      }
+
+      // ——— TOC scrollspy ———
+      const tocLinks = [...document.querySelectorAll('.toc-link')];
+      const targets = tocLinks
+        .map((a) => document.getElementById((a.getAttribute('href') || '').slice(1)))
+        .filter(Boolean);
+      if (targets.length) {
+        const spy = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                const id = entry.target.id;
+                tocLinks.forEach((a) =>
+                  a.classList.toggle('active', a.getAttribute('href') === `#${id}`)
+                );
+              }
+            }
+          },
+          { rootMargin: '0px 0px -70% 0px' }
+        );
+        targets.forEach((t) => spy.observe(t));
+      }
+    }
+  </script>
+
+</BaseLayout>

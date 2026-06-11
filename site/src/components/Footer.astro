@@ -1,0 +1,79 @@
+---
+// L1 Library Footer — stat band aligned to the hi-fi (big mono numbers, real
+// collection counts), existing open-source/support content preserved.
+import { getCollection } from 'astro:content';
+
+const chains = await getCollection('chains');
+const concepts = await getCollection('concepts');
+const year = new Date().getFullYear();
+
+const stats = [
+  { value: String(chains.length), label: chains.length === 1 ? 'chain profiled' : 'chains profiled' },
+  { value: String(concepts.length), label: concepts.length === 1 ? 'concept explained' : 'concepts explained' },
+  { value: '0', label: 'price charts. ever.' },
+  { value: '0', label: 'sponsored rankings' },
+];
+---
+
+<footer class="mt-auto">
+  <!-- Stat band — from Editorial (C), hi-fi treatment -->
+  <div class="stat-band">
+    <div class="max-w-6xl mx-auto px-4 py-7 flex flex-wrap items-center justify-between gap-6">
+      {stats.map((stat) => (
+        <div class="flex flex-col items-center gap-1 mx-auto sm:mx-0">
+          <span class="font-mono font-bold text-4xl leading-none">{stat.value}</span>
+          <span class="font-sans text-[13px] text-l1-gray-400">{stat.label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="double-rule mb-6"></div>
+    <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+      <div>
+        <p class="nameplate text-lg">L1 LIBRARY</p>
+        <p class="agate mt-1">Every chain. Explained.</p>
+        <p class="text-sm text-l1-gray-600 mt-3 max-w-xs">
+          Open source blockchain knowledge wiki. Free forever, community-supported.
+        </p>
+      </div>
+      <div class="flex gap-8">
+        <div>
+          <p class="kicker mb-2">Browse</p>
+          <ul class="space-y-1 text-sm text-l1-gray-600">
+            <li><a href="/chains" class="hover:text-l1-black">Chains A-Z</a></li>
+            <li><a href="/concepts" class="hover:text-l1-black">Concepts</a></li>
+            <li><a href="/glossary" class="hover:text-l1-black">Glossary</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="kicker mb-2">Learn</p>
+          <ul class="space-y-1 text-sm text-l1-gray-600">
+            <li><a href="/learn" class="hover:text-l1-black">Learning Paths</a></li>
+            <li><a href="/about" class="hover:text-l1-black">About</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="kicker mb-2">Support</p>
+          <ul class="space-y-1 text-sm text-l1-gray-600">
+            <li><a href="https://github.com/sponsors/HashHashShawn" class="hover:text-l1-black" target="_blank" rel="noopener">Sponsor</a></li>
+            <li><a href="https://github.com/HashHashShawn/L1Library" class="hover:text-l1-black" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="https://github.com/HashHashShawn/L1Library/blob/main/CONTRIBUTING.md" class="hover:text-l1-black" target="_blank" rel="noopener">Contribute</a></li>
+            <li class="agate pt-1" title="0xc3f8Ca91C3e14C41b7e7d97F423B702acb109a0A">ETH: 0xc3f8...9a0A</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="single-rule mt-6 pt-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+        <p class="agate">&copy; {year} L1 Library Contributors. Code: MIT. Content: CC-BY-SA 4.0.</p>
+        <div class="flex items-center gap-3">
+          <a href="https://github.com/HashHashShawn/L1Library" class="agate hover:text-l1-black" target="_blank" rel="noopener">
+            Open Source on GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,71 @@
+---
+title: "Blockchain Privacy and Zero-Knowledge Proofs"
+definition: "Most chains are fully public (good for verification, bad for confidentiality) or fully anonymous (no regulator insight). Zero-knowledge proofs enable a middle path: private transactions that still support provably correct audits."
+category: "cryptography"
+usedBy: []
+relatedConcepts: ["public-key-cryptography", "hash-functions", "blockchain-three-properties"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Public blockchains have a privacy paradox baked in: the radical transparency that lets anyone verify the ledger also means anyone can read your balance, your counterparties, and your entire payment history. For individuals that's uncomfortable; for businesses it's disqualifying — no firm can run payroll or settle trades on a ledger its competitors can read.
+
+The casebook frames the field as stuck between two poles: **fully public** chains (verifiable, not confidential) and **fully anonymous** ones like Zcash's shielded transactions (confidential, but opaque to any regulator or auditor). **zkLedger**, from MIT's Digital Currency Initiative, is the casebook's middle path — and the general lesson is bigger than one system: zero-knowledge proofs let you *prove facts about hidden data*.
+
+## How It Works
+
+### Beginner
+
+A zero-knowledge proof lets you convince someone a statement is true without revealing why. The classic example: prove you know the password to a door by walking through it while the verifier watches the only exit — they learn you know it, but never hear the password. Applied to money: prove "this transaction balances and I'm not overdrawn" without showing the amounts.
+
+### Intermediate
+
+zkLedger's design, per the casebook: transaction contents stay **private** between participants, while an auditor or regulator can run **provably correct aggregate queries** against the ledger — total balances, market concentration, even real-time price indices — without ever seeing individual transactions. The proofs guarantee the answers are computed honestly over *all* the data; a bank can't hide a transaction from the audit, because the math would no longer check out.
+
+This dissolves the public/anonymous dichotomy: verification and confidentiality stop being opposites. The auditor gets *better* assurance than with subpoenaed spreadsheets — the answer is cryptographically correct by construction — while participants reveal nothing else.
+
+### Builder
+
+{/* Beyond MIT source: post-casebook ZK landscape for currency */}
+
+zkLedger uses Pedersen commitments (additively homomorphic — sums of hidden values can be verified) plus NIZK range proofs to prevent negative-value tricks. The broader toolkit has since exploded: **zk-SNARKs** (tiny proofs, trusted setup), **zk-STARKs** (no trusted setup, larger proofs), and Bulletproofs (range proofs without setup). The killer app shifted from privacy to **scaling**: zk-rollups post a single validity proof that thousands of off-chain transactions were executed correctly — the same "prove without revealing/replaying" primitive powering [Layer 2](/concepts/layer-2) designs.
+
+## Examples
+
+- **Zcash** — Fully shielded transactions; the casebook's example of the anonymous pole.
+- **zkLedger (MIT DCI)** — Private transactions with provably correct auditing; the middle path.
+- **Monero** — Ring signatures + confidential amounts; a different anonymity toolkit. {/* Beyond MIT source */}
+- **zk-rollups** — Validity proofs as a scaling mechanism on Ethereum. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **Breaks the transparency/confidentiality trade-off** — verifiable *and* private is achievable.
+- **Audit-grade assurance** — aggregate answers are correct by construction, not by trust in the auditee.
+- **General primitive** — the same math now underwrites privacy, scaling, and identity systems.
+
+### Limitations
+
+- **Computational cost** — proof generation is orders of magnitude heavier than plain signatures, though improving fast. {/* Beyond MIT source */}
+- **Setup and complexity risk** — some schemes need trusted setups; all of them concentrate risk in dense, hard-to-audit cryptographic code.
+- **Regulatory ambivalence** — full anonymity attracts sanctions pressure (e.g., mixer designations); the middle path exists precisely because the poles are politically unstable. {/* Beyond MIT source */}
+
+## Related Concepts
+
+- [Public-Key Cryptography](/concepts/public-key-cryptography) — The base layer of cryptographic identity
+- [Hash Functions](/concepts/hash-functions) — Commitments and proof systems build on hashing
+- [The Blockchain (Three Properties)](/concepts/blockchain-three-properties) — The "readable by all" property this concept renegotiates
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Narula, Vasquez, Virza. "zkLedger: Privacy-Preserving Auditing for Distributed Ledgers" (2018)
+- Vault note: Blockchain Privacy and Zero-Knowledge Proofs (M2 cluster)
+
+*Freshness note: the post-zkLedger ZK landscape (SNARKs/STARKs/rollups) is flagged inline and moves quickly; re-verify annually.*
+
+*Last updated: June 10, 2026*

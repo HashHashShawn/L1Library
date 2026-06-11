@@ -1,0 +1,68 @@
+---
+title: "Monetary Policy and Stablecoins"
+definition: "A currency's value rests on collateral (quality, liquid assets) and trust (independent management aiming at price stability). Fixed-supply crypto protocols can't stabilize — excitement pushes price up, fear down — which is the volatility stablecoins try to engineer away."
+category: "economics"
+usedBy: []
+relatedConcepts: ["double-spend-problem", "mining-economics"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+A payment network whose unit doubles or halves in a quarter isn't money — it's a position. Rigobon's thread in the casebook applies monetary economics to crypto and lands on an uncomfortable diagnosis: most cryptocurrencies fail *as currencies* on both pillars that hold a currency's value up.
+
+Those pillars: **collateral** — quality, liquid assets standing behind the unit — and **trust** — independent management credibly aiming at price stability. Crypto struggles on both: collateral is illiquid or absent, and **fixed-supply protocols can't stabilize by construction** — when excitement rises, price rises; when fear rises, it falls. There is no mechanism leaning against the wind. That diagnosis is the entire reason stablecoins exist.
+
+## How It Works
+
+### Beginner
+
+Why is a dollar worth a dollar tomorrow? Because an institution with deep reserves actively manages its supply to keep it stable — printing less when it weakens, soaking it up when it overheats. Bitcoin deliberately has no such manager and a fixed schedule, so its price floats on pure sentiment. A stablecoin is an attempt to bolt the management back on: hold reserves, peg the price, expand and contract supply as demand moves.
+
+### Intermediate
+
+Two further points anchor the casebook's framing. First, stability must be measured **against a consumption basket** — what people actually buy — not against the dollar, which itself drifts. A coin perfectly pegged to a wobbling reference is still wobbling. Second, the upside case is concrete: **financial inclusion and remittances** — roughly 2 billion underbanked people, with fees of 15–25% on a $100 transfer — plus a hedge against abusive central banks. And a well-designed currency shouldn't need **speculative capital gains** to drive adoption; if holders are in it for the appreciation, it's an asset, not money.
+
+### Builder
+
+{/* Beyond MIT source: the post-casebook stablecoin taxonomy, flagged for currency */}
+
+The design space sorted itself into three families: **fiat-collateralized** (USDC, USDT — off-chain reserves, issuer trust, redemption risk), **crypto-collateralized** (DAI — on-chain over-collateralization, liquidation machinery), and **algorithmic** (supply rules without full collateral). The third family supplied the cautionary tale: Terra/UST's 2022 collapse (~$40B) was Rigobon's lecture rendered in real time — no collateral floor, trust evaporating, a death spiral the protocol was structurally unable to stop. Regulation has since pulled fiat-backed issuers toward audited, T-bill-heavy reserves — converging, ironically, on exactly the "quality, liquid collateral + trusted management" the casebook prescribed.
+
+## Examples
+
+- **Bitcoin** — Fixed supply, no stabilizer: sound-money experiment, volatile unit of account.
+- **USDC / USDT** — Fiat-reserve stablecoins; the dominant remittance and trading rails. {/* Beyond MIT source */}
+- **DAI** — Crypto-collateralized, governed on-chain. {/* Beyond MIT source */}
+- **Terra/UST** — The algorithmic failure case proving the collateral+trust thesis. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths (of engineered stability)
+
+- **Usable unit of account** — pricing, payroll, and contracts need a stable measuring stick.
+- **Cheap global transfer** — the remittance case from the casebook is stablecoins' clearest realized win.
+- **Inflation refuge** — a dollar proxy is a lifeline under abusive monetary regimes.
+
+### Limitations
+
+- **Trust reintroduced** — fiat-backed coins resurrect the trusted issuer crypto meant to remove; the collateral is only as good as the audit.
+- **Peg ≠ stability** — dollar-pegged coins import the dollar's drift; the consumption-basket standard remains unmet.
+- **Run risk** — under-collateralized or algorithmic designs are structurally exposed to death spirals.
+- **Regulatory dependency** — reserve quality and redemption rights are now a policy variable, not a protocol one. {/* Beyond MIT source */}
+
+## Related Concepts
+
+- [Double-Spend Problem](/concepts/double-spend-problem) — The e-cash → Bitcoin lineage this thread contrasts with
+- [Mining and Mining Economics](/concepts/mining-economics) — Where issuance meets real-world cost
+
+## Sources & Last Updated
+
+- MIT BLC Module 2 (primary source; Rigobon, Unit 1 thread)
+- Vault note: Monetary Policy and Stablecoins (M2 cluster; bridges to the planned Economics cluster)
+
+*Freshness note: the stablecoin taxonomy and Terra collapse post-date the casebook and are flagged inline.*
+
+*Last updated: June 10, 2026*

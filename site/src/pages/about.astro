@@ -1,0 +1,66 @@
+---
+// About — fixes the /about 404 from the footer nav.
+// Content sourced from the repo README; nothing invented.
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="L1 Library is an open source blockchain knowledge wiki built on MIT curriculum. No price charts, no sponsored rankings, just clarity."
+>
+  <div class="max-w-3xl mx-auto px-4 pt-12 pb-16 w-full">
+    <div class="double-rule mb-6"></div>
+    <h1 class="font-mono text-4xl font-bold tracking-tight mb-6">About</h1>
+
+    <p class="text-lg text-l1-gray-700 mb-10 text-pretty">
+      L1 Library is an open source blockchain knowledge wiki built on MIT
+      curriculum. Chain profiles, concept explainers, and technical
+      foundations — no price charts, no sponsored rankings, just clarity.
+    </p>
+
+    <div class="single-rule mb-4"></div>
+    <h2 class="kicker mb-3">What's Inside</h2>
+    <ul class="mb-10">
+      <li class="py-2.5 border-b border-dotted border-l1-gray-200">
+        <span class="font-semibold text-l1-black">Chain profiles</span>
+        <span class="text-sm text-l1-gray-600"> — structured 11-section breakdowns of Layer 1 blockchains: architecture, consensus, ecosystem, governance, economics, history, comparisons.</span>
+      </li>
+      <li class="py-2.5 border-b border-dotted border-l1-gray-200">
+        <span class="font-semibold text-l1-black">Concept pages</span>
+        <span class="text-sm text-l1-gray-600"> — deep explainers on blockchain fundamentals with beginner / intermediate / builder depth levels.</span>
+      </li>
+      <li class="py-2.5 border-b border-dotted border-l1-gray-200">
+        <span class="font-semibold text-l1-black">A–Z directory</span>
+        <span class="text-sm text-l1-gray-600"> — browse all chains alphabetically. Built to scale to 300+.</span>
+      </li>
+      <li class="py-2.5">
+        <span class="font-semibold text-l1-black">Learning paths</span>
+        <span class="text-sm text-l1-gray-600"> — curated sequences from fundamentals to advanced topics.</span>
+      </li>
+    </ul>
+
+    <div class="single-rule mb-4"></div>
+    <h2 class="kicker mb-3">Content Sources</h2>
+    <p class="text-l1-gray-700 mb-10">
+      The knowledge base is grounded in MIT's blockchain curriculum
+      (15.s12 / 15.395), including lecture materials, casebooks, and research
+      papers. Content beyond the MIT source material is flagged inline and
+      independently verified. Every contribution goes through editorial review
+      to maintain accuracy and consistency.
+    </p>
+
+    <div class="single-rule mb-4"></div>
+    <h2 class="kicker mb-3">Open Source</h2>
+    <p class="text-l1-gray-700 mb-4">
+      L1 Library is free, open source, and community-supported. Code is MIT
+      licensed; educational content is CC-BY-SA 4.0. Contributions are
+      welcome — new chain profiles, concept improvements, error fixes,
+      design work, and translations.
+    </p>
+    <div class="flex flex-wrap gap-3 mb-2">
+      <a href="https://github.com/HashHashShawn/L1Library" target="_blank" rel="noopener" class="font-mono text-sm border-[1.5px] border-l1-black px-4 py-2 hover:bg-l1-black hover:text-white transition-colors">GitHub →</a>
+      <a href="https://github.com/HashHashShawn/L1Library/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="font-mono text-sm border-[1.5px] border-l1-black px-4 py-2 hover:bg-l1-black hover:text-white transition-colors">Contributing Guide →</a>
+      <a href="https://github.com/sponsors/HashHashShawn" target="_blank" rel="noopener" class="font-mono text-sm border-[1.5px] border-l1-black px-4 py-2 hover:bg-l1-black hover:text-white transition-colors">Sponsor →</a>
+    </div>
+  </div>
+</BaseLayout>

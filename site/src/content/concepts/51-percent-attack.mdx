@@ -1,0 +1,74 @@
+---
+title: "51% Attack"
+definition: "If one party controls a majority of a network's power — hashing power in Proof of Work, staked tokens in Proof of Stake — it can monopolize block production, censor others, and reverse its own transactions."
+category: "security"
+usedBy: ["bitcoin"]
+relatedConcepts: ["proof-of-work", "proof-of-stake", "mining-economics", "sybil-attack", "double-spend-problem"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Every blockchain's security pitch ends with an asterisk, and this is the asterisk. Decentralized consensus doesn't make attacks impossible — it makes them *expensive*. The 51% attack is the canonical statement of that limit: control the majority of the scarce resource (hashrate or stake), and the rules protect you instead of the network.
+
+The casebook's realism is worth keeping: the attack is possible but **expensive**, and only becomes realistic once power **centralizes** — which is why it's less a cryptography problem than an economics problem, downstream of [mining concentration](/concepts/mining-economics).
+
+## How It Works
+
+### Beginner
+
+The network's history is whatever the majority of its power says it is — that's the rule that makes strangers agree. The attack is simply turning that rule against itself: if one party *is* the majority, it can decide which transactions get in, and it can secretly build an alternative history in which its own payments never happened, then publish it and erase the originals. Like rigging a vote by genuinely owning 51% of the voters.
+
+### Intermediate
+
+What a majority controller can do: **monopolize block production** (collect all rewards), **censor** (refuse to include others' transactions), and **reverse its own transactions** — pay, receive the goods, then mine a longer private chain in which the payment never occurred (a [double-spend](/concepts/double-spend-problem) made real).
+
+What it *cannot* do matters equally: it can't forge signatures, steal coins from arbitrary addresses, or change protocol rules — full nodes reject invalid blocks no matter how much work backs them.
+
+The threshold differs by mechanism: in [Proof of Work](/concepts/proof-of-work) it's >51% of **hashing power**; in [Proof of Stake](/concepts/proof-of-stake), >51% of **staked tokens**. PoS adds an economic disincentive — attacking devalues (and may slash) your own holdings — but the casebook's caveat applies: the protocol can't account for **off-chain motives**, like an attacker who profits from the chain's failure elsewhere.
+
+### Builder
+
+{/* Beyond MIT source: attack economics for completeness */}
+
+Attack cost ≈ acquiring/renting majority resource × attack duration, minus block rewards earned while attacking. Small PoW chains that share an algorithm with larger ones are the soft target: hashrate is *rentable*, and Ethereum Classic suffered repeated 51% reorgs (2019–2020) for exactly this reason. Defense-in-depth in practice: deeper confirmation requirements scale attacker cost linearly; exchanges raise confirmations on vulnerable chains; PoS designs add finality checkpoints that make reorgs beyond a depth impossible without mass slashing.
+
+## Examples
+
+- **Ethereum Classic** — Multiple successful 51% reorgs via rented hashpower. {/* Beyond MIT source */}
+- **Bitcoin Gold, Vertcoin** — Smaller PoW chains double-spent on exchanges. {/* Beyond MIT source */}
+- **[Bitcoin](/chains/bitcoin)** — Never successfully 51%-attacked; the cost (billions in ASICs plus gigawatts) is the defense.
+
+## Tradeoffs
+
+{/* Framed as the security model's tradeoffs, since the attack itself has no "strengths" */}
+
+### What the 51% threshold gets right
+
+- **Honest-majority security is quantifiable** — you can price the attack in dollars, which no trust-based system offers.
+- **Graceful scope** — even a majority attacker can't forge or steal arbitrarily; damage is bounded to reordering and censorship.
+
+### Where it bites
+
+- **Centralization is the attack surface** — pools and staking providers quietly accumulate the resource the model assumes is dispersed.
+- **Small chains are cheap targets** — rentable hashrate turns the threshold into a market price, sometimes a low one.
+- **Off-chain incentives are invisible** — slashing can't deter an attacker whose payoff lives outside the chain.
+
+## Related Concepts
+
+- [Proof of Work](/concepts/proof-of-work) — Majority hashpower as the attack vector
+- [Proof of Stake](/concepts/proof-of-stake) — Majority stake, plus slashing economics
+- [Mining and Mining Economics](/concepts/mining-economics) — How concentration actually develops
+- [Sybil Attack](/concepts/sybil-attack) — The cheap-identity sibling attack
+- [Double-Spend Problem](/concepts/double-spend-problem) — The payoff a 51% attacker seeks
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Vault note: 51% Attack (M2 cluster)
+
+*Freshness note: attack incidents (ETC, BTG) are post-casebook general knowledge, flagged inline.*
+
+*Last updated: June 10, 2026*

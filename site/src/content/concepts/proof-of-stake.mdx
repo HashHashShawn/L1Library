@@ -1,0 +1,77 @@
+---
+title: "Proof of Stake"
+definition: "A consensus mechanism that chooses the next block producer by a lottery weighted by stake rather than by computation. Validators post tokens as collateral; misbehavior risks losing the stake."
+category: "consensus"
+usedBy: ["ethereum"]
+relatedConcepts: ["proof-of-work", "delegated-proof-of-stake", "pure-proof-of-stake", "sybil-attack", "51-percent-attack"]
+alternativeTo: "proof-of-work"
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Proof of Work bought security with electricity — and by the late 2010s the bill had become the industry's defining controversy. Proof of Stake is the answer to one question: can you keep PoW's security properties while replacing burned energy with locked capital?
+
+The bet paid off at scale: Ethereum's 2022 Merge moved the second-largest chain to PoS and cut its energy use by ~99.95%. {/* Beyond MIT source: the Merge post-dates the casebook */} But the casebook's caveat still stands — stake-based security has its own blind spots, and the debate between the two camps is really a debate about what "skin in the game" should mean.
+
+## How It Works
+
+### Beginner
+
+Instead of a race between computers, imagine a raffle where your odds are proportional to how many tokens you've locked up as a deposit. Win, and you get to add the next block and earn rewards. Cheat, and the network can confiscate your deposit. Your stake is both your lottery ticket and your bond for good behavior.
+
+### Intermediate
+
+Validators lock (stake) tokens as collateral. The protocol selects a block proposer pseudo-randomly, weighted by stake. Other validators attest to the block; provable misbehavior — like signing two conflicting blocks — triggers **slashing**, destroying part of the offender's stake.
+
+The security arithmetic changes: a [51% attack](/concepts/51-percent-attack) now requires owning a majority of **staked tokens** rather than hashing power. That capital is on-chain and destructible — attacking the network devalues and forfeits your own position. The casebook's caveat: the protocol can't see a validator's **off-chain** holdings. An attacker who profits elsewhere from the chain's collapse — short positions, a competing chain, political motives — isn't fully deterred by losing stake.
+
+### Builder
+
+{/* Beyond MIT source: post-Merge mechanics for currency */}
+
+Modern PoS (Ethereum's Gasper): validators stake 32 ETH each; committees attest every slot (12s); finality comes from Casper-FFG checkpoints — two-thirds of total stake must attest across two epochs (~12.8 min) for a block to be final. Slashing conditions are narrow and provable (double-proposal, surround-voting). Long-range attacks are handled socially via weak subjectivity checkpoints. Stake-grinding is mitigated by RANDAO (plus future VDF designs).
+
+## Examples
+
+- **Ethereum** — Gasper PoS since the Merge (Sept 2022); ~34M ETH staked. {/* Beyond MIT source */}
+- **Cardano** — Ouroboros PoS, delegation-friendly with stake pools. {/* Beyond MIT source */}
+- **Algorand** — [Pure Proof of Stake](/concepts/pure-proof-of-stake): no slashing, no minimum, sortitioned committees.
+- **Variants** — [Delegated Proof of Stake](/concepts/delegated-proof-of-stake) (vote for block producers).
+
+## Tradeoffs
+
+### Strengths
+
+- **Energy efficiency** — security from capital at risk, not electricity; orders of magnitude less energy than PoW.
+- **Internalized punishment** — slashing makes attacks directly destructive to the attacker's own capital.
+- **Fast(er) finality** — vote-based attestation enables explicit finality instead of probabilistic confirmations.
+- **Lower hardware barrier** — no ASIC arms race; consumer hardware can validate.
+
+### Limitations
+
+- **Off-chain motives blind spot** — the protocol can't price an attacker's external incentives (the casebook's core caveat).
+- **Rich-get-richer dynamics** — stake earns yield, compounding concentration over time.
+- **Liquid-staking centralization** — pooled staking products can aggregate dangerous fractions of total stake. {/* Beyond MIT source */}
+- **Complexity** — slashing, checkpoints, and weak subjectivity are far harder to reason about than longest-chain.
+
+**Main alternative:** [Proof of Work](/concepts/proof-of-work) — burns external energy instead of risking internal capital.
+
+## Related Concepts
+
+- [Proof of Work](/concepts/proof-of-work) — The mechanism PoS was designed to replace
+- [Delegated Proof of Stake](/concepts/delegated-proof-of-stake) — Vote-for-delegates variant
+- [Pure Proof of Stake](/concepts/pure-proof-of-stake) — Algorand's sortition-based variant
+- [Sybil Attack](/concepts/sybil-attack) — Stake-weighting as Sybil resistance
+- [51% Attack](/concepts/51-percent-attack) — Majority-stake attack economics
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Vault note: Proof of Stake (M2 cluster)
+
+*Freshness note: the casebook pre-dates Ethereum's Merge (2022); current-state material is flagged inline and should be re-verified annually.*
+
+*Last updated: June 10, 2026*

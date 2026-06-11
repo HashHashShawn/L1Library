@@ -1,0 +1,135 @@
+---
+// Learn — fixes the /learn 404 from the header nav
+// Paths match the two on the homepage; the curriculum map mirrors
+// vault/maps/Module 2 — Maintaining Blockchain Integrity MOC.md.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const paths = [
+  {
+    num: '01',
+    name: 'Blockchain Fundamentals',
+    desc: 'The primitives, in the order they build on each other — ending at your first chain profile.',
+    steps: [
+      { label: 'Hash Functions', href: '/concepts/hash-functions' },
+      { label: 'Merkle Trees', href: '/concepts/merkle-trees' },
+      { label: 'Distributed Consensus', href: '/concepts/distributed-consensus' },
+      { label: 'Proof of Work', href: '/concepts/proof-of-work' },
+      { label: 'Bitcoin — your first chain profile', href: '/chains/bitcoin' },
+    ],
+  },
+  {
+    num: '02',
+    name: 'Consensus Deep Dive',
+    desc: 'How chains actually agree — the mechanisms, their tradeoffs, and the designs that answer each other.',
+    steps: [
+      { label: 'Proof of Work', href: '/concepts/proof-of-work' },
+      { label: 'Proof of Stake', href: '/concepts/proof-of-stake' },
+      { label: 'Byzantine Fault Tolerance', href: '/concepts/byzantine-fault-tolerance' },
+      { label: 'Delegated Proof of Stake', href: '/concepts/delegated-proof-of-stake' },
+      { label: 'Pure Proof of Stake & Sortition', href: '/concepts/pure-proof-of-stake' },
+    ],
+  },
+];
+
+// Curriculum map — units from the Module 2 MOC
+const units = [
+  {
+    name: 'Unit 1 — Money & Monetary Policy',
+    links: [
+      { label: 'Monetary Policy and Stablecoins', href: '/concepts/monetary-policy-stablecoins' },
+      { label: 'Double-Spend Problem', href: '/concepts/double-spend-problem' },
+    ],
+  },
+  {
+    name: 'Unit 2 — Bitcoin Mechanics',
+    links: [
+      { label: 'Public-Key Cryptography and Digital Signatures', href: '/concepts/public-key-cryptography' },
+      { label: 'UTXO Model', href: '/concepts/utxo-model' },
+      { label: 'Smart Contracts', href: '/concepts/smart-contracts' },
+    ],
+  },
+  {
+    name: 'Unit 3 — Consensus & Integrity',
+    links: [
+      { label: 'The Blockchain (Three Properties)', href: '/concepts/blockchain-three-properties' },
+      { label: 'Distributed Consensus', href: '/concepts/distributed-consensus' },
+      { label: 'Byzantine Fault Tolerance', href: '/concepts/byzantine-fault-tolerance' },
+      { label: 'Sybil Attack', href: '/concepts/sybil-attack' },
+      { label: 'Hash Functions', href: '/concepts/hash-functions' },
+      { label: 'Merkle Trees', href: '/concepts/merkle-trees' },
+      { label: 'Proof of Work', href: '/concepts/proof-of-work' },
+      { label: 'Proof of Stake', href: '/concepts/proof-of-stake' },
+      { label: 'Delegated Proof of Stake', href: '/concepts/delegated-proof-of-stake' },
+      { label: 'Pure Proof of Stake and Cryptographic Sortition', href: '/concepts/pure-proof-of-stake' },
+    ],
+  },
+  {
+    name: 'Unit 4 — Mining, Scaling & Privacy',
+    links: [
+      { label: 'Mining and Mining Economics', href: '/concepts/mining-economics' },
+      { label: '51% Attack', href: '/concepts/51-percent-attack' },
+      { label: 'Layer 2 and the Lightning Network', href: '/concepts/layer-2' },
+      { label: 'Blockchain Privacy and Zero-Knowledge Proofs', href: '/concepts/zero-knowledge-proofs' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Learn"
+  description="Guided learning paths through the L1 Library, built on MIT blockchain curriculum."
+>
+  <div class="max-w-6xl mx-auto px-4 pt-12 pb-16">
+    <div class="double-rule mb-6"></div>
+    <h1 class="font-mono text-4xl font-bold tracking-tight mb-2">Learn</h1>
+    <p class="text-l1-gray-600 max-w-2xl mb-10">
+      Concepts in the order they build on each other. Start with a path, or
+      browse the curriculum the library is built from.
+    </p>
+
+    <!-- Learning paths -->
+    <h2 class="kicker mb-4">Learning Paths</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+      {paths.map((path) => (
+        <div class="border border-l1-black p-6">
+          <p class="kicker text-l1-gray-400 mb-1">Path {path.num}</p>
+          <h3 class="font-mono text-xl font-bold mb-1">{path.name}</h3>
+          <p class="text-sm text-l1-gray-600 mb-5">{path.desc}</p>
+          <ol class="flex flex-col gap-0">
+            {path.steps.map((step, i) => (
+              <li class="flex gap-3 items-baseline py-2.5 border-b border-dotted border-l1-gray-200 last:border-b-0">
+                <span class="font-mono text-xs font-bold text-l1-gray-400 w-6 shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                <a href={step.href} class="font-medium text-l1-black hover:underline">{step.label}</a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+    </div>
+
+    <!-- Curriculum map -->
+    <div class="single-rule mb-6"></div>
+    <div class="flex items-baseline justify-between mb-1">
+      <h2 class="kicker">The Curriculum</h2>
+      <p class="agate">MIT BLC Module 2 — Maintaining Blockchain Integrity</p>
+    </div>
+    <p class="text-sm text-l1-gray-600 max-w-2xl mb-6">
+      Every concept page is grounded in MIT's blockchain course. This map
+      mirrors the module structure.
+    </p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8">
+      {units.map((unit) => (
+        <section>
+          <h3 class="font-mono text-sm font-semibold border-b-2 border-l1-black pb-1.5 mb-2">{unit.name}</h3>
+          <ul>
+            {unit.links.map((link) => (
+              <li class="py-1.5 border-b border-dotted border-l1-gray-200 last:border-b-0">
+                <a href={link.href} class="text-sm text-l1-black hover:underline">{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

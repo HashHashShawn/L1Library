@@ -1,0 +1,73 @@
+---
+title: "Layer 2 and the Lightning Network"
+definition: "Base-layer consensus doesn't scale — every node validates every transaction. Layer 2 uses the blockchain as an anchor of trust while moving most transactions off-chain, settling on-chain only when there's a dispute."
+category: "scaling"
+usedBy: ["bitcoin"]
+relatedConcepts: ["distributed-consensus", "proof-of-work", "blockchain-three-properties", "merkle-trees"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Decentralization has a built-in speed limit: if every node must validate every transaction, the network runs at the pace of its weakest participant. Bitcoin processes a handful of transactions per second; Visa does tens of thousands. You can't fix this by making blocks bigger forever — that just prices ordinary nodes out of validating, trading decentralization for throughput.
+
+Layer 2 is the escape hatch, and Narula's analogy from the casebook is the cleanest statement of it: selling a car with a private contract, where you only involve the **court** (the chain) if something goes wrong. Most business never touches the courtroom — but every handshake is enforceable because the courtroom exists.
+
+## How It Works
+
+### Beginner
+
+Imagine running a bar tab instead of paying card-machine fees on every drink. You and the bartender keep a running tally all night and settle once at closing time. Layer 2 works the same way: two parties (or a whole network of them) exchange signed IOUs instantly and for free, and only the final balance touches the blockchain. The chain's job shrinks from processing every drink to notarizing the tab.
+
+### Intermediate
+
+The base layer becomes an **anchor of trust**: L2 transactions happen off-chain, but each one is constructed so it *could* be enforced on-chain. The **Lightning Network** implements this with payment channels: two parties lock funds in an on-chain transaction, then exchange signed balance updates — off-chain receipts — as fast as the network can carry them. Either party can close the channel by publishing the latest state; cheating with a stale state is punishable on-chain. Channels link into a routed network, so you can pay anyone connected by a path of channels — fast and cheap, while preserving on-chain security guarantees.
+
+The casebook's freshness flag deserves promotion to the main text: Lightning was the leading example circa 2020; the L2 space has since expanded well beyond channels.
+
+### Builder
+
+{/* Beyond MIT source: the post-casebook L2 landscape, flagged for currency */}
+
+Channels (Lightning: HTLCs, penalty transactions, watchtowers) are one point in a larger design space defined by a single question — *how does L1 know the L2 state is valid?* **Optimistic rollups** (Arbitrum, Optimism, Base) post transaction data to L1 and assume validity unless challenged with a fraud proof within a window. **ZK-rollups** (zkSync, Starknet) post a validity proof up front — no challenge window, faster withdrawals, heavier proving. Ethereum's EIP-4844 blob space made rollup data cheap enough that rollups now carry the bulk of Ethereum-ecosystem activity. The common thread is unchanged from Narula's analogy: data or proofs anchored on L1, so exit is always enforceable in court.
+
+## Examples
+
+- **Lightning Network** — Routed payment channels on [Bitcoin](/chains/bitcoin); the casebook's leading example.
+- **Arbitrum / Optimism / Base** — Optimistic rollups on Ethereum. {/* Beyond MIT source */}
+- **zkSync / Starknet** — Validity-proof rollups. {/* Beyond MIT source */}
+- **State channels generally** — The same pattern for games, micropayments, machine-to-machine payments. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **Throughput without sacrificing the base layer** — L1 stays small enough for anyone to validate.
+- **Speed and cost** — off-chain updates are bounded by network latency, not block time.
+- **Inherited security** — honest parties can always exit to L1; the court is open even if rarely used.
+
+### Limitations
+
+- **Liquidity and capital lock-up** — channels and bridges require funds committed in advance.
+- **Liveness requirements** — channel users must watch for stale-state cheating (or delegate to watchtowers).
+- **New trust surfaces** — rollup sequencers, bridge contracts, and multisig upgrades reintroduce operators with real power. {/* Beyond MIT source */}
+- **Fragmentation** — value split across many L2s complicates the user experience the base layer kept simple. {/* Beyond MIT source */}
+
+## Related Concepts
+
+- [Distributed Consensus](/concepts/distributed-consensus) — The scaling bottleneck L2 routes around
+- [Proof of Work](/concepts/proof-of-work) — Why base-layer throughput is precious
+- [The Blockchain (Three Properties)](/concepts/blockchain-three-properties) — The anchor of trust
+- [Merkle Trees](/concepts/merkle-trees) — Compact proofs that make cross-layer claims checkable
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Narula lecture)
+- Poon, Dryja. "The Bitcoin Lightning Network" (2016)
+- Vault note: Layer 2 and the Lightning Network (M2 cluster)
+
+*Freshness note: the rollup landscape is post-casebook and fast-moving; flagged inline, re-verify quarterly.*
+
+*Last updated: June 10, 2026*

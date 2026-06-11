@@ -1,0 +1,70 @@
+---
+title: "Distributed Consensus"
+definition: "The problem of getting many computers to agree on a value — or a sequence of values — despite faults: machines that crash, go offline, or actively attack. Blockchains use it to agree on the ledger itself."
+category: "consensus"
+usedBy: ["bitcoin"]
+relatedConcepts: ["byzantine-fault-tolerance", "sybil-attack", "proof-of-work", "proof-of-stake", "double-spend-problem"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Every blockchain is, underneath everything else, a solution to one problem: how do thousands of machines that don't trust each other agree on a single history? Get this wrong and nothing above it — money, contracts, ownership records — can be trusted.
+
+The hard part is not storing data; it's **choosing the next block**. Classic distributed consensus (decades of computer science) assumed a fixed, known set of participants — fine inside a datacenter, useless on the open internet. Bitcoin's breakthrough was reaching consensus **without identity**: anyone can join or leave, and the system still converges on one ledger. That's also why ordering matters — putting transactions in an agreed sequence is precisely what resolves conflicts like the [Double-Spend Problem](/concepts/double-spend-problem).
+
+## How It Works
+
+### Beginner
+
+Imagine a group of accountants in different cities keeping copies of the same ledger. Mail is slow, some accountants nap, and a few are crooks. Consensus is the set of rules that guarantees that, despite all that, every honest accountant's copy ends up identical — and that everyone agrees on which entry came first.
+
+### Intermediate
+
+A consensus protocol must deliver two guarantees even under faults: **agreement** (all honest nodes decide on the same value) and **validity/consistency** (the decided value was actually proposed by someone). Faults come in two flavors — crash faults (a node stops) and Byzantine faults (a node lies), the latter handled by [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance).
+
+Open networks add a third problem: with no identities, an attacker can fake a crowd (the [Sybil Attack](/concepts/sybil-attack)). Every blockchain consensus mechanism is a different answer to "how do we weight votes when identities are free?" — computation ([Proof of Work](/concepts/proof-of-work)), stake ([Proof of Stake](/concepts/proof-of-stake)), elected delegates ([DPoS](/concepts/delegated-proof-of-stake)), or stake-weighted random committees ([Pure PoS](/concepts/pure-proof-of-stake)).
+
+### Builder
+
+{/* Beyond MIT source: standard distributed-systems framing for completeness */}
+
+The theoretical landscape is constrained by classic results: the FLP impossibility theorem (no deterministic consensus in a fully asynchronous network with even one crash fault) and the CAP trade-space. Practical protocols escape FLP via randomness or partial-synchrony assumptions. Blockchain protocols split into two families: **longest-chain** protocols (Nakamoto consensus — probabilistic finality, forks possible, security from cost) and **BFT-style** protocols (vote-based — deterministic finality, no forks, security from honest-supermajority assumptions, typically ⅔).
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — Nakamoto consensus: longest valid PoW chain wins; finality is probabilistic.
+- **Ethereum** — Gasper (Casper-FFG + LMD-GHOST): PoS with checkpoint finality. {/* Beyond MIT source */}
+- **Algorand** — Player-replaceable Byzantine Agreement with cryptographic sortition; no forks.
+- **Permissioned systems** — Classic BFT (e.g., PBFT-descendants) with a known validator set.
+
+## Tradeoffs
+
+### Strengths
+
+- **The enabling layer** — every property a chain advertises (immutability, ordering, censorship-resistance) reduces to its consensus guarantees.
+- **Well-studied foundations** — decades of distributed-systems theory underpin the design space.
+
+### Limitations
+
+- **Scaling ceiling** — base-layer consensus requires every node to validate everything; throughput is bounded by the slowest assumptions. This motivates [Layer 2](/concepts/layer-2).
+- **No free lunch** — every mechanism trades among decentralization, speed, and security; the differences between PoW, PoS, and BFT variants are exactly which corner they give up.
+
+## Related Concepts
+
+- [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance) — The fault model consensus must survive
+- [Sybil Attack](/concepts/sybil-attack) — Why open-network consensus is hard
+- [Proof of Work](/concepts/proof-of-work) — Nakamoto's identity-free solution
+- [Proof of Stake](/concepts/proof-of-stake) — Stake-weighted alternative
+- [Double-Spend Problem](/concepts/double-spend-problem) — The conflict ordering resolves
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Vault note: Distributed Consensus (M2 cluster)
+
+*Freshness note: Builder-level theory framing (FLP, BFT families) is general distributed-systems knowledge beyond the MIT casebook.*
+
+*Last updated: June 10, 2026*

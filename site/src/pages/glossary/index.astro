@@ -1,0 +1,75 @@
+---
+// Glossary — fixes the /glossary 404 from the header nav
+// Terms from vault/glossary/Module 2 Glossary.md (M2 cluster).
+// Major terms have their own concept pages, linked via `see`.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const terms = [
+  { term: '51% attack', def: 'Majority-control attack: one party controlling most of a network\u2019s power can monopolize block production and reverse transactions.', see: '/concepts/51-percent-attack', seeLabel: '51% Attack' },
+  { term: 'Block header', def: 'Compact block summary anchored by a Merkle root.', see: '/concepts/merkle-trees', seeLabel: 'Merkle Trees' },
+  { term: 'Chaumian e-cash', def: 'David Chaum\u2019s 1980s private digital cash; still required a bank.' },
+  { term: 'Distributed lottery', def: 'Gorbunov\u2019s framing of mining; cryptographic sortition is the stake-weighted analog.', see: '/concepts/pure-proof-of-stake', seeLabel: 'Pure Proof of Stake' },
+  { term: 'Finality', def: 'Guarantee that a block stays in the chain forever.', see: '/concepts/pure-proof-of-stake', seeLabel: 'Pure Proof of Stake' },
+  { term: 'Fork', def: 'Two valid blocks extending the same parent; dead branches are abandoned (risking lost payments).', see: '/concepts/proof-of-work', seeLabel: 'Proof of Work' },
+  { term: 'Genesis block', def: 'The first block in a chain; defined for free at system launch.' },
+  { term: 'Hash value', def: 'Fixed-length output of a hash function; a data fingerprint.', see: '/concepts/hash-functions', seeLabel: 'Hash Functions' },
+  { term: 'Longest-chain rule', def: 'Build on the longest chain you see; how Proof of Work resolves forks.', see: '/concepts/proof-of-work', seeLabel: 'Proof of Work' },
+  { term: 'Miner', def: 'Node doing Proof of Work to append blocks for a reward.', see: '/concepts/mining-economics', seeLabel: 'Mining and Mining Economics' },
+  { term: 'nLocktime', def: 'Rule making a transaction valid only after a set time.', see: '/concepts/utxo-model', seeLabel: 'UTXO Model' },
+  { term: 'Nonce', def: 'A number added to block data before hashing; varied repeatedly to find a valid hash.', see: '/concepts/proof-of-work', seeLabel: 'Proof of Work' },
+  { term: 'Permissionless', def: 'Anyone can join without approval (a core Bitcoin property).' },
+  { term: 'Public / private key', def: 'Shareable identifier / secret signer.', see: '/concepts/public-key-cryptography', seeLabel: 'Public-Key Cryptography' },
+  { term: 'scriptSig / scriptPubkey', def: 'Bitcoin Script input signature / output spending predicate.', see: '/concepts/utxo-model', seeLabel: 'UTXO Model' },
+  { term: 'Staking', def: 'Locking tokens as collateral to participate in Proof of Stake.', see: '/concepts/proof-of-stake', seeLabel: 'Proof of Stake' },
+  { term: 'Validator', def: 'Staker who proposes and verifies blocks in Proof of Stake.', see: '/concepts/proof-of-stake', seeLabel: 'Proof of Stake' },
+];
+
+// Group by first letter (digits under '0–9')
+const groups = [];
+for (const t of terms) {
+  const ch = t.term[0].toUpperCase();
+  const letter = /[0-9]/.test(ch) ? '0–9' : ch;
+  const g = groups.find((g) => g.letter === letter);
+  if (g) g.items.push(t);
+  else groups.push({ letter, items: [t] });
+}
+---
+
+<BaseLayout
+  title="Glossary"
+  description="Quick definitions of blockchain terms from the MIT curriculum. Major terms link to full concept pages."
+>
+  <div class="max-w-6xl mx-auto px-4 pt-12 pb-16">
+    <div class="double-rule mb-6"></div>
+    <div class="flex items-baseline justify-between mb-2">
+      <h1 class="font-mono text-4xl font-bold tracking-tight">Glossary</h1>
+      <p class="agate">{terms.length} terms · MIT BLC Module 2</p>
+    </div>
+    <p class="text-l1-gray-600 max-w-2xl mb-10">
+      Quick definitions of supporting terms. Major terms have their own
+      <a href="/concepts" class="underline underline-offset-2">concept pages</a>, linked below.
+    </p>
+
+    <div class="max-w-3xl">
+      {groups.map((group) => (
+        <section class="mb-8">
+          <div class="single-rule mb-3"></div>
+          <h2 class="font-mono text-xl font-bold mb-2">{group.letter}</h2>
+          <dl>
+            {group.items.map((t) => (
+              <div class="py-3 border-b border-dotted border-l1-gray-200 last:border-b-0">
+                <dt class="font-mono font-semibold text-l1-black">{t.term}</dt>
+                <dd class="text-sm text-l1-gray-600 mt-0.5 ml-0">
+                  {t.def}
+                  {t.see && (
+                    <a href={t.see} class="agate ml-2 hover:text-l1-black hover:underline whitespace-nowrap">See {t.seeLabel} →</a>
+                  )}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

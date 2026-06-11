@@ -1,0 +1,69 @@
+---
+title: "Merkle Trees"
+definition: "A structure that compresses all transactions in a block into a single block-header hash, enabling efficient proof that one transaction is included — without scanning the whole block."
+category: "data-structures"
+usedBy: ["bitcoin"]
+relatedConcepts: ["hash-functions", "blockchain-three-properties", "layer-2"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+A full blockchain is tens of gigabytes and growing. If verifying one payment required downloading all of it, blockchains would be unusable on phones, browsers, or anything resource-constrained. Merkle trees are the reason that isn't necessary.
+
+Gorbunov's framing from the casebook: to verify a single transaction, you trace a short path from it up to the **Merkle root** in the block header, rather than downloading the entire chain. This is the foundation of **light verification** — wallets that keep only block headers (a few megabytes) can still cryptographically confirm "my transaction is in this block."
+
+## How It Works
+
+### Beginner
+
+Picture a tournament bracket, but for fingerprints. Every transaction gets hashed; then pairs of hashes are hashed together, then pairs of those, until one hash remains — the Merkle root — which goes in the block header. To prove your transaction is in the block, you don't need every transaction; you just need the handful of "opponents" along your bracket path to the root. Anyone can replay those few hashes and check they land on the published root.
+
+### Intermediate
+
+Leaves are transaction hashes; each internal node is the hash of its two children; the root commits to the entire set. An **inclusion proof** (Merkle proof) for one of `n` transactions consists of `log₂(n)` sibling hashes — for 4,000 transactions, about 12 hashes instead of 4,000. Because [hash functions](/concepts/hash-functions) are one-way and avalanche-sensitive, no one can fabricate a path to a root they didn't actually build from the data.
+
+This is what makes **SPV (light) wallets** sound: they store headers only, request a Merkle proof from any full node, and verify it locally — trusting math, not the node.
+
+### Builder
+
+{/* Beyond MIT source: implementation detail for completeness */}
+
+Bitcoin: leaves are double-SHA-256 txids; odd nodes are paired with themselves (a quirk that once enabled CVE-2012-2459 duplicate-tx mutations — handled by consensus rules). The coinbase's position in the tree is what merged mining and some commitments exploit. Beyond Bitcoin: Ethereum uses Merkle-Patricia tries to commit to *state*, not just transactions; rollups post Merkle (or Verkle-style) commitments so [Layer 2](/concepts/layer-2) disputes can be settled with compact proofs on L1.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — Merkle root in every block header; SPV wallets verify by proof.
+- **Ethereum** — Merkle-Patricia tries committing to account state and receipts. {/* Beyond MIT source */}
+- **Rollups & bridges** — Inclusion proofs as the trust anchor for cross-layer claims. {/* Beyond MIT source */}
+- **Outside crypto** — Certificate Transparency logs, Git's object DAG (a cousin). {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **Logarithmic proofs** — verify one of millions of items with a few dozen hashes.
+- **Header-only verification** — enables light clients, the most underrated decentralization feature.
+- **Composability** — roots can commit to anything: transactions, state, off-chain data.
+
+### Limitations
+
+- **Proves inclusion, not absence** — showing something is *not* in a block requires extra structure (sorted trees, accumulators). {/* Beyond MIT source */}
+- **Proof freshness** — a proof is only as good as the header chain it anchors to; light clients still trust the consensus layer for headers.
+- **Update cost** — changing one leaf recomputes the path to the root; fine for blocks, costlier for rapidly mutating state.
+
+## Related Concepts
+
+- [Hash Functions](/concepts/hash-functions) — The primitive the tree is built from
+- [The Blockchain (Three Properties)](/concepts/blockchain-three-properties) — Headers and chaining
+- [Layer 2](/concepts/layer-2) — Compact proofs as the bridge between layers
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Gorbunov lecture)
+- Merkle, R. "A Digital Signature Based on a Conventional Encryption Function" (1987)
+- Vault note: Merkle Trees (M2 cluster)
+
+*Last updated: June 10, 2026*

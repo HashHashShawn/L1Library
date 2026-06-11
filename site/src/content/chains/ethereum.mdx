@@ -1,0 +1,192 @@
+---
+name: "Ethereum"
+ticker: "ETH"
+tagline: "The programmable blockchain. Smart contracts, Proof of Stake, account-based model."
+letter: "E"
+launched: "July 30, 2015"
+consensus: "Proof of Stake (Casper FFG + LMD-GHOST)"
+language: "Solidity, Vyper"
+tps: "~15–25"
+blockTime: "~12 seconds"
+marketCapRank: "2"
+nativeToken: "ETH"
+supply: "~120.5M (no hard cap; net deflationary post-EIP-1559)"
+website: "https://ethereum.org"
+explorer: "https://etherscan.io"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: true
+compareTo: ["solana", "cardano", "avalanche"]
+relatedChains: ["bitcoin", "polygon", "arbitrum", "optimism", "base"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Modules 3-4"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Ethereum is the second-largest blockchain by market capitalization and the first general-purpose programmable blockchain. Proposed by Vitalik Buterin in late 2013 and launched on July 30, 2015, Ethereum extended Bitcoin's innovation beyond peer-to-peer payments into a platform for decentralized applications — programs that run exactly as written, without downtime, censorship, or third-party interference.
+
+The core idea: instead of a ledger that only records "who paid whom," Ethereum provides a world computer where anyone can deploy code (smart contracts) that executes automatically when conditions are met. Every node on the network runs the same computation and agrees on the result, creating a shared, trustless execution environment.
+
+In September 2022, Ethereum completed "The Merge" — transitioning from Proof of Work to Proof of Stake. This reduced energy consumption by ~99.95% and set the stage for a scalability roadmap centered on Layer 2 rollups. Combined with EIP-1559's fee-burning mechanism, ETH supply has been net deflationary during periods of high network activity.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Ethereum is a shared computer that everyone can use and no one controls. When you interact with Ethereum, you're sending a transaction — which might transfer ETH, or it might tell a smart contract to do something (swap tokens, lend funds, mint an NFT).
+
+Unlike Bitcoin's UTXO model, Ethereum tracks balances directly using accounts — similar to a bank ledger. There are two types: externally owned accounts (controlled by a private key, like your wallet) and contract accounts (controlled by code).
+
+Every computation on Ethereum costs "gas" — a fee paid in ETH. Gas prevents infinite loops and spam by making every operation have a price. The more complex your transaction, the more gas it costs.
+
+### Intermediate
+
+Ethereum uses an **account-based model** rather than Bitcoin's UTXO model. The global state is a mapping from addresses to account objects, each containing a nonce (transaction counter), balance, storage hash, and code hash. State transitions happen when the Ethereum Virtual Machine (EVM) executes transactions.
+
+The **EVM** is a stack-based virtual machine with a 256-bit word size. Smart contracts are compiled to EVM bytecode and deployed to the network. The EVM is deterministic — given the same input and state, every node produces the same output. This is what makes trustless execution possible.
+
+**EIP-1559** (August 2021) restructured the fee market into a base fee (algorithmically adjusted and burned) plus an optional priority fee (tip to validators). The base fee targets 50% block utilization, making gas prices more predictable and creating a deflationary mechanism for ETH supply.
+
+### Builder
+
+State model: Modified Merkle Patricia Trie. World state trie root is committed in each block header. Account storage is a separate trie per contract. State bloat is the dominant scalability concern — full state is ~100+ GB and growing.
+
+EVM execution: 256-bit stack, max depth 1024. Memory is byte-addressable, expandable (quadratic gas cost). Storage is word-addressable, persistent (20,000 gas for SSTORE to fresh slot). Opcodes: ~140, including CREATE2 for deterministic contract deployment.
+
+Consensus: Casper FFG (finality gadget) layered on LMD-GHOST (fork choice rule). Validators stake 32 ETH. Epochs = 32 slots × 12 seconds = 6.4 minutes. Finality in 2 epochs (~12.8 minutes). Slashing for double-voting or surround-voting. Validator set: ~1M+ active validators.
+
+Block structure: Post-Merge, execution payload embedded in beacon chain block. Max gas per block: 30M (target: 15M). Blob transactions (EIP-4844, "Proto-Danksharding," March 2024) add data blobs for L2 rollup data at ~10x lower cost than calldata.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Ethereum uses [Proof of Stake](/concepts/proof-of-stake) — validators lock 32 ETH as collateral and are randomly selected to propose blocks. Other validators attest to the validity of proposed blocks. Honest behavior earns rewards; dishonest behavior results in slashing (loss of staked ETH).
+
+**Key parameters:**
+- Minimum stake: 32 ETH per validator
+- Slot time: 12 seconds
+- Epoch: 32 slots (~6.4 minutes)
+- Finality: 2 epochs (~12.8 minutes)
+- Validator APR: ~3-5% (varies with total staked)
+- Slashing penalty: 1/32 of stake minimum, up to full stake for correlated attacks
+
+**Pre-Merge history:** Ethereum ran on Proof of Work (Ethash algorithm) from 2015 to September 15, 2022. The Merge was one of the most complex live infrastructure upgrades in software history — switching consensus mechanisms on a network securing hundreds of billions in value, with zero downtime.
+
+*Read the full concept: [Proof of Stake →](/concepts/proof-of-stake)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Decentralized Finance (DeFi)** — Lending, borrowing, trading, and yield without intermediaries. Protocols like Uniswap, Aave, and MakerDAO collectively hold tens of billions in value.
+- **NFTs and digital ownership** — ERC-721 and ERC-1155 standards established the framework for provable digital ownership.
+- **DAOs** — Decentralized Autonomous Organizations use smart contracts for collective governance, treasury management, and community decision-making.
+- **Stablecoins** — USDC, DAI, and USDT are predominantly issued or operated on Ethereum, forming the backbone of on-chain commerce.
+- **Layer 2 settlement** — Ethereum serves as the data availability and settlement layer for rollups (Arbitrum, Optimism, Base, zkSync), anchoring their security to Ethereum's validator set.
+- **Identity and attestations** — Ethereum Name Service (ENS), Soulbound tokens, and on-chain credentials.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **MetaMask** — Browser extension and mobile, most widely used EVM wallet
+- **Rainbow** — Mobile-first, designed for mainstream users
+- **Ledger** — Hardware wallet, supports ETH and ERC-20 tokens
+
+### Layer 2
+- **Arbitrum** — Optimistic rollup, largest L2 by TVL
+- **Optimism** — Optimistic rollup, OP Stack used by Base, Zora, and others
+- **Base** — Coinbase's L2, built on OP Stack
+- **zkSync** — ZK rollup with native account abstraction
+- **Starknet** — ZK rollup using STARK proofs, Cairo language
+
+### DeFi
+- **Uniswap** — Automated market maker (AMM) for token swaps
+- **Aave** — Lending and borrowing protocol
+- **MakerDAO** — CDP-based stablecoin (DAI) issuer
+- **Lido** — Liquid staking, largest single staking provider
+
+### Infrastructure
+- **Geth** — Go-Ethereum, dominant execution client
+- **Prysm / Lighthouse / Teku / Nimbus** — Consensus clients (client diversity is critical)
+- **Infura / Alchemy** — RPC node providers
+- **The Graph** — Indexing protocol for querying blockchain data
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2013** — Vitalik Buterin publishes the Ethereum whitepaper
+- **2014** — Ethereum Foundation formed. Crowdsale raises ~$18M in BTC.
+- **2015** — Frontier launch (July 30). First live block mined.
+- **2016** — The DAO hack (~$60M). Contentious hard fork creates Ethereum (ETH) and Ethereum Classic (ETC).
+- **2017** — ICO boom drives network to mainstream awareness. ENS launches.
+- **2020** — DeFi Summer. Beacon Chain launches (December), beginning the PoS transition.
+- **2021** — EIP-1559 (London upgrade) introduces base fee burning. NFT market explodes. Gas fees peak.
+- **2022** — The Merge (September 15): Proof of Work → Proof of Stake. Energy usage drops ~99.95%.
+- **2023** — Shanghai/Capella upgrade enables staked ETH withdrawals. Rollup adoption accelerates.
+- **2024** — EIP-4844 (Dencun upgrade, March): Proto-Danksharding adds blob transactions, cutting L2 data costs ~10x. Spot Ethereum ETFs approved in US.
+- **2025** — Pectra upgrade (May): EIP-7702 enables EOAs to temporarily act as smart contracts, EIP-7251 raises max effective validator balance to 2048 ETH.
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Ethereum | Solana | Cardano |
+|---|---|---|---|
+| **Consensus** | Casper PoS | Tower BFT / PoH | Ouroboros PoS |
+| **Block time** | ~12 sec | ~400 ms | ~20 sec |
+| **TPS (L1)** | ~15-25 | ~1,000-4,000 | ~1-20 |
+| **Smart contract language** | Solidity / Vyper | Rust | Plutus (Haskell) |
+| **State model** | Account-based | Account-based | Extended UTXO |
+| **Finality** | ~12.8 min | ~12.8 sec | ~5 min |
+| **EVM compatible** | Native | No (SVM) | No |
+| **L2 ecosystem** | Largest (Arbitrum, OP, Base, zkSync) | Minimal | Minimal |
+| **Validator count** | ~1M+ | ~800 | ~3,000 |
+| **Primary strength** | Security + ecosystem + L2 scaling | Raw throughput | Formal verification |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Bitcoin](/chains/bitcoin)** — UTXO model, PoW, store of value. Ethereum's philosophical predecessor.
+- **Polygon** — EVM sidechain and emerging zkEVM rollup. Extends Ethereum to lower-fee use cases.
+- **Arbitrum** — Leading optimistic rollup. Inherits Ethereum security while offering ~10x lower fees.
+- **Optimism** — Optimistic rollup and OP Stack ecosystem (Base, Zora, Mode). Part of the "Superchain" vision.
+- **Base** — Coinbase's L2 built on OP Stack. Onboarding the next wave of mainstream users.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- MIT BLC Module 3: Smart Contracts and DApps (Ethereum architecture)
+- MIT BLC Module 4: Blockchain Economics and Applications (token economics, DeFi foundations)
+- Buterin, V. "Ethereum: A Next-Generation Smart Contract and Decentralized Application Platform" (2013) — [ethereum.org/whitepaper](https://ethereum.org/en/whitepaper/)
+- ethereum.org — Official documentation, tutorials, and developer resources
+- *Concept pages:* [Proof of Stake](/concepts/proof-of-stake) · [Smart Contracts](/concepts/smart-contracts) · [UTXO Model](/concepts/utxo-model) (compare account-based)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Buterin, V. (2013). "Ethereum: A Next-Generation Smart Contract and Decentralized Application Platform."
+2. MIT BLC Modules 3-4 (2020-2021). Blockchain and Cryptocurrency course materials.
+3. Ethereum Foundation. "The Merge" — [ethereum.org/upgrades/merge](https://ethereum.org/en/roadmap/merge/)
+4. EIP-1559 specification — [eips.ethereum.org/EIPS/eip-1559](https://eips.ethereum.org/EIPS/eip-1559)
+5. EIP-4844 specification — [eips.ethereum.org/EIPS/eip-4844](https://eips.ethereum.org/EIPS/eip-4844)
+6. Network statistics — [etherscan.io](https://etherscan.io)
+7. L2Beat — Layer 2 ecosystem data — [l2beat.com](https://l2beat.com)
+
+*Freshness note: Validator count, staking APR, and L2 TVL rankings should be verified quarterly. Supply figure is approximate and changes with burn rate.*
+
+*Last updated: June 10, 2026*

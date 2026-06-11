@@ -1,0 +1,73 @@
+---
+title: "Public-Key Cryptography and Digital Signatures"
+definition: "Key generation produces a public key (a shareable identifier) and a secret key (never shared). Signing a transaction with the secret key proves consent and guarantees integrity — signatures are unforgeable and message-specific."
+category: "cryptography"
+usedBy: ["bitcoin"]
+relatedConcepts: ["utxo-model", "double-spend-problem", "smart-contracts", "hash-functions"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Blockchains have no login page. There is no "forgot password," no fraud department, no one to call. The *entire* notion of ownership — who can spend a coin, who controls a contract — reduces to one mechanism: can you produce a valid signature with the right secret key?
+
+That's why the casebook's warning (Gorbunov) deserves its bluntness: **private keys are money**. Most "blockchain hacks" aren't broken cryptography — they're buggy wallets, leaked keys, and people rolling their own crypto. The math has held; the key management around it is where funds die.
+
+## How It Works
+
+### Beginner
+
+Imagine a magic pen and a public autograph card. Anyone can compare a signature against your card and confirm it's genuinely yours — but nobody can forge the pen's signature, and your signature on one document can't be peeled off and stuck onto another. The pen is your secret key (never share it); the card is your public key (share it freely). Spending crypto is signing a note that says "I authorize this payment" with your pen.
+
+### Intermediate
+
+A signature scheme has three parts, per the casebook:
+
+1. **Generate** — produce a keypair: a public key (your identifier on the network — addresses derive from it) and a secret key.
+2. **Sign** — combine the secret key with a specific message (the transaction) to produce a signature.
+3. **Verify** — anyone with the public key, message, and signature can check validity.
+
+Two guarantees follow: **consent** (only the secret-key holder could have produced it) and **integrity** (the signature is message-specific — alter the payee or amount and verification fails). This is what secures the [UTXO Model](/concepts/utxo-model): every input must carry a valid signature from the keys its locking script demands.
+
+### Builder
+
+{/* Beyond MIT source: scheme specifics for completeness */}
+
+Bitcoin uses ECDSA (and, since Taproot, Schnorr) over secp256k1; Ethereum uses ECDSA/secp256k1 with Keccak-derived addresses. Schnorr's linearity enables key and signature aggregation (MuSig) — n-of-n multisig that looks like a single signature on-chain. What's actually signed is a hash of the transaction (sighash modes select which parts), which is why [hash functions](/concepts/hash-functions) and signatures are inseparable in practice. Standing advice from the casebook stands verbatim: never roll your own crypto.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — ECDSA/Schnorr signatures authorizing every UTXO spend.
+- **Ethereum** — ECDSA account signatures; contract wallets add programmable policies. {/* Beyond MIT source */}
+- **Multisig custody** — m-of-n signatures for treasuries and exchanges. {/* Beyond MIT source */}
+- **Everywhere else** — TLS, SSH, code signing: the same primitive securing the internet. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **Self-sovereign ownership** — no registrar or intermediary stands between a keyholder and their assets.
+- **Unforgeable, message-specific consent** — the two properties that make permissionless value transfer possible.
+- **Verifiable by anyone** — public verification is what lets every node check every transaction.
+
+### Limitations
+
+- **Keys are money** — loss is irrecoverable, theft is final; the human layer is the weakest link.
+- **No revocation** — a compromised key can't be "cancelled"; funds must be raced to a new key.
+- **Quantum horizon** — large-scale quantum computers would break ECDSA; post-quantum migration is an open, slow-moving question for every chain. {/* Beyond MIT source */}
+
+## Related Concepts
+
+- [UTXO Model](/concepts/utxo-model) — Where signatures meet spendable coins
+- [Double-Spend Problem](/concepts/double-spend-problem) — Consent alone isn't enough; ordering matters too
+- [Smart Contracts](/concepts/smart-contracts) — Programmable spending conditions beyond a single signature
+- [Hash Functions](/concepts/hash-functions) — The companion primitive
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Gorbunov lecture)
+- Vault note: Public-Key Cryptography and Digital Signatures (M2 cluster)
+
+*Last updated: June 10, 2026*

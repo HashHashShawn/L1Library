@@ -1,0 +1,72 @@
+---
+title: "Smart Contracts"
+definition: "Programs that execute agreements on-chain without a trusted intermediary. The ledger already disintermediates payments; smart contracts extend that to arbitrary agreements — provided they're done properly."
+category: "smart-contracts"
+usedBy: ["ethereum"]
+relatedConcepts: ["utxo-model", "public-key-cryptography", "pure-proof-of-stake", "blockchain-three-properties", "layer-2"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+A blockchain that only moves coins is a payment rail. The larger prize, in Micali's framing from the casebook, is this: the ledger already **disintermediates** — it executes transfers with no bank in the middle — and the **ultimate goal** is to do the same for agreements in general. Escrow without an escrow agent, insurance that pays out without a claims department, markets without a clearinghouse.
+
+The casebook is equally clear about the qualifier: *provided they're done properly*. A contract that runs exactly as written runs exactly as written — bugs included — and there's no one to call when "as written" wasn't "as intended."
+
+## How It Works
+
+### Beginner
+
+A vending machine is a contract that enforces itself: money in, snack out, no shopkeeper, no trust. A smart contract is a vending machine made of code and placed on a blockchain: it holds funds, watches for conditions, and releases value according to fixed rules that no one — including its author — can bend after deployment. The blockchain guarantees the machine can't be unplugged or tampered with.
+
+### Intermediate
+
+The primitive form already exists in Bitcoin: **Bitcoin Script**, via the [UTXO Model](/concepts/utxo-model), makes spending conditions programmable — multisignature requirements, timelocks — a limited, early form of contract. Generalized platforms make the contract a full program with its own state and balance, invoked by transactions.
+
+The casebook's two cautions (Micali): the **DAO hack** — the famous 2016 theft from an Ethereum contract — was an *implementation bug, not an inherent flaw* of the idea; and contemporary smart contracts are **too slow**, with performance and careful **language design** named as the open challenges. Both cautions aged well: the field's history since is largely the story of those two problems being worked.
+
+### Builder
+
+{/* Beyond MIT source: the post-casebook platform landscape, per the vault's freshness flag */}
+
+The dominant model became Ethereum's EVM: gas-metered execution, Solidity contracts, state in a global trie. The bug problem matured into a discipline — audits, formal verification, standardized libraries (OpenZeppelin), bug bounties — after roughly a decade of expensive lessons (reentrancy, oracle manipulation, bridge exploits). The performance problem moved to [Layer 2](/concepts/layer-2) and alternative runtimes (Solana's parallel execution, Move's resource types, CosmWasm). Composability — contracts calling contracts — proved to be both the killer feature (DeFi's "money legos") and a compounding risk surface.
+
+## Examples
+
+- **Bitcoin Script** — Multisig and timelocks via the [UTXO model](/concepts/utxo-model); the limited early form.
+- **Ethereum** — The general-purpose platform; DeFi, NFTs, DAOs all live here. {/* Beyond MIT source */}
+- **The DAO (2016)** — The casebook's cautionary example: implementation bug, $60M, a chain-splitting bailout. {/* Beyond MIT source: outcome details */}
+- **Algorand** — Contracts paired with [on-chain self-governance](/concepts/pure-proof-of-stake) for protocol upgrades.
+
+## Tradeoffs
+
+### Strengths
+
+- **Disintermediation generalized** — agreements execute without trusted middlemen, fees, or discretion.
+- **Credible neutrality** — the rules are public, deterministic, and apply identically to everyone.
+- **Composability** — contracts build on contracts, compounding what the platform can express. {/* Beyond MIT source */}
+
+### Limitations
+
+- **Code is the contract** — bugs are binding; there is no court of "what we meant." The DAO is the standing example.
+- **Performance** — the casebook's "too slow" still holds at base layer; execution everywhere is metered and costly.
+- **Oracle dependence** — contracts only know on-chain facts; real-world inputs reintroduce trusted parties. {/* Beyond MIT source */}
+- **Immutability cuts both ways** — unstoppable also means unfixable without governance machinery.
+
+## Related Concepts
+
+- [UTXO Model](/concepts/utxo-model) — Bitcoin's programmable-spending seed
+- [Public-Key Cryptography](/concepts/public-key-cryptography) — The authorization layer contracts build on
+- [Pure Proof of Stake](/concepts/pure-proof-of-stake) — Fast finality and self-governance as contract enablers
+- [The Blockchain (Three Properties)](/concepts/blockchain-three-properties) — Disintermediation as a core property
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Micali lecture)
+- Vault note: Smart Contracts (M2 cluster)
+
+*Freshness note: the vault marks this a stub pre-dating modern EVM platforms; post-casebook material is flagged inline and should be expanded when later modules are processed.*
+
+*Last updated: June 10, 2026*

@@ -1,0 +1,99 @@
+---
+title: "Proof of Work"
+definition: "A consensus mechanism where miners repeatedly hash block data with a varying nonce until they find a hash with the required number of leading zeros — proving they expended real computation. The longest-chain rule resolves forks."
+category: "consensus"
+usedBy: ["bitcoin"]
+relatedConcepts: ["proof-of-stake", "byzantine-fault-tolerance", "hash-functions", "mining-economics", "sybil-attack", "51-percent-attack"]
+alternativeTo: "proof-of-stake"
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+{/* Section 2: The "so what" */}
+
+Proof of Work is the original solution to a fundamental problem: how do you get strangers on the internet to agree on a shared ledger without trusting anyone? Before PoW, digital money couldn't work because there was no way to prevent someone from spending the same coin twice without a central authority keeping score.
+
+PoW makes cheating expensive. To rewrite Bitcoin's history, an attacker would need more computing power than the rest of the network combined — a cost measured in billions of dollars and megawatts of electricity. That cost *is* the security.
+
+The tradeoff is real: Bitcoin's network consumes energy comparable to a small country. This is the central tension that led to alternative mechanisms like Proof of Stake. Whether the energy cost is justified depends on whether you think a trustless, censorship-resistant monetary network is worth powering.
+
+## How It Works
+
+{/* Section 3: Depth tabs — Beginner / Intermediate / Builder */}
+{/* Note: Depth tab interactivity will be implemented as a client-side component */}
+
+### Beginner
+
+Think of it like a lottery that runs every 10 minutes. Thousands of computers around the world race to solve a math puzzle. The puzzle is simple to check but hard to solve — like a combination lock where you have to try billions of combinations. The first computer to find the answer gets to add the next page to the shared ledger and earns new bitcoin as a reward.
+
+### Intermediate
+
+Miners take a block of pending transactions, combine them with the previous block's hash and a random number (the **nonce**), and run it through SHA-256. If the resulting hash starts with enough zeros (determined by the **difficulty target**), the block is valid. If not, they increment the nonce and try again. On average, the network performs ~600 quintillion hashes per second to find one valid block.
+
+The **difficulty adjustment** recalibrates every 2,016 blocks (~2 weeks) to maintain a 10-minute average block time, regardless of how much computing power joins or leaves the network.
+
+### Builder
+
+The core loop: `SHA256(SHA256(block_header))` where `block_header` includes version, previous block hash, Merkle root of transactions, timestamp, difficulty bits, and nonce (32-bit). When the 32-bit nonce space is exhausted, miners modify the coinbase transaction's `extraNonce` field, which changes the Merkle root, creating a fresh nonce search space.
+
+Key parameters (Bitcoin mainnet, 2024): block reward = 3.125 BTC (post-fourth halving), difficulty retarget every 2,016 blocks, target block time = 600 seconds, max block weight = 4M weight units.
+
+## Examples
+
+{/* Section 4: Which chains use this */}
+
+Chains using Proof of Work:
+
+- **[Bitcoin](/chains/bitcoin)** — The original PoW implementation. SHA-256 mining, 10-minute blocks.
+- **Litecoin** — Scrypt-based PoW, 2.5-minute blocks. Designed as "silver to Bitcoin's gold."
+- **Dogecoin** — Merged-mining with Litecoin (Scrypt). Originally a meme, now a top-20 chain.
+- **Bitcoin Cash** — SHA-256, larger block size (32MB). Forked from Bitcoin in 2017.
+- **Monero** — RandomX PoW, designed to resist ASIC mining and preserve CPU-mining accessibility.
+- **Ethereum Classic** — Ethash PoW. Continued after Ethereum moved to PoS in the Merge (2022).
+
+## Tradeoffs
+
+{/* Section 5: Strengths and limitations */}
+
+### Strengths
+
+- **Battle-tested security** — Bitcoin has operated continuously since 2009 with no successful 51% attack on the main chain.
+- **True decentralization of issuance** — Anyone with hardware and electricity can mine. No stake requirement.
+- **Thermodynamic finality** — The cost to rewrite history grows exponentially with each confirmation.
+- **Simple to verify** — Checking a proof is trivial; producing one is expensive. This asymmetry is the mechanism.
+
+### Limitations
+
+- **Energy consumption** — Bitcoin mining uses ~150 TWh/year (comparable to a mid-size country). This is a feature to proponents and a bug to critics.
+- **Mining centralization** — Despite the design intent, ~3 mining pools control the majority of Bitcoin hashrate.
+- **Low throughput** — Bitcoin processes ~7 transactions per second on the base layer. Scaling relies on Layer 2 solutions.
+- **Fork latency** — Merchants typically wait 6 confirmations (~1 hour) for high-value transactions.
+
+**Main alternative:** [Proof of Stake](/concepts/proof-of-stake) — replaces energy expenditure with economic stake as the security mechanism.
+
+## Related Concepts
+
+{/* Section 6 */}
+
+- [Hash Functions](/concepts/hash-functions) — The cryptographic primitive that makes PoW possible
+- [Sybil Attack](/concepts/sybil-attack) — The attack vector PoW was designed to prevent
+- [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance) — The theoretical framework for consensus
+- [Proof of Stake](/concepts/proof-of-stake) — The primary alternative consensus mechanism
+- [Mining and Mining Economics](/concepts/mining-economics) — The economic incentive layer
+- [51% Attack](/concepts/51-percent-attack) — The primary attack vector against PoW chains
+
+## Sources & Last Updated
+
+{/* Section 7 */}
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Nakamoto, S. "Bitcoin: A Peer-to-Peer Electronic Cash System" (2008)
+- Back, A. "Hashcash — A Denial of Service Counter-Measure" (2002)
+- Micali, S. Lecture on consensus mechanism tradeoffs (MIT BLC)
+
+*Freshness note: Ethereum's September 2022 Merge moved it from PoW to PoS. Bitcoin block reward figures updated for the April 2024 halving. Mining pool concentration and hashrate figures should be verified quarterly.*
+
+*Last updated: June 10, 2026*

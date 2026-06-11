@@ -1,0 +1,46 @@
+---
+// L1 Library Header — aligned to the hi-fi masthead (Variant D "Almanac")
+// Agate row → double rule → 52px nameplate → toolbar (sans nav + bordered search)
+---
+
+<header>
+  <div class="max-w-6xl mx-auto px-4">
+    <!-- Agate row -->
+    <div class="agate flex justify-between pt-3 pb-2 uppercase">
+      <span>Vol. 1 — June 2026</span>
+      <span class="hidden sm:inline">The Blockchain Encyclopedia</span>
+    </div>
+
+    <div class="double-rule"></div>
+
+    <!-- Nameplate -->
+    <div class="text-center pt-6 pb-5">
+      <a href="/" class="nameplate text-4xl md:text-[52px] text-l1-black no-underline inline-block">
+        L1 LIBRARY
+      </a>
+      <p class="text-sm text-l1-gray-500 mt-1.5">Built from MIT curriculum · Every chain. Explained.</p>
+    </div>
+
+    <div class="single-rule"></div>
+
+    <!-- Navigation + Search toolbar -->
+    <nav class="flex items-center justify-between gap-6 py-2.5">
+      <div class="flex gap-5">
+        <a href="/chains" class="text-sm font-medium text-l1-gray-700 hover:text-l1-black hover:underline">Chains A–Z</a>
+        <a href="/concepts" class="text-sm font-medium text-l1-gray-700 hover:text-l1-black hover:underline">Concepts</a>
+        <a href="/glossary" class="text-sm font-medium text-l1-gray-700 hover:text-l1-black hover:underline">Glossary</a>
+        <a href="/learn" class="text-sm font-medium text-l1-gray-700 hover:text-l1-black hover:underline">Learn</a>
+      </div>
+      <form action="/search" method="get">
+        <input
+          type="search"
+          name="q"
+          placeholder="Search L1 Library..."
+          class="font-sans text-sm border-[1.5px] border-l1-black px-3 py-2 w-72 max-w-[40vw] focus:outline-none placeholder:text-l1-gray-400"
+        />
+      </form>
+    </nav>
+  </div>
+
+  <div class="single-rule"></div>
+</header>

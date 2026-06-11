@@ -1,0 +1,74 @@
+---
+title: "Byzantine Fault Tolerance"
+definition: "A consensus property where the system stays correct even when some participants are malicious — not merely offline. Byzantine Agreement guarantees honest players end on one value, even with traitors in the room."
+category: "consensus"
+usedBy: []
+relatedConcepts: ["distributed-consensus", "pure-proof-of-stake", "proof-of-work", "proof-of-stake"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Crash faults are easy: a dead node says nothing. The dangerous node is the one that keeps talking — sending one answer to half the network and a different answer to the other half. Byzantine Fault Tolerance (BFT) is the property of surviving liars, and it's the difference between a system that works among friends and one that works among strangers.
+
+Every public blockchain needs BFT in some form, because anyone — including attackers — can run a node. The interesting story is how the classic solution, brilliant but impractical for open networks, got re-engineered into something blockchains could actually use.
+
+## How It Works
+
+### Beginner
+
+The name comes from a thought experiment: Byzantine generals surrounding a city must all attack at once to win, coordinating by messenger — but some generals are traitors who tell different things to different people. BFT protocols are message rules that let the loyal generals reach the same decision anyway.
+
+### Intermediate
+
+Byzantine Agreement gives two guarantees: **agreement** — all honest players end up on a single value — and **consistency** — if all honest players start with the same value, that's the value they end on. Classic protocols achieve this with rounds of cross-checking votes, and tolerate up to a threshold of traitors (typically less than one-third of participants).
+
+The catch, per the MIT casebook: classic Byzantine Agreement is roughly 30-year-old technology that is **slow** and assumes a **fixed, known set of players**. That's fine for a permissioned consortium; it's a non-starter for an open network where membership changes constantly and identities are free to mint.
+
+### Builder
+
+{/* Beyond MIT source: standard BFT bounds and protocol names for completeness */}
+
+The classic bound: with `n` players and `f` Byzantine, agreement requires `n ≥ 3f + 1` in partial synchrony. PBFT (Castro–Liskov, 1999) made BFT practical at small scale with O(n²) message complexity — the reason it doesn't stretch to thousands of open-network validators. Modern chains adapt it: Tendermint/CometBFT linearizes views; HotStuff (the basis of Aptos/Sui-style consensus) gets linear message complexity with a three-phase commit.
+
+Algorand's contribution ([Pure Proof of Stake](/concepts/pure-proof-of-stake)) re-engineers Byzantine Agreement to be **player-replaceable**: a fresh, randomly sortitioned committee runs each step, so the protocol no longer needs a fixed player set — that's what makes BFT compatible with an open network.
+
+## Examples
+
+- **Tendermint / Cosmos chains** — BFT consensus with a bonded validator set; instant finality. {/* Beyond MIT source */}
+- **Algorand** — Player-replaceable Byzantine Agreement selected by cryptographic sortition.
+- **Permissioned ledgers** — PBFT descendants with a known membership list.
+- **Nakamoto consensus** — Bitcoin sidesteps classic BFT entirely: no voting rounds, just costly leader election via [Proof of Work](/concepts/proof-of-work).
+
+## Tradeoffs
+
+### Strengths
+
+- **Deterministic finality** — once a BFT round commits, the block is final; no waiting for confirmations.
+- **Strong guarantees under a known threshold** — provable safety as long as the traitor fraction stays below the bound.
+- **No energy expenditure** — security comes from message rounds, not work.
+
+### Limitations
+
+- **Assumes known players** — classic BFT requires a fixed membership list, which open networks don't have.
+- **Communication overhead** — vote rounds scale poorly; committee sizes are bounded in practice.
+- **Threshold cliffs** — guarantees vanish abruptly past the fault threshold (⅓), unlike PoW's gradual degradation.
+
+## Related Concepts
+
+- [Distributed Consensus](/concepts/distributed-consensus) — The general problem BFT addresses
+- [Pure Proof of Stake](/concepts/pure-proof-of-stake) — Algorand's player-replaceable re-engineering
+- [Proof of Work](/concepts/proof-of-work) — The identity-free alternative path
+- [Proof of Stake](/concepts/proof-of-stake) — Often paired with BFT-style finality
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Lamport, Shostak, Pease. "The Byzantine Generals Problem" (1982)
+- Vault note: Byzantine Fault Tolerance (M2 cluster)
+
+*Freshness note: protocol genealogy (PBFT, Tendermint, HotStuff) is general knowledge beyond the MIT casebook.*
+
+*Last updated: June 10, 2026*

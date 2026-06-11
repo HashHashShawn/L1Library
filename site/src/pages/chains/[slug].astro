@@ -1,0 +1,85 @@
+---
+// Chain Profile Template — 11 sections (L1-009, validated with Bitcoin + Ethereum)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const chains = await getCollection('chains');
+  return chains.map(chain => ({
+    params: { slug: chain.slug },
+    props: { chain },
+  }));
+}
+
+const { chain } = Astro.props;
+const { Content } = await chain.render();
+const letter = chain.data.letter;
+
+// Sections for TOC
+const sections = [
+  { id: 'overview', label: '1. Overview' },
+  { id: 'key-stats', label: '2. Key Stats' },
+  { id: 'how-it-works', label: '3. How It Works' },
+  { id: 'consensus', label: '4. Consensus' },
+  { id: 'use-cases', label: '5. Use Cases' },
+  { id: 'ecosystem', label: '6. Ecosystem' },
+  { id: 'history', label: '7. History' },
+  { id: 'comparison', label: '8. Comparison' },
+  { id: 'related', label: '9. Related Chains' },
+  { id: 'learning', label: '10. Learning Resources' },
+  { id: 'sources', label: '11. Sources' },
+];
+---
+
+<BaseLayout title={chain.data.name} description={chain.data.tagline}>
+
+  <!-- Breadcrumb -->
+  <div class="max-w-6xl mx-auto px-4 pt-4">
+    <nav class="agate">
+      <a href="/" class="hover:text-l1-black">Home</a>
+      <span class="mx-1">/</span>
+      <a href="/chains" class="hover:text-l1-black">Chains</a>
+      <span class="mx-1">/</span>
+      <a href={`/chains#${letter}`} class="hover:text-l1-black">{letter}</a>
+      <span class="mx-1">/</span>
+      <span class="text-l1-black">{chain.data.name}</span>
+    </nav>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-8">
+
+      <!-- Sticky TOC sidebar -->
+      <aside class="hidden md:block">
+        <nav class="sticky top-8 space-y-2">
+          <p class="kicker mb-3">On this page</p>
+          {sections.map(s => (
+            <a href={`#${s.id}`} class="toc-link block py-0.5">{s.label}</a>
+          ))}
+        </nav>
+      </aside>
+
+      <!-- Main content area -->
+      <article class="relative">
+        <!-- Ghost watermark -->
+        <div class="l1-watermark -top-20 -right-20 text-[12rem]">L1</div>
+
+        <!-- Eyebrow + Title -->
+        <div class="relative z-10">
+          <span class="eyebrow mb-3">{chain.data.category} · {chain.data.consensusType}</span>
+          <h1 class="font-mono text-4xl md:text-5xl font-bold mt-3 mb-2">{chain.data.name}</h1>
+          <p class="text-xl text-l1-gray-600 mb-2">{chain.data.tagline}</p>
+          <p class="agate">Last updated: {chain.data.lastUpdated.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+
+        <div class="double-rule my-6"></div>
+
+        <!-- MDX content renders all 11 sections -->
+        <div class="relative z-10 prose prose-neutral max-w-none">
+          <Content />
+        </div>
+      </article>
+    </div>
+  </div>
+
+</BaseLayout>

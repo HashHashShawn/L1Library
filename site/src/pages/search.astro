@@ -1,0 +1,60 @@
+---
+// Search — Pagefind UI. The index is generated at build time
+// ("build": "astro build && pagefind --site dist"), so search works on the
+// deployed site and `npm run preview`, but not in `astro dev`.
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Search" description="Search chains, concepts, and glossary.">
+  <div class="max-w-3xl mx-auto px-4 pt-12 pb-16 w-full">
+    <div class="double-rule mb-6"></div>
+    <h1 class="font-mono text-4xl font-bold tracking-tight mb-8">Search</h1>
+    <div id="search"></div>
+  </div>
+
+  <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('search');
+      if (typeof PagefindUI === 'undefined') {
+        el.innerHTML =
+          '<p class="agate">Search index not found. It is generated at build time — run <code>npm run build</code> (unavailable in dev mode).</p>';
+        return;
+      }
+      const ui = new PagefindUI({
+        element: '#search',
+        showSubResults: true,
+        showImages: false,
+      });
+      const q = new URLSearchParams(location.search).get('q');
+      if (q) ui.triggerSearch(q);
+    });
+  </script>
+
+  <style is:global>
+    /* Pagefind UI → L1 brand */
+    #search {
+      --pagefind-ui-primary: #000000;
+      --pagefind-ui-text: #333333;
+      --pagefind-ui-background: #ffffff;
+      --pagefind-ui-border: #000000;
+      --pagefind-ui-tag: #f5f5f5;
+      --pagefind-ui-border-width: 1.5px;
+      --pagefind-ui-border-radius: 0;
+      --pagefind-ui-font: 'Inter', system-ui, sans-serif;
+    }
+    #search .pagefind-ui__search-input {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 400;
+    }
+    #search .pagefind-ui__result-title {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    #search mark {
+      background: #000;
+      color: #fff;
+      padding: 0 2px;
+    }
+  </style>
+</BaseLayout>

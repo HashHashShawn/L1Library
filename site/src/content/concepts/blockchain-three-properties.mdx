@@ -1,0 +1,69 @@
+---
+title: "The Blockchain (Three Properties)"
+definition: "Micali's framing: a blockchain is data in blocks that is readable by all, writable by all, and tamper-proof for all — blocks encased in bulletproof glass and chained in order."
+category: "data-structures"
+usedBy: ["bitcoin"]
+relatedConcepts: ["hash-functions", "merkle-trees", "distributed-consensus", "smart-contracts"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Strip away the markets, the jargon, and the hype, and the casebook's definition is three properties: **readable by all** (anyone can inspect the ledger), **writable by all** (anyone can submit to it), and **tamper-proof for all** (no one — not even a majority of insiders — can quietly rewrite it). Micali's image: blocks encased in *bulletproof glass*, chained in order. You can look, you can add, you cannot reach in and edit.
+
+The three properties are also the test for whether you need a blockchain at all. Drop "writable by all" and a database with backups is cheaper. Drop "readable by all" and you've built an intranet. The technology only earns its cost when all three are required at once.
+
+## How It Works
+
+### Beginner
+
+Think of a public guestbook in a town square, written in permanent ink, with every page numbered and laminated as soon as it's full. Anyone may read it, anyone may add a line, and because each new page begins by quoting a fingerprint of the previous page, tearing out or altering an old page is instantly obvious to everyone. The order of entries — who signed first — is part of what's preserved.
+
+### Intermediate
+
+Each property has a distinct mechanism. **Readable**: every node holds the full ledger; transparency is the default, not a feature. **Writable**: anyone can broadcast a transaction; [distributed consensus](/concepts/distributed-consensus) — not an administrator — decides what gets appended. **Tamper-proof**: each block embeds the [hash](/concepts/hash-functions) of its predecessor, so editing history breaks every later link, in public.
+
+The casebook then maps properties to uses: **notarization and storage** (a house title that can't be quietly altered), **ordering and timestamping** (proving who was first — patents, priority disputes), and **disintermediation** (executing agreements with no trusted middleman — the road to [smart contracts](/concepts/smart-contracts)).
+
+### Builder
+
+{/* Beyond MIT source: precision notes for completeness */}
+
+Engineering caveats behind each property. *Readable*: full transparency is why [privacy](/concepts/zero-knowledge-proofs) needs separate machinery. *Writable*: permissionless write access is rate-limited by fees and block space — "writable by all" means no gatekeeper, not free. *Tamper-proof*: hash-chaining makes history tamper-*evident*; making it tamper-*resistant* is consensus's job, and the guarantee is economic (cost of a reorg) rather than absolute — see [51% attack](/concepts/51-percent-attack). Permissioned ledgers deliberately relax "writable by all" and inherit a different trust model entirely.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — The original instantiation of all three properties.
+- **Notarization** — Land registries and document-timestamping pilots. {/* Beyond MIT source */}
+- **Ordering** — Priority proofs; first-to-file disputes resolved by chain position.
+- **Disintermediation** — From simple transfers to full [smart contracts](/concepts/smart-contracts).
+
+## Tradeoffs
+
+### Strengths
+
+- **A clean mental model** — three properties cover what blockchains actually guarantee, no metaphysics required.
+- **A built-in use-case filter** — if an application doesn't need all three, simpler tools win.
+- **Composable foundation** — notarization, ordering, and disintermediation are the primitives everything else builds on.
+
+### Limitations
+
+- **Transparency is total** — "readable by all" includes adversaries, competitors, and chain-analysis firms.
+- **Tamper-proofing is economic** — bulletproof glass is bought per-block with energy or stake, and is only as thick as the consensus securing it.
+- **Immutable includes mistakes** — wrong addresses, exploits, and illegal content are preserved with equal fidelity.
+
+## Related Concepts
+
+- [Hash Functions](/concepts/hash-functions) — The chaining that makes tampering evident
+- [Merkle Trees](/concepts/merkle-trees) — Compressing block contents into the header
+- [Distributed Consensus](/concepts/distributed-consensus) — Who gets to write
+- [Smart Contracts](/concepts/smart-contracts) — Disintermediation, generalized
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Micali lecture)
+- Vault note: The Blockchain (Three Properties) (M2 cluster)
+
+*Last updated: June 10, 2026*

@@ -1,0 +1,79 @@
+---
+// Chains A–Z directory — fixes the /chains 404 from the header nav
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const chains = await getCollection('chains');
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+const byLetter = alphabet.map((letter) => ({
+  letter,
+  items: chains
+    .filter((c) => c.data.letter === letter)
+    .sort((a, b) => a.data.name.localeCompare(b.data.name)),
+}));
+const activeGroups = byLetter.filter((g) => g.items.length > 0);
+---
+
+<BaseLayout
+  title="Chains A–Z"
+  description="The full L1 Library chain directory — every profiled chain, alphabetically."
+>
+  <div class="max-w-6xl mx-auto px-4 pt-12 pb-16">
+    <!-- Page header -->
+    <div class="double-rule mb-6"></div>
+    <div class="flex items-baseline justify-between mb-2">
+      <h1 class="font-mono text-4xl font-bold tracking-tight">Chains A–Z</h1>
+      <p class="agate">{chains.length} {chains.length === 1 ? 'chain' : 'chains'} profiled</p>
+    </div>
+    <p class="text-l1-gray-600 max-w-2xl mb-8">
+      Every chain in the library, alphabetically. Profiles follow the same
+      11-section template — no rankings, no price charts.
+    </p>
+
+    <!-- Letter jump bar (2-row compact grid, matches homepage) -->
+    <nav class="az-grid mb-12" aria-label="Jump to letter">
+      {alphabet.map((letter) => {
+        const count = byLetter.find((g) => g.letter === letter)?.items.length || 0;
+        return count > 0 ? (
+          <a href={`#${letter}`} class="az-tile">
+            <span class="az-letter">{letter}</span>
+            <span class="az-count">{count}</span>
+          </a>
+        ) : (
+          <span class="az-tile az-empty">
+            <span class="az-letter">{letter}</span>
+          </span>
+        );
+      })}
+    </nav>
+
+    <!-- Letter sections -->
+    {activeGroups.length === 0 && (
+      <p class="agate">No chains published yet — profiles in development.</p>
+    )}
+    {activeGroups.map((group) => (
+      <section id={group.letter} class="mb-10 scroll-mt-6">
+        <div class="single-rule mb-3"></div>
+        <h2 class="font-mono text-2xl font-bold mb-4">{group.letter}</h2>
+        <ul class="space-y-0">
+          {group.items.map((chain) => (
+            <li class="border-b border-l1-gray-200">
+              <a
+                href={`/chains/${chain.slug}`}
+                class="grid grid-cols-1 md:grid-cols-[14rem_1fr_auto] gap-1 md:gap-6 items-baseline py-3 group"
+              >
+                <span class="font-mono font-semibold group-hover:underline">
+                  {chain.data.name}
+                  <span class="text-l1-gray-400 font-normal ml-2">{chain.data.ticker}</span>
+                </span>
+                <span class="text-sm text-l1-gray-600">{chain.data.tagline}</span>
+                <span class="agate hidden md:block">{chain.data.consensus}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

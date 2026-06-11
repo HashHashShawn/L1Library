@@ -1,0 +1,71 @@
+---
+title: "Double-Spend Problem"
+definition: "Digital tokens are copyable, so the core problem of digital money is ensuring a coin is spent only once. Banks used to guarantee this; Bitcoin had to solve it without one."
+category: "security"
+usedBy: ["bitcoin"]
+relatedConcepts: ["distributed-consensus", "utxo-model", "public-key-cryptography", "51-percent-attack"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Cash works because handing over a bill physically removes it from your pocket. A digital coin is just data — and data copies for free. Send the same coin to two people, and without something stopping you, both copies are "real." This is the double-spend problem, and it's the reason digital money needed either a bank or a breakthrough.
+
+For decades the answer was a bank: a central ledger-keeper who sees every transaction and rejects the second spend. Bitcoin's entire reason for existing is solving double-spending **without** that referee — which is why this concept, more than any other, explains what a blockchain is *for*.
+
+## How It Works
+
+### Beginner
+
+Picture emailing a photo: you still have it after sending. Digital coins have the same property — "sending" is copying. The fix requires everyone to agree on a single, shared transaction history: if the whole network agrees your coin went to Alice at 2:03pm, your later attempt to send the same coin to Bob is rejected by everyone, automatically. No referee — just a public record nobody can fork to their advantage.
+
+### Intermediate
+
+Bitcoin's answer, per the casebook, is an **ordered ledger** formed by [distributed consensus](/concepts/distributed-consensus): when two transactions spend the same coin, the one that comes **first in the agreed order** is valid and the second is discarded. Ordering, not identity, resolves the conflict — which is why consensus on *sequence* is the heart of the protocol.
+
+The [UTXO Model](/concepts/utxo-model) operationalizes it: every coin is a discrete unspent output, consumed in its entirety when spent. A second spend of the same output is detectable by every node against its UTXO set. This combination gives Bitcoin its signature properties — **permissionless** participation, **authoritative transfers**, and a **tamper-proof** history.
+
+### Builder
+
+{/* Beyond MIT source: practical confirmation policy for completeness */}
+
+Within consensus, double-spending survives at the margins: **race attacks** (broadcast conflicting unconfirmed transactions), **Finney attacks** (pre-mined conflicting blocks), and full **reorg-based** double-spends under majority hashpower (the [51% attack](/concepts/51-percent-attack)). Probabilistic finality is the mitigation: each confirmation buries a transaction deeper; the conventional 6-confirmation rule (~1 hour) prices reversal beyond plausible attacker budgets on Bitcoin. Zero-confirmation acceptance is a merchant risk decision, not a protocol guarantee. BFT-finality chains close the window differently: once committed, reversal is protocol-impossible rather than merely expensive.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — First system to solve double-spending without a central party (2009).
+- **Pre-Bitcoin e-cash** — DigiCash et al. solved it *with* a central mint — and inherited the mint as a single point of failure. {/* Beyond MIT source */}
+- **Exchange-targeted attacks** — Real-world double-spends on small chains via 51% reorgs. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+{/* Framed as tradeoffs of Bitcoin's ordering-based solution */}
+
+### Strengths of the consensus solution
+
+- **No trusted issuer** — the ledger's order, not an institution, is the arbiter.
+- **Global verifiability** — every node independently detects conflicting spends.
+- **Composable guarantee** — everything above (payments, contracts, L2s) inherits spend-once semantics.
+
+### Limitations
+
+- **Finality is probabilistic** — on longest-chain protocols, "spent once" is a confidence level, not an instant fact.
+- **Latency cost** — waiting for confirmations is the price of trustlessness; instant acceptance reintroduces risk.
+- **Degrades with consensus** — the guarantee is only as strong as the chain's resistance to majority attack.
+
+## Related Concepts
+
+- [Distributed Consensus](/concepts/distributed-consensus) — The ordering machinery that resolves conflicts
+- [UTXO Model](/concepts/utxo-model) — Spend-once accounting in practice
+- [Public-Key Cryptography](/concepts/public-key-cryptography) — Consent; ordering handles the rest
+- [51% Attack](/concepts/51-percent-attack) — Where the guarantee breaks down
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Nakamoto, S. "Bitcoin: A Peer-to-Peer Electronic Cash System" (2008)
+- Vault note: Double-Spend Problem (M2 cluster)
+
+*Last updated: June 10, 2026*

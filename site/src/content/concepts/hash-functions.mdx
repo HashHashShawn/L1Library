@@ -1,0 +1,73 @@
+---
+title: "Hash Functions"
+definition: "A function that turns data of any size into a fixed-size fingerprint. Deterministic (same input, same output, anywhere), effectively one-way (can't be reversed), and avalanche-sensitive (a tiny input change produces a totally different output)."
+category: "cryptography"
+usedBy: ["bitcoin", "ethereum"]
+relatedConcepts: ["proof-of-work", "merkle-trees", "blockchain-three-properties", "public-key-cryptography"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Hash functions are the load-bearing primitive of every blockchain. Three separate jobs rest on them: they give every block a unique fingerprint, they make the chain tamper-evident, and they power the mining puzzle itself. Remove hash functions and there is no "chain" in blockchain — just disconnected data.
+
+The tamper-evidence is the elegant part: each block embeds the **previous block's hash**. Change one transaction anywhere in history and that block's hash changes — which breaks the next block's embedded reference, and the next, all the way to the tip. You can't quietly edit the past; you'd have to rebuild everything after it, in public, faster than the honest network extends it.
+
+## How It Works
+
+### Beginner
+
+A hash function is a blender for data: put in anything — a word, a novel, a hard drive — and out comes a fixed-length scramble of letters and numbers. The same input always gives the same scramble, but you can't un-blend it to recover the input, and changing even one comma produces a completely different result. That scramble is a fingerprint: compact, unique in practice, and impossible to forge.
+
+### Intermediate
+
+The three properties from the casebook, precisely:
+
+- **Deterministic** — same input → same output, on any machine, anywhere. This is what lets strangers verify each other's work.
+- **One-way (preimage resistant)** — given an output, there's no better way to find an input than guessing.
+- **Avalanche effect** — flip one input bit and roughly half the output bits flip; outputs reveal nothing about input similarity.
+
+In Bitcoin, the hash of a block's contents *is* the block's identity. Miners vary a **nonce** until the block's hash has N leading zeros — that's the entire [Proof of Work](/concepts/proof-of-work) puzzle, and it only works because hashing is one-way (no shortcut to a winning nonce) and deterministic (everyone can check the answer instantly). Bitcoin's function is **SHA-256**.
+
+### Builder
+
+{/* Beyond MIT source: standard cryptographic detail for completeness */}
+
+SHA-256 outputs 256 bits, so a brute-force preimage takes ~2²⁵⁶ guesses and a birthday collision ~2¹²⁸ — both far beyond physical computation. Bitcoin double-hashes (`SHA256(SHA256(x))`) block headers. Related primitives in the stack: RIPEMD-160 (legacy address derivation), tagged hashes in Taproot, and Keccak-256 on Ethereum. Hash choice also shapes mining economics: SHA-256 is trivially ASIC-friendly, while functions like RandomX are designed to resist specialized hardware.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — SHA-256 for block IDs, PoW, transaction IDs, and (with RIPEMD-160) addresses.
+- **Ethereum** — Keccak-256 throughout. {/* Beyond MIT source */}
+- **[Merkle Trees](/concepts/merkle-trees)** — Hashes composed into a tree to fingerprint entire transaction sets.
+- **Git, checksums, password storage** — The same primitive doing tamper-evidence everywhere in computing. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **Cheap to verify, impossible to fake** — the asymmetry every blockchain mechanism leans on.
+- **Compact commitments** — a 32-byte hash can stand in for gigabytes of data.
+- **Battle-tested** — SHA-256 has withstood two decades of public cryptanalysis. {/* Beyond MIT source */}
+
+### Limitations
+
+- **No secrecy** — hashing is not encryption; hashed data with low entropy (e.g., a phone number) can be brute-forced from the output.
+- **Algorithm lifetime risk** — hash functions do age (MD5 and SHA-1 fell); a practical SHA-256 break would be existential for Bitcoin. {/* Beyond MIT source */}
+- **Hardware capture** — simple hash puzzles invite ASICs, with the centralization consequences covered in [Mining Economics](/concepts/mining-economics).
+
+## Related Concepts
+
+- [Proof of Work](/concepts/proof-of-work) — The hash-puzzle consensus mechanism
+- [Merkle Trees](/concepts/merkle-trees) — Hashes structured for efficient inclusion proofs
+- [The Blockchain (Three Properties)](/concepts/blockchain-three-properties) — Tamper-proofing via chained hashes
+- [Public-Key Cryptography](/concepts/public-key-cryptography) — The other cryptographic pillar
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Gorbunov lecture)
+- Vault note: Hash Functions (M2 cluster)
+
+*Last updated: June 10, 2026*

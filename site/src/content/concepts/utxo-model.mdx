@@ -1,0 +1,69 @@
+---
+title: "UTXO Model"
+definition: "Bitcoin tracks coins, not account balances. Coins are consumed in their entirety and spent once; an input references a previous transaction's output, and the sum of inputs must cover the sum of outputs — no money from nowhere."
+category: "data-structures"
+usedBy: ["bitcoin"]
+relatedConcepts: ["public-key-cryptography", "double-spend-problem", "smart-contracts", "hash-functions"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Ask where your bitcoin "balance" lives and the honest answer is: nowhere. There is no account row with your name and a number. Bitcoin tracks discrete **coins** — unspent transaction outputs (UTXOs) — and your balance is just the sum of coins your keys can unlock. This isn't trivia; it's a deliberate accounting design with real consequences.
+
+Spend-once semantics fall out naturally: a coin is consumed **in its entirety** when spent, so a second spend of the same coin is detectable by every node — the [double-spend problem](/concepts/double-spend-problem) reduced to a set-membership check. And because each output carries its own little spending program, the UTXO model is also where programmable money begins.
+
+## How It Works
+
+### Beginner
+
+Think physical cash, not a bank account. Your wallet holds specific bills — a $20, two $5s. To pay $23, you hand over all $30 and get $7 back as change. Bitcoin works the same way: you spend whole coins, and transactions make change by creating a new coin back to yourself. The network doesn't track balances; it tracks which bills exist and have not yet been handed on.
+
+### Intermediate
+
+A transaction consumes **inputs** — each referencing a previous transaction's output — and creates new **outputs**. Per the casebook: **sum(inputs) ≥ sum(outputs)** (no money from nowhere; the difference is the miner's fee), and a transaction may gather inputs from **multiple parties**, requiring **each signer's signature** ([public-key cryptography](/concepts/public-key-cryptography) at work).
+
+Spending is **programmable**: each output is locked by a script (`scriptPubkey`), and the spender must provide an unlocking script (`scriptSig`) that satisfies it. Plus rules like `nLocktime` (a transaction invalid until a set time), this enables conditions beyond "one signature" — **multisig** being the canonical example — which the casebook identifies as the seed of [smart contracts](/concepts/smart-contracts).
+
+### Builder
+
+{/* Beyond MIT source: contrast and modern detail for completeness */}
+
+The contrast case is the **account model** (Ethereum): global state maps addresses to balances; transactions mutate state directly. Trade-offs: UTXOs parallelize validation naturally (no shared account state), improve privacy hygiene (fresh addresses per output), and make light-client proofs simple — while accounts make stateful contracts and balance queries natural. Practical UTXO concerns: coin selection algorithms, change-output fingerprinting, dust outputs, and UTXO-set growth (the set every full node holds in fast storage). Script evolved through P2SH → SegWit → Taproot, each expanding what output conditions can express while improving efficiency.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — The original UTXO ledger; Script-locked outputs.
+- **Litecoin, Bitcoin Cash** — Direct UTXO inheritors. {/* Beyond MIT source */}
+- **Cardano** — Extended UTXO (eUTXO) carrying data for contract logic. {/* Beyond MIT source */}
+- **Ethereum** — The account-model contrast that clarifies what UTXO chooses. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **Double-spend detection by construction** — spent-or-unspent is a simple set lookup for every node.
+- **Parallel validation** — independent coins validate independently; no account-level contention.
+- **Auditable supply** — sum the UTXO set and you've audited every coin in existence.
+- **Programmable spending** — script conditions per output, the seed of contracts.
+
+### Limitations
+
+- **Awkward for stateful applications** — rich contract state fights the coins-not-accounts abstraction; this is why generalized platforms went account-based.
+- **Change-handling complexity** — wallets must select coins and manage change, leaking privacy if done carelessly. {/* Beyond MIT source */}
+- **Script's limits** — deliberately non-Turing-complete; expressive contracts need a different machine.
+
+## Related Concepts
+
+- [Public-Key Cryptography](/concepts/public-key-cryptography) — Signatures that unlock outputs
+- [Double-Spend Problem](/concepts/double-spend-problem) — What spend-once accounting solves
+- [Smart Contracts](/concepts/smart-contracts) — Where programmable outputs lead
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Gorbunov lecture)
+- Vault note: UTXO Model (M2 cluster)
+
+*Last updated: June 10, 2026*

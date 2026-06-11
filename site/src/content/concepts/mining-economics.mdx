@@ -1,0 +1,71 @@
+---
+title: "Mining and Mining Economics"
+definition: "Mining is performing Proof of Work to append blocks and earn the block reward plus fees. A hardware arms race — CPU to GPU to FPGA to ASIC — turned it into an industry sited near cheap power."
+category: "economics"
+usedBy: ["bitcoin"]
+relatedConcepts: ["proof-of-work", "51-percent-attack", "pure-proof-of-stake", "hash-functions"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Proof of Work is a protocol; mining is the industry the protocol created. Understanding the economics — who mines, why, and what it costs — explains the two facts about Bitcoin that surprise newcomers most: why it consumes a small country's worth of electricity, and why a system designed for "one CPU, one vote" is dominated by a handful of industrial pools.
+
+The casebook's through-line (via Micali) is the uncomfortable one: the arms race concentrated power in ways **antithetical to decentralization**, and that concentration is the root vulnerability behind the [51% attack](/concepts/51-percent-attack). Mining economics isn't a side topic — it's where PoW's security model meets reality.
+
+## How It Works
+
+### Beginner
+
+Miners are competitive bookkeepers. They race to seal the next page of the ledger; the winner is paid in newly created coins plus tips (fees) from the transactions included. The race consumes electricity, so mining is profitable exactly when the value of the rewards exceeds your power bill — which is why mines cluster wherever electricity is cheapest, and why your laptop can't compete anymore.
+
+### Intermediate
+
+The reward structure: **block subsidy** (new coins, halving on a fixed schedule) plus **transaction fees**. Competition drove a hardware succession — **CPU → GPU → FPGA → ASIC** — each generation orders of magnitude more efficient at one thing: computing SHA-256. ASICs can do nothing else, so mining capital is sunk, single-purpose, and ruthlessly margin-driven; operations site near cheap **hydro and geothermal** power.
+
+Three consequences, per the casebook: ordinary computers can no longer participate meaningfully; total energy use rivals a small country; and power **concentrates** into a few large pools — the structural condition that makes a majority attack thinkable at all.
+
+### Builder
+
+{/* Beyond MIT source: current figures, flagged per the vault's freshness note (casebook reward figures pre-2020) */}
+
+Bitcoin's subsidy is 3.125 BTC per block since the April 2024 halving (the casebook's figures pre-date multiple halvings). Pool economics: individual miners join pools to convert lottery-ticket income into steady payouts (FPPS/PPLNS schemes), which is why *pool operators* — who select transactions — aggregate de facto power even though hashrate ownership is more distributed. Long-run question: as the subsidy trends to zero, the **fee market** must fund security alone — the "security budget" problem, still unresolved. Stranded-energy and flare-gas mining complicate the simple energy-waste narrative without dissolving it.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — The defining case: industrial ASIC farms, ~3 pools coordinating majority hashrate.
+- **Monero** — RandomX deliberately resists ASICs to keep CPU mining viable — a direct response to this concentration story. {/* Beyond MIT source */}
+- **Algorand** — [Pure Proof of Stake](/concepts/pure-proof-of-stake): the casebook's example of designing the miner class out of existence.
+
+## Tradeoffs
+
+### Strengths
+
+- **Real cost = real security** — attack expense is anchored to physical capital and energy markets.
+- **Permissionless entry (in principle)** — no gatekeeper decides who may mine; only economics does.
+- **Incentive alignment** — miners hold mining-specific capital whose value depends on the chain's health.
+
+### Limitations
+
+- **Energy consumption** — national-scale electricity use; a feature to proponents, indefensible to critics.
+- **Centralizing gravity** — economies of scale in hardware and power pull hashrate into few hands, undermining the decentralization the work was meant to buy.
+- **E-waste and capital lock-in** — single-purpose ASICs obsolesce in cycles. {/* Beyond MIT source */}
+- **Security-budget horizon** — fee-only security after subsidies end is an open question. {/* Beyond MIT source */}
+
+## Related Concepts
+
+- [Proof of Work](/concepts/proof-of-work) — The mechanism mining performs
+- [51% Attack](/concepts/51-percent-attack) — The risk concentration creates
+- [Pure Proof of Stake](/concepts/pure-proof-of-stake) — The "no miners" counter-design
+- [Hash Functions](/concepts/hash-functions) — Why ASICs are possible at all
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Micali lecture)
+- Vault note: Mining and Mining Economics (M2 cluster)
+
+*Freshness note: casebook reward figures pre-date the 2020 and 2024 halvings; current figures flagged inline. Pool-concentration numbers should be re-verified quarterly.*
+
+*Last updated: June 10, 2026*

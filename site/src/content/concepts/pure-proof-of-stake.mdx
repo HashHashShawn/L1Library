@@ -1,0 +1,69 @@
+---
+title: "Pure Proof of Stake and Cryptographic Sortition"
+definition: "Algorand's consensus design: no forks, no miners, no Proof of Work. Each user runs a private, stake-weighted lottery (cryptographic sortition) to join a fresh committee for each step of a fast, player-replaceable Byzantine Agreement."
+category: "consensus"
+usedBy: []
+relatedConcepts: ["byzantine-fault-tolerance", "proof-of-stake", "delegated-proof-of-stake", "proof-of-work", "distributed-consensus"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+Most consensus designs pick their poison: PoW burns energy, DPoS concentrates power, classic BFT needs a fixed guest list. Micali's Pure Proof of Stake — the design behind Algorand — is the casebook's example of refusing the menu: "effortless, one-by-one Byzantine Agreement" with **no forks, no Proof of Work, no miners**.
+
+The security assumption shifts to **majority of money honest** — which Micali argues is *stronger* than majority-of-compute, because money on the chain is fungible and visible while hashpower can be rented, hidden, and concentrated. The deeper idea, cryptographic sortition, matters beyond Algorand: it shows you can have a committee-based protocol where the adversary never knows whom to attack.
+
+## How It Works
+
+### Beginner
+
+Imagine the network needs a small jury for each decision. Instead of electing a standing jury (a bribery target), every participant privately rolls weighted dice — more stake, better odds. Winners reveal their winning ticket along with their vote, all at once. By the time anyone knows who was on the jury, the jury has already spoken and dissolved. There's never anyone to bribe or attack in advance.
+
+### Intermediate
+
+**Cryptographic sortition**: each user runs a private lottery whose win-odds are proportional to their stake — un-game-able, per the casebook, *even by a nation-state*. Because selection is secret until the moment of participation, the adversary can't know whom to corrupt beforehand; and corrupting a member *after* their message has propagated is useless — the message is already out.
+
+**Player-replaceable Byzantine Agreement**: every step of the protocol uses a *fresh* random committee, so [BFT](/concepts/byzantine-fault-tolerance) no longer needs a fixed player set. The flow runs in three phases: one sortitioned user **proposes** a block → a committee of ~1,000 users runs agreement → onlookers accept when they see ~750 of 1,000 expected signatures. The result: **finality** (no forks to reorganize), **scalability** (speed bounded by the network, not by puzzles), and **on-chain self-governance** — versus chains Micali likens to "ocean liners on autopilot."
+
+### Builder
+
+{/* Beyond MIT source: implementation detail for currency */}
+
+Sortition is implemented with **Verifiable Random Functions (VRFs)**: `VRF(sk, seed ‖ round ‖ step)` yields a pseudo-random output plus a proof anyone can verify against the user's public key. Selection threshold scales with the user's stake fraction, so the expected committee composition is stake-weighted without any coordinator. Algorand mainnet (live since 2019) produces blocks in ~2.8s with immediate finality; there is no slashing — safety comes from the honest-majority-of-stake assumption, not from bonds.
+
+## Examples
+
+- **Algorand** — The reference implementation; Micali's design realized on mainnet. {/* Beyond MIT source: launch details post-date casebook */}
+- **Sortition elsewhere** — VRF-based committee selection has since influenced other designs (e.g., leader election in several PoS protocols). {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **No forks** — Byzantine Agreement per block means transactions are final on arrival.
+- **No standing target** — secret, per-step committees eliminate the DoS/bribery surface that [DPoS](/concepts/delegated-proof-of-stake) exposes.
+- **Energy-light and egalitarian** — no mining, no hardware race, no minimum-stake oligarchy.
+- **Self-governance** — the same machinery can ratify protocol upgrades on-chain.
+
+### Limitations
+
+- **Honest-majority-of-money assumption** — security is only as good as the stake distribution; a quietly accumulated majority breaks it.
+- **No slashing** — misbehavior isn't punished economically, only outvoted; deterrence is weaker than bonded PoS in some threat models. {/* Beyond MIT source */}
+- **Participation sensitivity** — liveness depends on enough stake actually being online to fill committees.
+
+## Related Concepts
+
+- [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance) — The 30-year-old machinery this design re-engineers
+- [Proof of Stake](/concepts/proof-of-stake) — The family it belongs to
+- [Delegated Proof of Stake](/concepts/delegated-proof-of-stake) — The contrast case for committee exposure
+- [Proof of Work](/concepts/proof-of-work) — The mechanism it eliminates entirely
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source; Micali lecture)
+- Gilad et al. "Algorand: Scaling Byzantine Agreements for Cryptocurrencies" (2017)
+- Vault note: Pure Proof of Stake and Cryptographic Sortition (M2 cluster)
+
+*Last updated: June 10, 2026*

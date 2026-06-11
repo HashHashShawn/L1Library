@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://l1library.com/sitemap-index.xml

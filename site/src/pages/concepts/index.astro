@@ -1,0 +1,69 @@
+---
+// Concepts index — fixes the /concepts 404 from the header nav
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const concepts = await getCollection('concepts');
+
+// Ordered category labels (matches the enum in content/config.ts)
+const categoryLabels = {
+  consensus: 'Consensus',
+  cryptography: 'Cryptography',
+  'data-structures': 'Data Structures',
+  security: 'Security',
+  economics: 'Economics',
+  scaling: 'Scaling',
+  'smart-contracts': 'Smart Contracts',
+  governance: 'Governance',
+  networking: 'Networking',
+};
+
+const groups = Object.entries(categoryLabels)
+  .map(([key, label]) => ({
+    key,
+    label,
+    items: concepts
+      .filter((c) => c.data.category === key)
+      .sort((a, b) => a.data.title.localeCompare(b.data.title)),
+  }))
+  .filter((g) => g.items.length > 0);
+---
+
+<BaseLayout
+  title="Concepts"
+  description="Concept explainers grounded in MIT blockchain curriculum — consensus, cryptography, economics, and more."
+>
+  <div class="max-w-6xl mx-auto px-4 pt-12 pb-16">
+    <!-- Page header -->
+    <div class="double-rule mb-6"></div>
+    <div class="flex items-baseline justify-between mb-2">
+      <h1 class="font-mono text-4xl font-bold tracking-tight">Concepts</h1>
+      <p class="agate">{concepts.length} {concepts.length === 1 ? 'explainer' : 'explainers'}</p>
+    </div>
+    <p class="text-l1-gray-600 max-w-2xl mb-10">
+      The building blocks behind every chain profile — each explained at three
+      depths, grounded in MIT curriculum.
+    </p>
+
+    {groups.length === 0 && (
+      <p class="agate">No concepts published yet — explainers in development.</p>
+    )}
+
+    {groups.map((group) => (
+      <section class="mb-10">
+        <div class="single-rule mb-3"></div>
+        <h2 class="kicker mb-4">{group.label}</h2>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {group.items.map((concept) => (
+            <li class="border border-l1-gray-300">
+              <a href={`/concepts/${concept.slug}`} class="block p-4 h-full hover:border-l1-black group">
+                <h3 class="font-mono font-semibold mb-1 group-hover:underline">{concept.data.title}</h3>
+                <p class="text-sm text-l1-gray-600 line-clamp-3">{concept.data.definition}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</BaseLayout>

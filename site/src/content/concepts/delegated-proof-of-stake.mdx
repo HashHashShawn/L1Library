@@ -1,0 +1,73 @@
+---
+title: "Delegated Proof of Stake"
+definition: "A Proof of Stake variant where token holders vote for a small set of delegates who produce blocks and validate transactions. Misbehaving delegates can be voted out."
+category: "consensus"
+usedBy: []
+relatedConcepts: ["proof-of-stake", "pure-proof-of-stake", "distributed-consensus", "51-percent-attack"]
+alternativeTo: "proof-of-stake"
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+If every validator has to process every block, the network is only as fast as its slowest participant. DPoS makes a blunt trade: elect a small, known roster of block producers, and the chain gets fast. The question it forces — and the reason it's worth studying even if you never use a DPoS chain — is whether a system with twenty-one elected operators is meaningfully decentralized at all.
+
+The casebook's critique (via Micali) is unusually sharp: DPoS is **centralization "by declaration"** — and because the same known parties hold power for a stretch, the delegate set is a standing **denial-of-service target**. Knowing exactly whom to attack is a gift to adversaries.
+
+## How It Works
+
+### Beginner
+
+Think of it as a representative democracy for block production. Instead of every token holder validating, you vote — with voting power proportional to your tokens — for a small slate of delegates. The winners take turns producing blocks. If a delegate misbehaves or goes offline, voters can replace them at the next round.
+
+### Intermediate
+
+Token holders continuously vote, stake-weighted, for block producers (typically ~21–101 depending on the chain). Elected delegates produce blocks round-robin on a fixed schedule, which removes the lottery entirely — block times are deterministic and fast. Rewards flow to delegates, who often share them with their voters, creating campaign-style competition based on reputation.
+
+Two structural critiques follow directly: the validator set is **small and publicly known** (DoS target, collusion risk), and stake-weighted voting tends toward **cartel equilibrium** — large holders and exchanges can entrench a stable slate.
+
+### Builder
+
+{/* Beyond MIT source: concrete parameters for currency */}
+
+EOS: 21 block producers, 0.5s blocks, producers re-elected continuously by stake-weighted approval voting. Tron: 27 "Super Representatives," 3s blocks. Both deliver thousands of TPS precisely because consensus is a scheduled rotation among few, well-provisioned nodes — the throughput is bought with the validator count. Note the casebook's claim that no DPoS chain had launched is **dated**: EOS (2018) and Tron (2018) have run for years.
+
+## Examples
+
+- **EOS** — The canonical 21-producer DPoS chain. {/* Beyond MIT source */}
+- **Tron** — 27 elected Super Representatives. {/* Beyond MIT source */}
+- **Lisk, BitShares, Steem** — Earlier DPoS implementations from the same design lineage. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+### Strengths
+
+- **High throughput, fast finality** — few, known producers on a fixed schedule means no fork lottery.
+- **Accountability** — delegates are identifiable and removable by vote.
+- **Energy-light** — inherits PoS's efficiency.
+
+### Limitations
+
+- **Centralization by declaration** — the casebook's core critique: a small elected set is structurally centralized regardless of the election.
+- **DoS target** — known producers can be attacked precisely because everyone knows who holds power this round.
+- **Voter apathy and cartels** — low participation plus exchange-held stake tends to freeze the delegate slate.
+
+**Main alternative:** [Pure Proof of Stake](/concepts/pure-proof-of-stake) — keeps PoS's efficiency but replaces a standing elected set with secret, per-step random committees, eliminating the DoS target.
+
+## Related Concepts
+
+- [Proof of Stake](/concepts/proof-of-stake) — The parent mechanism
+- [Pure Proof of Stake](/concepts/pure-proof-of-stake) — The casebook's explicit counter-design
+- [Distributed Consensus](/concepts/distributed-consensus) — The problem all variants solve
+- [51% Attack](/concepts/51-percent-attack) — Majority control in vote-based systems
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Vault note: Delegated Proof of Stake (M2 cluster)
+
+*Freshness note: the casebook's "no DPoS chain has launched" claim was already outdated at publication of this page — corrected inline per the vault's freshness flag.*
+
+*Last updated: June 10, 2026*

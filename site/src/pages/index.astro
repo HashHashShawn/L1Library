@@ -1,0 +1,138 @@
+---
+// L1 Library Homepage — Variant D (Almanac base + Broadsheet nameplate + Editorial stat band)
+// PATCH: A-Z grid fixed — `grid-cols-13` is not a Tailwind class (default scale stops
+// at 12), so the grid was collapsing to a single column. Replaced with the hi-fi
+// .az-grid / .az-tile component classes (global.css) → 26 square tiles, 13×2.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const chains = await getCollection('chains');
+const concepts = await getCollection('concepts');
+
+// Build A-Z index from chain collection
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const chainsByLetter = {};
+for (const letter of alphabet) {
+  chainsByLetter[letter] = chains.filter(c => c.data.letter === letter);
+}
+---
+
+<BaseLayout title="Home" description="L1 Library — Every chain. Explained. A blockchain knowledge wiki built on MIT curriculum.">
+
+  <!-- Ghost L1 watermark -->
+  <div class="relative overflow-hidden">
+    <div class="l1-watermark top-0 left-1/2 -translate-x-1/2">L1</div>
+
+    <!-- Section 1: Hero with Search -->
+    <section class="relative z-10 max-w-6xl mx-auto px-4 pt-16 pb-12 text-center">
+      <h1 class="font-mono text-5xl md:text-6xl font-bold tracking-tight mb-4">
+        The Blockchain<br />Reference Wiki
+      </h1>
+      <p class="text-xl text-l1-gray-600 max-w-2xl mx-auto mb-8">
+        MIT-grounded chain profiles, concept explainers, and technical foundations. No price charts. No sponsored rankings. Just clarity.
+      </p>
+      <form class="max-w-xl mx-auto" action="/search" method="get">
+        <input
+          type="search"
+          name="q"
+          placeholder="Search chains, concepts, glossary..."
+          class="w-full font-mono text-lg border-2 border-l1-black px-4 py-3 focus:outline-none"
+        />
+      </form>
+    </section>
+
+    <!-- Section 2: A-Z Directory (compact 2-row grid: 13 columns x 2 rows) -->
+    <section class="relative z-10 max-w-6xl mx-auto px-4 pb-12">
+      <div class="double-rule mb-6"></div>
+      <div class="flex items-baseline justify-between mb-4">
+        <h2 class="kicker">Chains A–Z</h2>
+        <a href="/chains" class="agate hover:text-l1-black hover:underline">Full directory →</a>
+      </div>
+      <div class="az-grid">
+        {alphabet.map(letter => {
+          const count = chainsByLetter[letter]?.length || 0;
+          return count > 0 ? (
+            <a href={`/chains#${letter}`} class="az-tile">
+              <span class="az-letter">{letter}</span>
+              <span class="az-count">{count}</span>
+            </a>
+          ) : (
+            <span class="az-tile az-empty">
+              <span class="az-letter">{letter}</span>
+            </span>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Section 3: Featured Chains -->
+    <section class="relative z-10 max-w-6xl mx-auto px-4 pb-12">
+      <div class="single-rule mb-6"></div>
+      <h2 class="kicker mb-4">Featured</h2>
+      <div class="flex gap-3 flex-wrap">
+        {chains
+          .filter(c => c.data.status === 'published')
+          .slice(0, 10)
+          .map(chain => (
+            <a
+              href={`/chains/${chain.slug}`}
+              class="font-mono text-sm border border-l1-black px-3 py-1.5 hover:bg-l1-black hover:text-white transition-colors"
+            >
+              {chain.data.name}
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Section 4: Topic Clusters + Updates Rail -->
+    <section class="relative z-10 max-w-6xl mx-auto px-4 pb-12">
+      <div class="single-rule mb-6"></div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Topic columns -->
+        <div>
+          <h3 class="kicker mb-3">Consensus</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/concepts/proof-of-work" class="hover:underline">Proof of Work</a></li>
+            <li><a href="/concepts/proof-of-stake" class="hover:underline">Proof of Stake</a></li>
+            <li><a href="/concepts/byzantine-fault-tolerance" class="hover:underline">Byzantine Fault Tolerance</a></li>
+            <li><a href="/concepts/delegated-proof-of-stake" class="hover:underline">Delegated Proof of Stake</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="kicker mb-3">Cryptography</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/concepts/hash-functions" class="hover:underline">Hash Functions</a></li>
+            <li><a href="/concepts/merkle-trees" class="hover:underline">Merkle Trees</a></li>
+            <li><a href="/concepts/public-key-cryptography" class="hover:underline">Public-Key Cryptography</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="kicker mb-3">Latest Updates</h3>
+          <ul class="space-y-3 text-sm">
+            <li class="agate">Coming soon — chain profiles and concept pages in development.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Learning Paths -->
+    <section class="relative z-10 max-w-6xl mx-auto px-4 pb-12">
+      <div class="single-rule mb-6"></div>
+      <h2 class="kicker mb-4">Learning Paths</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="border border-l1-gray-300 p-4">
+          <p class="kicker text-l1-gray-400 mb-1">Path 01</p>
+          <h3 class="font-mono font-semibold mb-1">Blockchain Fundamentals</h3>
+          <p class="text-sm text-l1-gray-600">Hash functions → Merkle trees → Consensus → Your first chain profile.</p>
+        </div>
+        <div class="border border-l1-gray-300 p-4">
+          <p class="kicker text-l1-gray-400 mb-1">Path 02</p>
+          <h3 class="font-mono font-semibold mb-1">Consensus Deep Dive</h3>
+          <p class="text-sm text-l1-gray-600">PoW → PoS → BFT → DPoS → How chains actually agree.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</BaseLayout>

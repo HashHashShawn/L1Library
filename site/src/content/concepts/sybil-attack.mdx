@@ -1,0 +1,70 @@
+---
+title: "Sybil Attack"
+definition: "When identities are cheap to create, an attacker can spin up many fake identities and subvert any vote-based system. Bitcoin had to solve this to achieve consensus among unknown participants."
+category: "security"
+usedBy: ["bitcoin"]
+relatedConcepts: ["proof-of-work", "proof-of-stake", "distributed-consensus", "51-percent-attack"]
+lastUpdated: 2026-06-10
+status: "published"
+mitSource: "MIT BLC Module 2"
+---
+
+## Why It Matters
+
+"One node, one vote" sounds democratic until you realize a node is just a process — and one attacker can run a million of them. The Sybil attack (named after a famous case study in multiple personalities) is why naive voting can't secure an open network, and it's the problem that stalled digital cash for decades.
+
+It's also the cleanest lens for understanding consensus mechanisms: every one of them is, at bottom, an answer to "what do we weight votes by, if not identities?" Get that, and the differences between PoW, PoS, and their variants snap into focus.
+
+## How It Works
+
+### Beginner
+
+Imagine a town vote where registering to vote is free, unlimited, and anonymous. One bad actor prints ten thousand voter cards and outvotes the whole town. That's a Sybil attack. The fix isn't checking IDs — there are no IDs on the internet — it's making each vote *cost* something real, so a flood of fake voters becomes a flood of real expenses.
+
+### Intermediate
+
+The casebook frames it as an old, known problem that Bitcoin had to solve to do [consensus](/concepts/distributed-consensus) **without known participants**. Classic BFT protocols assume a fixed membership list precisely to dodge this; an open network can't.
+
+Satoshi's answer: make identity **costly**. In [Proof of Work](/concepts/proof-of-work), your "vote" on the next block is hashing power — spinning up a thousand fake nodes gains you nothing, because nodes don't vote, *work* does. Stake-based systems take the other route: influence is tied to **money held** ([Proof of Stake](/concepts/proof-of-stake)), so fake identities just split your stake without multiplying it. Either way, the resource — joules or capital — is what's scarce, not names.
+
+### Builder
+
+{/* Beyond MIT source: design framing for completeness */}
+
+The general principle: Sybil resistance requires binding influence to an **unforgeable, costly resource** — computation (PoW), bonded capital (PoS), storage (proof-of-space), or even verified personhood (proof-of-identity experiments). Note what Sybil resistance does *not* buy: it caps influence-per-dollar, but says nothing about how many dollars one party has. Concentration of the underlying resource re-opens the door — that's the [51% attack](/concepts/51-percent-attack), the Sybil attack's better-funded sibling. Peer-to-peer layers face their own variant: eclipse attacks Sybil a single node's *connections* rather than the global vote.
+
+## Examples
+
+- **[Bitcoin](/chains/bitcoin)** — PoW as costly identity; the canonical solution.
+- **PoS networks** — Stake-weighting as the alternative answer. {/* Beyond MIT source */}
+- **Outside consensus** — Fake reviews, bot followers, airdrop farming: the same attack against any free-identity voting system. {/* Beyond MIT source */}
+
+## Tradeoffs
+
+{/* Framed as tradeoffs of the standard defenses, since the attack itself has no "strengths" */}
+
+### What costly-identity defenses buy
+
+- **Open membership** — anyone can join, yet votes can't be forged out of nowhere.
+- **Quantifiable security** — attack cost is measurable in hashrate or stake, not in unverifiable headcounts.
+
+### What they don't
+
+- **Plutocracy by design** — weighting by resources means the wealthy weigh more; "one person, one vote" is abandoned, not achieved.
+- **No protection against concentration** — a majority owner of the scarce resource defeats the scheme (see [51% Attack](/concepts/51-percent-attack)).
+- **Cost is borne constantly** — the network pays for Sybil resistance every block (energy or locked capital), not just under attack.
+
+## Related Concepts
+
+- [Proof of Work](/concepts/proof-of-work) — Costly identity via computation
+- [Proof of Stake](/concepts/proof-of-stake) — Influence weighted by capital
+- [Distributed Consensus](/concepts/distributed-consensus) — The process being defended
+- [51% Attack](/concepts/51-percent-attack) — What Sybil resistance can't prevent
+
+## Sources & Last Updated
+
+- MIT BLC Module 2: Maintaining Blockchain Integrity (primary source)
+- Douceur, J. "The Sybil Attack" (2002)
+- Vault note: Sybil Attack (M2 cluster)
+
+*Last updated: June 10, 2026*
