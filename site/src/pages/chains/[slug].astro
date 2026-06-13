@@ -15,6 +15,22 @@ const { chain } = Astro.props;
 const { Content } = await chain.render();
 const letter = chain.data.letter;
 
+// JSON-LD structured data — helps search + AI answer engines ground on the profile
+const siteOrigin = Astro.site?.origin ?? 'https://l1library.com';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: `${chain.data.name} — Layer 1 Blockchain Profile`,
+  description: chain.data.tagline,
+  url: new URL(`/chains/${chain.slug}`, Astro.site).href,
+  dateModified: chain.data.lastUpdated.toISOString().split('T')[0],
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  author: { '@type': 'Organization', name: 'L1 Library', url: siteOrigin },
+  publisher: { '@type': 'Organization', name: 'L1 Library', url: siteOrigin },
+  about: { '@type': 'Thing', name: chain.data.name, alternateName: chain.data.ticker },
+};
+
 // Sections for TOC
 const sections = [
   { id: 'overview', label: '1. Overview' },
@@ -31,7 +47,9 @@ const sections = [
 ];
 ---
 
-<BaseLayout title={chain.data.name} description={chain.data.tagline}>
+<BaseLayout title={chain.data.name} description={chain.data.tagline} type="article">
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
   <!-- Breadcrumb -->
   <div class="max-w-6xl mx-auto px-4 pt-4">

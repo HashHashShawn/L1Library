@@ -1,0 +1,180 @@
+---
+name: "Cardano"
+ticker: "ADA"
+tagline: "Peer-reviewed Layer 1. Ouroboros Proof of Stake, eUTXO model, on-chain governance."
+letter: "C"
+launched: "September 29, 2017"
+consensus: "Ouroboros (Proof of Stake)"
+language: "Plutus (Haskell), Aiken, Marlowe"
+tps: "~5–15 base layer (Hydra and Leios scaling in progress)"
+blockTime: "~20 seconds"
+marketCapRank: "16"
+nativeToken: "ADA"
+supply: "45,000,000,000 max; ~36B circulating"
+website: "https://cardano.org"
+explorer: "https://cardanoscan.io"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: false
+compareTo: ["ethereum", "solana", "avalanche"]
+relatedChains: ["ethereum", "solana", "avalanche", "bitcoin"]
+lastUpdated: 2026-06-13
+status: "published"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Cardano is a Proof-of-Stake Layer 1 blockchain built around an unusually formal, research-first engineering philosophy. Founded by Charles Hoskinson — a co-founder of Ethereum — and launched in September 2017, it is developed by three organizations: Input Output Global (IOG, formerly IOHK), the Cardano Foundation, and Emurgo. Its defining characteristic is that core protocol changes are grounded in peer-reviewed academic papers and implemented with formal methods.
+
+The foundational protocol is Ouroboros, described in the literature as the first provably secure Proof-of-Stake consensus protocol. Cardano pairs this with the **extended UTXO (eUTXO)** model — a generalization of Bitcoin's coin-based ledger that adds programmability while preserving deterministic transaction validation. Development has proceeded in named eras: Byron (foundation), Shelley (decentralization), Goguen (smart contracts), Basho (scaling), and Voltaire (governance).
+
+Cardano entered the Voltaire era in 2024–2025. The Chang hard fork (September 2024) introduced interim on-chain governance, and the Plomin hard fork (January 2025) completed the transition to full minimum-viable on-chain governance as specified in CIP-1694, with a ratified Constitution, delegated representatives (DReps), a Constitutional Committee, and stake pool operators all holding formal voting roles. Throughput scaling is being pursued through the Hydra Layer 2 and the in-development Ouroboros Leios upgrade.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Cardano is a Proof-of-Stake network: instead of miners spending electricity, holders of ADA (the network's token) help secure it by staking. Most people stake by delegating to a stake pool and earn rewards for doing so, without giving up custody of their coins.
+
+Cardano is known for moving deliberately. New features are researched and reviewed before they ship, which makes the network slower to change but aims to make those changes dependable.
+
+Its ledger works more like Bitcoin's than Ethereum's: your funds exist as discrete outputs you control, rather than as a single running balance. Cardano extends that idea so those outputs can also carry programmable conditions — the basis for its smart contracts.
+
+### Intermediate
+
+**Ouroboros** divides time into epochs (5 days) and slots (1 second). For each slot, a stake-weighted lottery may elect a slot leader to produce a block. Selection uses a verifiable random function (VRF), and security is proven under the assumption that an honest majority of stake participates.
+
+The **extended UTXO (eUTXO)** model carries a *datum* (state) and a *validator script* on outputs. On-chain code only validates whether a transaction may spend an output — it returns yes or no — while the transaction itself is constructed off-chain. This makes fees and execution outcomes predictable before submission, but requires a different design pattern than Ethereum's account-based contracts.
+
+Cardano supports **native tokens** at the ledger level, so issuing an asset does not require a smart contract. Smart contracts are written in **Plutus** (compiled from Haskell), with **Aiken** as a popular alternative language and **Marlowe** as a domain-specific language for financial contracts.
+
+### Builder
+
+Consensus: Ouroboros Praos is the production protocol — private, stake-weighted leader election via VRF, with an active slot coefficient (~0.05) yielding an effective ~20-second block interval over 1-second slots and 432,000-slot epochs. Ouroboros Genesis adds dynamic availability and safer bootstrapping from genesis. Notably, Cardano has **no slashing**; security derives from honest-majority stake and pledge/saturation incentives rather than penalties.
+
+Ledger: eUTXO with deterministic script validation. Plutus Core is the on-chain execution target; transaction fees are a function of size and execution budget (steps and memory), known in advance. Concurrency is managed at the application layer because outputs are consumed atomically.
+
+Scaling: **Hydra** provides isomorphic state channels (Layer 2) for off-chain, near-instant transactions among participants, settling to the main chain. **Ouroboros Leios** restructures block production into endorsement (input) blocks and ranking blocks to parallelize transaction processing, targeting a large multiple of current base-layer throughput; it was moving toward testnet in 2026.
+
+Governance: CIP-1694 defines on-chain governance actions (e.g., protocol-parameter changes, treasury withdrawals, hard forks) ratified by a combination of DReps, the Constitutional Committee, and stake pool operators, subject to the Constitution.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Cardano runs on [Proof of Stake](/concepts/proof-of-stake) via **Ouroboros**, presented in academic literature as the first provably secure PoS protocol. Stake pool operators (SPOs) produce blocks, and ADA holders delegate stake to pools to participate in securing the network and earning rewards.
+
+**Key parameters:**
+- Epoch: 5 days · Slot: 1 second · Effective block time: ~20 seconds
+- Stake pools (SPOs): ~3,000
+- Slashing: none (incentive-based security via pledge and a saturation cap that discourages oversized pools)
+- Finality: probabilistic (practical settlement in minutes; full settlement governed by the security parameter)
+- Rewards: distributed each epoch from reserves and fees
+
+**Protocol lineage:** Ouroboros has evolved through several peer-reviewed variants — Classic, BFT (used during bootstrap), Praos (current production), Genesis (dynamic availability), and the forthcoming Leios (scaling). This research-then-implement cadence is central to Cardano's identity.
+
+*Read the full concept: [Proof of Stake →](/concepts/proof-of-stake)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Decentralized Finance (DeFi)** — Minswap (AMM), Liqwid (lending), and Indigo (synthetic assets) anchor an eUTXO-native DeFi stack.
+- **Stablecoins** — Djed (overcollateralized, algorithmic) and USDM (fiat-backed) provide on-chain dollar liquidity.
+- **Governance and treasury funding** — Project Catalyst is one of the largest decentralized innovation funds; CIP-1694 governance directs protocol changes and treasury spending on-chain.
+- **Native assets and NFTs** — Tokens and NFTs are issued at the ledger level without smart contracts, reducing a common class of bugs.
+- **Identity and enterprise** — A long-running focus on identity and education pilots (notably in Africa), with an ongoing pivot toward enterprise and real-world-asset use.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Lace** — IOG's light wallet, governance-aware
+- **Eternl** — Feature-rich wallet popular with power users
+- **Yoroi** — Emurgo's light wallet
+
+### DeFi
+- **Minswap** — Leading decentralized exchange
+- **Liqwid** — Lending and borrowing
+- **Indigo** — Synthetic assets (iAssets)
+
+### Scaling & Protocol
+- **Hydra** — Isomorphic state channels (Layer 2)
+- **Mithril** — Stake-based threshold signatures for fast sync and light clients
+- **Midnight** — Data-protection (privacy) sidechain
+- **Milkomeda** — EVM-compatible sidechain
+
+### Organizations
+- **Input Output Global (IOG)** — Core research and engineering
+- **Cardano Foundation** — Stewardship and standards
+- **Emurgo** — Commercial and adoption arm
+- **Intersect** — Member-based body coordinating governance and the budget process
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2015** — IOHK (now IOG) founded by Charles Hoskinson and Jeremy Wood; Cardano research begins
+- **2017** — Byron mainnet launches (September 29); ADA begins trading
+- **2020** — Shelley upgrade introduces decentralized staking and stake pools (July)
+- **2021** — Alonzo hard fork (Goguen era) enables Plutus smart contracts (September)
+- **2022** — Vasil hard fork improves throughput and script efficiency
+- **2024** — Chang hard fork opens the Voltaire governance era with interim on-chain governance (September)
+- **2025** — Plomin hard fork completes the transition to full on-chain governance under CIP-1694 (January); Constitution ratified
+- **2026** — Ouroboros Leios advances toward testnet (targeting 1,000+ base-layer TPS); Hydra adoption deepens
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Cardano | Ethereum | Solana |
+|---|---|---|---|
+| **Consensus** | Ouroboros PoS | Casper PoS | PoH + Tower BFT |
+| **Block time** | ~20 sec | ~12 sec | ~400 ms |
+| **TPS (L1)** | ~5–15 | ~15–25 | ~1,000–4,000 |
+| **State model** | Extended UTXO | Account-based | Account-based |
+| **Smart contract language** | Plutus (Haskell) | Solidity / Vyper | Rust |
+| **Slashing** | None | Yes | Yes |
+| **EVM compatible** | No (Milkomeda sidechain) | Native | No |
+| **Governance** | On-chain (CIP-1694) | Off-chain / social | On-chain (stake votes) |
+| **Primary strength** | Formal methods + governance | Security + ecosystem + L2s | Throughput |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Ethereum](/chains/ethereum)** — Account-based smart contracts. Charles Hoskinson co-founded Ethereum before leaving to build Cardano on a different methodology.
+- **[Bitcoin](/chains/bitcoin)** — Cardano's eUTXO ledger generalizes Bitcoin's UTXO model, adding programmable validation while keeping deterministic spending.
+- **[Solana](/chains/solana)** — A contrasting philosophy: performance-first and rapidly iterated, versus Cardano's research-first and deliberate.
+- **Algorand / Tezos** — Other academically oriented Proof-of-Stake chains; Tezos shares Cardano's emphasis on formal verification and on-chain governance.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- Kiayias, A., Russell, A., David, B., Oliynykov, R. "Ouroboros: A Provably Secure Proof-of-Stake Blockchain Protocol" (2017)
+- Cardano official documentation — [docs.cardano.org](https://docs.cardano.org)
+- CIP-1694 — On-chain governance specification — [cips.cardano.org](https://cips.cardano.org)
+- *Concept pages:* [Proof of Stake](/concepts/proof-of-stake) · [UTXO Model](/concepts/utxo-model) (compare eUTXO) · [Distributed Consensus](/concepts/distributed-consensus)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Kiayias, A., Russell, A., David, B., Oliynykov, R. (2017). "Ouroboros: A Provably Secure Proof-of-Stake Blockchain Protocol."
+2. Cardano documentation — [docs.cardano.org](https://docs.cardano.org)
+3. CIP-1694 on-chain governance specification — [cips.cardano.org](https://cips.cardano.org)
+4. Intersect. Constitution and budget process — [intersectmbo.org](https://www.intersectmbo.org)
+5. IOG research library — [iohk.io/research](https://iohk.io/en/research/library/)
+6. Network statistics — [cardanoscan.io](https://cardanoscan.io)
+
+*Freshness note: Market cap rank, stake pool count, governance participation, and the status of Leios and Hydra change over time and should be verified quarterly.*
+
+*Last updated: June 13, 2026*

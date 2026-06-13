@@ -15,6 +15,29 @@ const { title, description = 'Every chain. Explained.', ogImage = '/og-default.p
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
 const fullTitle = title === 'Home' ? 'L1 Library — Every chain. Explained.' : `${title} | L1 Library`;
+
+const siteOrigin = Astro.site?.origin ?? 'https://l1library.com';
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteOrigin}/#org`,
+      name: 'L1 Library',
+      url: siteOrigin,
+      description:
+        'A free, neutral, structured reference for how Layer 1 blockchains work — architecture, consensus, and economics.',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteOrigin}/#website`,
+      name: 'L1 Library',
+      url: siteOrigin,
+      inLanguage: 'en',
+      publisher: { '@id': `${siteOrigin}/#org` },
+    },
+  ],
+};
 ---
 
 <!DOCTYPE html>
@@ -47,6 +70,9 @@ const fullTitle = title === 'Home' ? 'L1 Library — Every chain. Explained.' : 
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+
+    <!-- Sitewide structured data (schema.org) -->
+    <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
 
     <slot name="head" />
   </head>

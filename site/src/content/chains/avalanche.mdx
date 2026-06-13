@@ -1,0 +1,178 @@
+---
+name: "Avalanche"
+ticker: "AVAX"
+tagline: "Multi-chain Layer 1. Snowman consensus, sub-second finality, sovereign L1s."
+letter: "A"
+launched: "September 21, 2020"
+consensus: "Avalanche / Snowman (Proof of Stake)"
+language: "Solidity (C-Chain), custom VMs"
+tps: "~4,500+ (C-Chain); scales horizontally via L1s"
+blockTime: "~2 seconds (C-Chain)"
+marketCapRank: "28"
+nativeToken: "AVAX"
+supply: "720,000,000 max; ~432M circulating"
+website: "https://www.avax.network"
+explorer: "https://snowtrace.io"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: true
+compareTo: ["ethereum", "solana", "cardano"]
+relatedChains: ["ethereum", "solana", "cardano", "bitcoin"]
+lastUpdated: 2026-06-13
+status: "published"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Avalanche is a high-performance Layer 1 platform built for sub-second finality and horizontal scaling across many chains. It launched in September 2020, developed by Ava Labs — co-founded by Cornell computer scientist Emin Gün Sirer along with Kevin Sekniqi and Maofan "Ted" Yin. Rather than scale a single chain, Avalanche is designed so that many application-specific chains can run in parallel under a shared security and coordination layer.
+
+Two ideas define it. The first is a family of consensus protocols (the "Snow" family) that reach agreement through repeated random subsampling rather than the all-to-all voting of classical Byzantine Fault Tolerance — yielding fast, low-latency finality that scales to large validator sets. The second is the **Primary Network** of three specialized chains: the X-Chain for creating and trading assets, the C-Chain for EVM-compatible smart contracts, and the P-Chain for coordinating validators and chains. Because the C-Chain runs the Ethereum Virtual Machine, existing Ethereum wallets, contracts, and tooling work with minimal changes.
+
+Avalanche's scaling model is many sovereign chains. Originally called "subnets," these were restructured and renamed **Avalanche L1s** in the Avalanche9000 (Etna) upgrade of December 2024. Implementing ACP-77, the upgrade decoupled L1 validators from the Primary Network and sharply reduced the cost of launching a chain, replacing a large staking requirement with a small continuous fee.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Avalanche aims to be fast and final: a transaction typically confirms in under a second and cannot be reversed afterward. Instead of one chain doing everything, Avalanche uses several specialized chains, and projects can launch their own custom chain on top.
+
+The token AVAX pays transaction fees and is staked to help secure the network. Avalanche's main smart-contract chain behaves like Ethereum, so familiar tools such as MetaMask work directly.
+
+What makes Avalanche fast is how validators agree. Rather than every validator talking to every other one, each repeatedly polls a small random sample of peers. Opinions converge quickly — like a snowball gathering mass — until the whole network settles on the same answer.
+
+### Intermediate
+
+**Avalanche consensus** works by repeated random subsampling. A validator repeatedly queries small random samples of other validators for their current preference; as samples agree, each validator gains confidence and the preference "snowballs" to network-wide agreement with overwhelming probability. This avoids the communication overhead of classical BFT and supports sub-second finality across many participants.
+
+The **Primary Network** runs three chains, each suited to a job:
+- **X-Chain (Exchange)** — Creating and transferring assets; structured as a DAG and uses the DAG-optimized Avalanche protocol.
+- **C-Chain (Contract)** — EVM smart contracts; uses the linear-chain Snowman protocol. This is where most DeFi and dApps live.
+- **P-Chain (Platform)** — Tracks validators, staking, and the creation and configuration of Avalanche L1s; also uses Snowman.
+
+Sybil resistance is **Proof of Stake**: validating the Primary Network requires staking AVAX (minimum 2,000 AVAX), and AVAX paid as C-Chain fees is burned, offsetting issuance.
+
+### Builder
+
+Consensus lineage: Slush → Snowflake → Snowball → Avalanche (DAG, partially ordered) → Snowman (totally ordered, for linear chains). Tunable parameters include sample size *k*, quorum threshold *α*, and decision threshold *β*; security and latency trade off against these. C-Chain finality is typically sub-second to ~2 seconds; throughput is on the order of 4,500 TPS, with additional capacity added by running more L1s in parallel.
+
+C-Chain: EVM execution with an EIP-1559-style base fee that is burned. Standard Ethereum tooling (Solidity, MetaMask, Hardhat) applies. The P-Chain governs staking (validators and delegators) and the lifecycle of L1s.
+
+Post-Etna / ACP-77: Avalanche L1s have sovereign validator management — each L1 sets its own validator policy and can use its own gas token and virtual machine (Subnet-EVM or a custom VM). L1 validators pay a continuous fee on the P-Chain (a base rate around 1.33 AVAX per validator per month, adjustable by governance) instead of each staking 2,000 AVAX, and they are no longer required to also validate the Primary Network. This lowered the barrier to launching and operating a dedicated chain.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Avalanche secures Sybil resistance through [Proof of Stake](/concepts/proof-of-stake) and reaches agreement through its [Byzantine Fault Tolerant](/concepts/byzantine-fault-tolerance) Snow family of protocols. The distinguishing mechanism is repeated random subsampling: validators converge by polling small random subsets of peers rather than broadcasting votes to everyone.
+
+**Key parameters:**
+- Minimum validator stake: 2,000 AVAX · Minimum delegation: 25 AVAX
+- Staking period: 2 weeks to 1 year
+- Primary Network validators: ~1,300
+- Finality: sub-second (typically under 1–2 seconds)
+- Slashing: none (validators must maintain sufficient uptime to earn rewards; stake is not destroyed for downtime)
+
+**Architecture note:** The same Snow-family principles underpin all three Primary Network chains, with the DAG-based Avalanche protocol on the X-Chain and the totally ordered Snowman protocol on the C-Chain and P-Chain. Sovereign Avalanche L1s reuse this machinery while choosing their own validator sets and execution environments.
+
+*Read the full concept: [Proof of Stake →](/concepts/proof-of-stake)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Decentralized Finance (DeFi)** — LFJ (formerly Trader Joe), Benqi (lending and liquid staking), and GMX (perpetuals) lead C-Chain activity, alongside major cross-chain protocols.
+- **Institutional and real-world assets** — Permissioned and "Evergreen"-style L1s have been used by banks and asset managers for tokenization and settlement pilots.
+- **Gaming** — Dedicated gaming L1s such as Beam and titles like Off the Grid use sovereign chains for high-volume, low-fee in-game economies.
+- **Sovereign enterprise chains** — Organizations launch custom L1s with their own gas token, validator rules, and compliance requirements.
+- **Stablecoins and payments** — Native USDC and low C-Chain fees support on-chain settlement.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Core** — Ava Labs' wallet, designed for the multi-chain (X/C/P and L1) model
+- **MetaMask** — Works directly with the EVM C-Chain
+- **Ledger** — Hardware support for AVAX and C-Chain assets
+
+### L1 / Developer Tooling
+- **Avalanche CLI** — Create and manage L1s from the command line
+- **AvaCloud** — Managed, no-code L1 deployment (Ava Labs)
+- **Subnet-EVM** — EVM virtual machine for custom L1s
+
+### DeFi
+- **LFJ (Trader Joe)** — Leading C-Chain DEX
+- **Benqi** — Lending and liquid staking (sAVAX)
+- **GMX** — Decentralized perpetual exchange
+
+### Notable L1s & Infrastructure
+- **Beam** — Gaming-focused L1
+- **Dexalot** — On-chain central-limit orderbook
+- **Snowtrace** — C-Chain block explorer
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2018** — The pseudonymous "Team Rocket" publishes the Avalanche consensus whitepaper
+- **2019** — Ava Labs founded by Emin Gün Sirer, Kevin Sekniqi, and Maofan "Ted" Yin
+- **2020** — Mainnet launches (September 21) following a public token sale
+- **2021** — Avalanche Rush incentive program drives rapid DeFi growth; Ava Labs raises significant funding
+- **2022** — Subnets gain adoption in gaming and institutional pilots
+- **2023** — Evergreen subnets and real-world-asset initiatives target institutional users
+- **2024** — Avalanche9000 (Etna) upgrade activates (December 16): subnets become sovereign Avalanche L1s under ACP-77, sharply reducing the cost to launch a chain
+- **2025–2026** — Continued growth in gaming and institutional L1s, with ongoing fee and tooling refinements
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Avalanche | Ethereum | Solana |
+|---|---|---|---|
+| **Consensus** | Snowman (Avalanche family) | Casper PoS | PoH + Tower BFT |
+| **Block time** | ~2 sec (C-Chain) | ~12 sec | ~400 ms |
+| **Finality** | <1 sec | ~12.8 min | ~12.8 sec |
+| **TPS (L1)** | ~4,500 (C-Chain) | ~15–25 | ~1,000–4,000 |
+| **Scaling model** | Many sovereign L1s | Layer 2 rollups | Single monolithic chain |
+| **Smart contract language** | Solidity | Solidity / Vyper | Rust |
+| **EVM compatible** | Yes (C-Chain) | Native | No |
+| **Validator count** | ~1,300 (Primary Network) | ~1M+ | ~770–800 |
+| **Primary strength** | Sub-second finality + sovereign L1s | Security + ecosystem + L2s | Throughput |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Ethereum](/chains/ethereum)** — Avalanche's C-Chain is EVM-compatible and shares Ethereum's tooling and language, but uses a different consensus and a multi-chain scaling model.
+- **[Solana](/chains/solana)** — Another sub-second, high-throughput L1, but monolithic (one chain) rather than multi-chain.
+- **[Bitcoin](/chains/bitcoin)** — The original Layer 1, with which Avalanche shares little architecturally beyond being a base-layer settlement network.
+- **Cosmos / Polkadot** — Like Avalanche's L1s, these are app-chain ecosystems where many sovereign chains interoperate (Cosmos via IBC, Polkadot via shared-security parachains).
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- Team Rocket. "Snowflake to Avalanche: A Novel Metastable Consensus Protocol Family" (2018)
+- Avalanche developer documentation — [build.avax.network](https://build.avax.network)
+- Avalanche9000 / Etna and ACP-77 references — [build.avax.network](https://build.avax.network)
+- *Concept pages:* [Proof of Stake](/concepts/proof-of-stake) · [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance) · [Distributed Consensus](/concepts/distributed-consensus)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Team Rocket (2018). "Snowflake to Avalanche: A Novel Metastable Consensus Protocol Family."
+2. Ava Labs. Avalanche developer documentation — [build.avax.network](https://build.avax.network)
+3. Avalanche9000 / Etna upgrade and ACP-77 — [avax.network](https://www.avax.network)
+4. Avalanche Community Proposals (ACPs) — [github.com/avalanche-foundation/ACPs](https://github.com/avalanche-foundation/ACPs)
+5. Network statistics — [snowtrace.io](https://snowtrace.io)
+
+*Freshness note: Market cap rank varies by source (roughly #23–#34) and, with validator count, L1 fee parameters, and circulating supply, should be verified quarterly.*
+
+*Last updated: June 13, 2026*

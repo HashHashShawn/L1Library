@@ -1,0 +1,183 @@
+---
+name: "Solana"
+ticker: "SOL"
+tagline: "High-throughput Layer 1. Proof of History, parallel execution, sub-second blocks."
+letter: "S"
+launched: "March 16, 2020 (mainnet beta)"
+consensus: "Proof of History + Tower BFT (Proof of Stake)"
+language: "Rust, C, C++"
+tps: "~1,000–4,000 (real-world); 65,000 theoretical"
+blockTime: "~400 ms"
+marketCapRank: "7"
+nativeToken: "SOL"
+supply: "~600M+ circulating; no hard cap; disinflationary to 1.5% terminal"
+website: "https://solana.com"
+explorer: "https://explorer.solana.com"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: false
+compareTo: ["ethereum", "avalanche", "cardano"]
+relatedChains: ["ethereum", "avalanche", "cardano", "bitcoin"]
+lastUpdated: 2026-06-13
+status: "published"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Solana is a high-performance Layer 1 blockchain designed for low-latency, high-throughput applications. Proposed by Anatoly Yakovenko in a 2017 whitepaper and launched as a mainnet beta on March 16, 2020, Solana set out to scale a single global state without sharding the network or relying on Layer 2 systems — the approach taken by most of its contemporaries.
+
+Its central design bet is that a single, highly optimized chain can process transactions in parallel at hardware speed. The key primitive is Proof of History (PoH), a verifiable, cryptographic record of the passage of time that lets validators agree on transaction ordering without first communicating. Combined with parallel transaction execution (Sealevel) and a pipelined block-production engine, this targets throughput orders of magnitude higher than account-based chains like Ethereum.
+
+That performance has come with trade-offs. Solana has experienced several full or partial network outages, and its validator set is smaller and more hardware-intensive than Ethereum's. The network is now undergoing its largest consensus change to date — Alpenglow, approved by stakeholder vote in September 2025 — alongside Firedancer, an independent validator client built to harden reliability and raise the throughput ceiling further.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Solana is built to be fast and cheap. A new block is produced roughly every 400 milliseconds, and a typical transaction costs a small fraction of a cent. This makes it suitable for applications that need many small, quick interactions — trading, payments, games, and collectibles.
+
+The trick that makes this possible is called Proof of History. Think of it as a tamper-proof clock that timestamps every transaction. Because every validator already agrees on the order things happened, they spend far less time negotiating, and the network moves faster.
+
+Like Ethereum, Solana tracks balances using accounts rather than Bitcoin's coin-based (UTXO) model. You hold SOL — the network's token — to pay fees and to stake, which helps secure the network in return for rewards.
+
+### Intermediate
+
+Solana uses an **account-based model** where all programs (smart contracts) and data live in accounts addressed by public keys. Programs are stateless and operate on accounts passed into each instruction, which is what allows the runtime to know in advance which transactions touch which state.
+
+**Proof of History** is not a consensus mechanism on its own — it is a verifiable delay function that produces an ordered, timestamped sequence of events. This pre-agreed ordering lets **Tower BFT**, Solana's Proof-of-Stake consensus, finalize blocks with far less message-passing than a traditional BFT protocol. Sybil resistance and security come from staked SOL; validators and delegators earn rewards, and misbehavior is penalized.
+
+**Sealevel** is the parallel execution engine: because each transaction declares the accounts it will read and write, the runtime can execute non-overlapping transactions simultaneously across CPU cores. Other pipeline components — Gulf Stream (mempool-less transaction forwarding), Turbine (block propagation), and the QUIC-based networking layer — are all aimed at sustaining high throughput.
+
+### Builder
+
+Consensus: Tower BFT layered on Proof of History. Slot time ~400 ms; a leader schedule is fixed per epoch (~2 days, 432,000 slots). Confirmation is probabilistic and "optimistic confirmation" typically lands in ~12.8 seconds (32+ confirmations). Vote transactions are posted on-chain, historically consuming a large share of block space.
+
+Execution: Sealevel runtime; programs are compiled to eBPF (SBF) bytecode, typically from Rust or C. Transactions specify read/write account locks, enabling deterministic parallelization. Compute is metered in compute units with a per-transaction and per-block ceiling; priority fees bid for inclusion and ordering.
+
+Accounts and state: A single global account space; rent-exempt accounts must hold a minimum SOL balance. State is large and growing, which drives the high RAM/NVMe requirements for validators.
+
+Clients: **Agave** (maintained by Anza, the Solana Labs spinout) is the incumbent client. **Firedancer** / **Frankendancer** (Jump Crypto), a clean-room C implementation, reached mainnet in late 2025 and runs on roughly a fifth of stake by mid-2026, bringing client diversity and higher performance headroom.
+
+Pending change: **Alpenglow** replaces Proof of History and Tower BFT with **Votor** (a new voting/finality protocol targeting ~100–150 ms finality) and **Rotor** (block propagation), and moves voting off-chain to reclaim block space. Approved by governance in September 2025; live on a test cluster as of May 2026; mainnet expected later in the year.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Solana's security rests on [Proof of Stake](/concepts/proof-of-stake): validators stake SOL (and accept delegated stake) and are selected to produce blocks proportionally to stake. Its distinctive element is layering [Byzantine Fault Tolerant](/concepts/byzantine-fault-tolerance) voting (**Tower BFT**) on top of **Proof of History**, a cryptographic clock that establishes transaction order before validators vote.
+
+**Key parameters:**
+- Block (slot) time: ~400 ms
+- Epoch: ~2 days (432,000 slots)
+- Optimistic confirmation: ~12.8 seconds typical
+- Minimum stake to validate: none fixed, but high hardware and voting-cost requirements in practice
+- Validator set: ~770–800 (down from ~2,560 in 2023, partly reflecting hardware economics and a purge of subsidized nodes)
+- Issuance: disinflationary, starting ~8% and decreasing ~15% per year toward a 1.5% long-run rate
+
+**Coming consensus upgrade:** Alpenglow (approved September 2025) is the most significant change in Solana's history — retiring Proof of History and Tower BFT in favor of Votor and Rotor, with sub-150-millisecond finality and off-chain voting. As of mid-2026 it is in testing, not yet on mainnet.
+
+*Read the full concept: [Proof of Stake →](/concepts/proof-of-stake)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Decentralized Finance (DeFi)** — Sub-second blocks suit high-frequency and orderbook-style trading. Major venues include Jupiter (aggregation), Raydium and Orca (AMMs), Drift and Phoenix (orderbooks), and Kamino (lending).
+- **Consumer payments** — Low, predictable fees enable micropayments and point-of-sale flows via Solana Pay, with native USDC settlement.
+- **NFTs and digital collectibles** — Magic Eden and Tensor anchor trading; state compression ("compressed NFTs") cuts minting costs by orders of magnitude.
+- **DePIN (Decentralized Physical Infrastructure)** — Helium (wireless), Render (GPU compute), and Hivemapper (mapping) coordinate real-world hardware networks on-chain.
+- **High-volume retail activity** — Token launchpads such as Pump.fun drove significant transaction volume during 2024–2025.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Phantom** — Most widely used Solana wallet; browser extension and mobile
+- **Solflare** — Native wallet with staking and hardware support
+- **Backpack** — Wallet paired with the xNFT/exchange ecosystem
+
+### Clients & Infrastructure
+- **Agave** — Incumbent validator client, maintained by Anza
+- **Firedancer / Frankendancer** — Independent C client from Jump Crypto; client diversity and performance
+- **Jito** — MEV infrastructure and liquid staking (JitoSOL)
+- **Helius / Triton** — RPC and developer infrastructure
+
+### DeFi & Liquid Staking
+- **Jupiter** — Swap aggregator and routing layer
+- **Raydium / Orca** — Automated market makers
+- **Marinade / Sanctum** — Liquid staking
+- **Kamino** — Lending and leveraged strategies
+
+### Consumer
+- **Solana Mobile** — Saga and Seeker phones with a native dApp store
+- **Solana Pay** — Merchant payments protocol
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2017** — Anatoly Yakovenko publishes the Solana whitepaper introducing Proof of History
+- **2018** — Solana Labs founded; testnet development begins
+- **2020** — Mainnet beta launches (March 16)
+- **2021** — Rapid ecosystem growth in DeFi and NFTs; SOL enters the top tier by market cap. First significant network outages appear.
+- **2022** — Repeated outages raise reliability concerns. The November collapse of FTX and Alameda Research — both closely associated with Solana — drives SOL down roughly 96% from its peak.
+- **2023** — Recovery and rebuild. Firedancer announced. Jito, Jupiter, and a renewed DeFi stack gain traction.
+- **2024** — Activity rebound led by memecoins (Pump.fun), DePIN, and high retail volume. Solana Mobile expands.
+- **2025** — Alpenglow consensus upgrade approved by stakeholder vote (September, ~98% in favor). Firedancer reaches mainnet (December).
+- **2026** — Alpenglow goes live on a community test cluster (May); mainnet targeted for later in the year. Firedancer runs on ~20% of stake.
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Solana | Ethereum | Avalanche |
+|---|---|---|---|
+| **Consensus** | PoH + Tower BFT | Casper PoS | Snowman (Avalanche family) |
+| **Block time** | ~400 ms | ~12 sec | ~2 sec (C-Chain) |
+| **TPS (L1)** | ~1,000–4,000 | ~15–25 | ~4,500 |
+| **Finality** | ~12.8 sec | ~12.8 min | <1 sec |
+| **Smart contract language** | Rust / C | Solidity / Vyper | Solidity |
+| **State model** | Account-based | Account-based | Account-based (C-Chain) |
+| **EVM compatible** | No (SVM) | Native | Yes (C-Chain) |
+| **Validator count** | ~770–800 | ~1M+ | ~1,300 |
+| **Primary strength** | Throughput + low latency | Security + ecosystem + L2s | Sub-second finality + L1s |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Ethereum](/chains/ethereum)** — The incumbent smart-contract platform. Scales via Layer 2 rollups rather than a single high-throughput L1.
+- **[Avalanche](/chains/avalanche)** — Another high-performance L1, but reaches scale through many application-specific chains (L1s) rather than one monolithic chain.
+- **[Cardano](/chains/cardano)** — Contrasting design philosophy: peer-reviewed, deliberate, eUTXO-based, slower base-layer throughput.
+- **Aptos / Sui** — Move-language L1s that, like Solana, pursue parallel execution and high throughput on a single chain.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- Yakovenko, A. "Solana: A New Architecture for a High Performance Blockchain" (2017) — [solana.com](https://solana.com)
+- Solana official documentation — [solana.com/docs](https://solana.com/docs)
+- Anza — Agave client and Alpenglow specifications — [anza.xyz](https://www.anza.xyz)
+- *Concept pages:* [Proof of Stake](/concepts/proof-of-stake) · [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance) · [Distributed Consensus](/concepts/distributed-consensus)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Yakovenko, A. (2017). "Solana: A New Architecture for a High Performance Blockchain."
+2. Solana Foundation. Documentation and architecture references — [solana.com/docs](https://solana.com/docs)
+3. Anza. Agave client and Alpenglow (Votor/Rotor) specifications — [anza.xyz](https://www.anza.xyz)
+4. Solana governance: Alpenglow proposal approval, September 2025.
+5. Jump Crypto. Firedancer validator client — [jumpcrypto.com/firedancer](https://jumpcrypto.com/firedancer)
+6. Network statistics — [explorer.solana.com](https://explorer.solana.com)
+
+*Freshness note: Validator count, market cap rank, issuance rate, and Alpenglow/Firedancer rollout status change frequently and should be verified quarterly. Alpenglow was in testing — not yet on mainnet — as of June 2026.*
+
+*Last updated: June 13, 2026*
