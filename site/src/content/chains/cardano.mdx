@@ -60,7 +60,7 @@ Consensus: Ouroboros Praos is the production protocol — private, stake-weighte
 
 Ledger: eUTXO with deterministic script validation. Plutus Core is the on-chain execution target; transaction fees are a function of size and execution budget (steps and memory), known in advance. Concurrency is managed at the application layer because outputs are consumed atomically.
 
-Scaling: **Hydra** provides isomorphic state channels (Layer 2) for off-chain, near-instant transactions among participants, settling to the main chain. **Ouroboros Leios** restructures block production into endorsement (input) blocks and ranking blocks to parallelize transaction processing, targeting a large multiple of current base-layer throughput; it was moving toward testnet in 2026.
+Scaling: **Hydra** provides isomorphic state channels (Layer 2) for off-chain, near-instant transactions among participants, settling to the main chain. **Ouroboros Leios** restructures block production into endorsement (input) blocks and ranking blocks to parallelize transaction processing, targeting a large multiple of current base-layer throughput. Its public testnet was scheduled for June 2026, with a mainnet goal by year-end.
 
 Governance: CIP-1694 defines on-chain governance actions (e.g., protocol-parameter changes, treasury withdrawals, hard forks) ratified by a combination of DReps, the Constitutional Committee, and stake pool operators, subject to the Constitution.
 
@@ -128,7 +128,7 @@ Cardano runs on [Proof of Stake](/concepts/proof-of-stake) via **Ouroboros**, pr
 - **2022** — Vasil hard fork improves throughput and script efficiency
 - **2024** — Chang hard fork opens the Voltaire governance era with interim on-chain governance (September)
 - **2025** — Plomin hard fork completes the transition to full on-chain governance under CIP-1694 (January); Constitution ratified
-- **2026** — Ouroboros Leios advances toward testnet (targeting 1,000+ base-layer TPS); Hydra adoption deepens
+- **2026** — Ouroboros Leios public testnet goes live (June, targeting 1,000+ base-layer TPS); Hydra adoption deepens
 
 ## Comparison
 

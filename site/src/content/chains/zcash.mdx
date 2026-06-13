@@ -1,0 +1,176 @@
+---
+name: "Zcash"
+ticker: "ZEC"
+tagline: "Privacy-preserving digital cash. zk-SNARKs, shielded transactions, fixed supply."
+letter: "Z"
+launched: "October 28, 2016"
+consensus: "Proof of Work (Equihash)"
+language: "C++ (zcashd), Rust (Zebra)"
+tps: "~6–26 (base layer)"
+blockTime: "~75 seconds"
+marketCapRank: "15"
+nativeToken: "ZEC"
+supply: "21,000,000 max; ~16.7M circulating"
+website: "https://z.cash"
+explorer: "https://blockchair.com/zcash"
+category: "layer-1"
+consensusType: "pow"
+evmCompatible: false
+compareTo: ["bitcoin", "monero"]
+relatedChains: ["bitcoin", "monero", "ethereum"]
+lastUpdated: 2026-06-13
+status: "published"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Zcash is a privacy-preserving cryptocurrency that pioneered the practical use of zero-knowledge proofs in a public blockchain. Launched on October 28, 2016 by the Electric Coin Company (ECC), founded by Zooko Wilcox-O'Hearn, it implements the academic Zerocash protocol on a fork of Bitcoin's codebase. The result is digital cash that can be fully shielded — hiding sender, receiver, and amount — while still being verifiable by the network.
+
+Like Bitcoin, Zcash uses Proof of Work and a fixed maximum supply of 21 million coins, with block rewards that halve roughly every four years. What distinguishes it is optional privacy: funds can sit in transparent addresses (public, like Bitcoin) or shielded addresses (private, protected by zk-SNARKs). Users can also share viewing keys to selectively disclose activity to an auditor or regulator, a middle path between full transparency and full opacity.
+
+Through 2025–2026 Zcash drew renewed attention amid a broader interest in financial privacy and post-quantum concerns, and the share of supply held in shielded pools rose markedly. The protocol continues to evolve: recent network upgrades restructured its funding model, an emergency 2026 upgrade patched a shielded-proof vulnerability, and two larger efforts are in progress — Project Tachyon to scale shielded transactions, and Crosslink to add a Proof-of-Stake finality layer on top of Proof of Work.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Zcash is digital cash with optional privacy. It works much like Bitcoin — coins are mined, the supply is capped at 21 million, and transactions are recorded on a public chain — but Zcash adds a second mode. You can hold and send funds transparently, where everything is visible, or "shielded," where the amount and the parties are hidden.
+
+The hidden transactions still have to be valid: no spending coins you don't have, no spending the same coin twice. Zcash proves this using zero-knowledge proofs — math that lets the network confirm a transaction follows the rules without seeing any of its private details.
+
+Because privacy is optional, Zcash also lets you share a "viewing key" so a chosen party — an accountant, an exchange, a regulator — can see your shielded activity. Privacy by default, disclosure by choice.
+
+### Intermediate
+
+Zcash supports two kinds of addresses: **transparent** (t-addresses), which behave like Bitcoin's public ledger, and **shielded** (z-addresses), where transaction data is encrypted on-chain. A **zk-SNARK** (zero-knowledge succinct non-interactive argument of knowledge) accompanies each shielded transaction, proving it is valid — inputs cover outputs, the spender owns the notes, no double-spend — without revealing values or addresses.
+
+The shielded system has evolved through several "pools." **Sprout** was the original; **Sapling** (2018) made shielded transactions far more efficient and practical on mobile devices; **Orchard** (activated with NU5 in 2022) introduced the Halo 2 proving system, which removed the need for a trusted setup ceremony, and added Unified Addresses that bundle address types together.
+
+Sybil resistance and issuance come from **Proof of Work** (the Equihash algorithm). New ZEC enters circulation through mining, on the same disinflationary halving schedule as Bitcoin. A portion of the block reward has historically funded development through the Founders' Reward and later the Dev Fund.
+
+### Builder
+
+Consensus: Equihash Proof of Work; target block time ~75 seconds. Issuance follows Bitcoin-style halvings (most recently November 18, 2024, cutting the reward to 1.5625 ZEC); maximum supply 21 million.
+
+Shielded cryptography: Sprout (original, Groth16-era circuits), Sapling (Groth16 with a trusted setup, efficient note encryption), and Orchard (Halo 2 — no trusted setup, built on the Pallas/Vesta "Pasta" curves). Shielded transfers use note commitments stored in incremental Merkle trees and nullifiers to prevent double-spends; values and recipients are encrypted. Unified Addresses abstract over pools, and viewing keys enable selective disclosure.
+
+Recent upgrades: NU5 (May 2022, Halo 2 + Orchard), NU6 (November 2024, which redirected part of issuance into a development "lockbox"), NU6.1 (November 2025, a coinholder-governed funding model), and NU6.2 (activated June 3, 2026, an emergency fix for a critical vulnerability in the Orchard proof circuit).
+
+In development: **NU7** (targeted for late 2026; first testnet live May 2026) bundles **Project Tachyon** — proof-carrying wallets, oblivious synchronization, and transaction aggregation aimed at thousands of shielded transactions per second — with **Zcash Shielded Assets** (user-issued private tokens) and a network sustainability fee mechanism. Separately, **Crosslink** (Shielded Labs) proposes a Proof-of-Stake BFT finality layer atop the existing Proof-of-Work chain, with staked ZEC finalizing blocks and a roughly even issuance split between miners and stakers.
+
+Clients: the original **zcashd** (C++, ECC) is being deprecated in favor of **Zebra** / zebrad (Rust, Zcash Foundation), with **Zallet** as the replacement wallet backend.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Zcash secures its ledger with [Proof of Work](/concepts/proof-of-work) using the Equihash algorithm. Miners compete to produce blocks, earning newly issued ZEC plus fees, and the longest valid chain wins — the same security model as Bitcoin, applied to a chain that also carries encrypted, zero-knowledge-verified transactions.
+
+**Key parameters:**
+- Algorithm: Equihash (Proof of Work)
+- Block time: ~75 seconds
+- Block reward: 1.5625 ZEC (after the November 2024 halving)
+- Next halving: ~2028
+- Maximum supply: 21,000,000 ZEC
+- Funding: a share of issuance funds development (Founders' Reward through 2020, then the Dev Fund; restructured by NU6 and NU6.1 into grants plus a coinholder-governed lockbox)
+
+**Proposed finality layer:** Crosslink (Shielded Labs) would layer a Proof-of-Stake, Byzantine Fault Tolerant finality gadget on top of Proof of Work — validators stake ZEC to finalize blocks, improving settlement guarantees for exchanges and bridges. As of mid-2026 it is in development and testing, not yet live.
+
+*Read the full concept: [Proof of Work →](/concepts/proof-of-work)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Private payments** — Shielded transactions conceal amount, sender, and receiver while remaining verifiable, the network's core use case.
+- **Selective disclosure** — Viewing keys let a holder reveal shielded activity to an auditor, accountant, or regulator without making it public — privacy compatible with compliance.
+- **Store of value with optional privacy** — A fixed 21-million supply and Bitcoin-style issuance, with the option to hold and move funds privately.
+- **Censorship-resistant transfer** — Permissionless value movement that resists surveillance and selective blocking.
+- **Cross-chain privacy** — Integrations such as Zashi's NEAR Intents support let users swap and off-ramp shielded ZEC, extending privacy beyond the Zcash chain.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Zashi** — ECC's shielded-first mobile wallet, with integrated swaps and off-ramps via NEAR Intents
+- **Ywallet** — Multi-pool wallet with fast shielded sync
+- **Nighthawk / Zecwallet** — Community wallets focused on shielded use
+
+### Clients & Protocol
+- **Zebra (zebrad)** — Independent Rust node from the Zcash Foundation; the path forward as zcashd is deprecated
+- **zcashd** — Original C++ node from ECC, being phased out
+- **Zallet** — New wallet backend replacing the zcashd wallet
+
+### Organizations
+- **Electric Coin Company (ECC)** — Created Zcash; protocol R&D and the Zashi wallet
+- **Zcash Foundation** — Public-good stewardship and the Zebra client
+- **Shielded Labs** — Developing the Crosslink Proof-of-Stake finality layer
+- **Zcash Community Grants (ZCG)** — Community-directed ecosystem funding
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2014** — The Zerocash protocol is published by academic researchers (Ben-Sasson, Chiesa, et al.)
+- **2016** — Zcash mainnet launches (October 28) following a multi-party trusted-setup ceremony
+- **2018** — Sapling upgrade dramatically improves shielded-transaction efficiency
+- **2020** — Canopy upgrade; first halving; the Founders' Reward ends and the Dev Fund begins
+- **2022** — NU5 activates Halo 2 and the Orchard pool (no trusted setup) plus Unified Addresses (May)
+- **2024** — Second halving (November 18); NU6 redirects part of issuance into a development lockbox
+- **2025** — NU6.1 introduces a coinholder-governed funding model; shielded-pool share of supply rises sharply amid a major ZEC rally; zcashd deprecation begins
+- **2026** — NU6.2 emergency upgrade patches an Orchard proof-circuit vulnerability (June); NU7 reaches testnet (Project Tachyon, Shielded Assets); Crosslink Proof-of-Stake work advances; ~30% of supply held in shielded pools
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Zcash | Bitcoin | Monero |
+|---|---|---|---|
+| **Consensus** | PoW (Equihash) | PoW (SHA-256) | PoW (RandomX) |
+| **Privacy** | Optional (shielded) | Pseudonymous | Private by default |
+| **Privacy tech** | zk-SNARKs (Halo 2 / Orchard) | None | Ring signatures + RingCT + stealth |
+| **Supply cap** | 21M | 21M | Uncapped (tail emission) |
+| **Block time** | ~75 sec | ~10 min | ~2 min |
+| **Auditability** | Selective (viewing keys) | Fully public | Opaque |
+| **Smart contracts** | None (Bitcoin-style Script) | Limited (Script) | None |
+| **Primary use** | Private digital cash | Store of value | Private transactions |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Bitcoin](/chains/bitcoin)** — Zcash forked Bitcoin's codebase and shares its Proof of Work, 21-million cap, and halving schedule, adding zero-knowledge privacy on top.
+- **Monero** — The other major privacy coin. Monero is private by default using ring signatures and stealth addresses, where Zcash makes strong zk-SNARK privacy optional and auditable.
+- **[Ethereum](/chains/ethereum)** — Not a privacy chain, but the place zero-knowledge proofs now scale most visibly: ZK rollups use the same cryptographic family Zcash pioneered for payments.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- Ben-Sasson, E., Chiesa, A., et al. "Zerocash: Decentralized Anonymous Payments from Bitcoin" (2014)
+- Zcash Protocol Specification — [zips.z.cash/protocol/protocol.pdf](https://zips.z.cash/protocol/protocol.pdf)
+- Electric Coin Company documentation — [z.cash](https://z.cash)
+- *Concept pages:* [Proof of Work](/concepts/proof-of-work) · [Blockchain Privacy and Zero-Knowledge Proofs](/concepts/zero-knowledge-proofs) · [Public-Key Cryptography and Digital Signatures](/concepts/public-key-cryptography)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Ben-Sasson, E., et al. (2014). "Zerocash: Decentralized Anonymous Payments from Bitcoin."
+2. Zcash Protocol Specification — [zips.z.cash](https://zips.z.cash)
+3. Electric Coin Company — protocol, Orchard/Halo 2, and Zashi — [electriccoin.co](https://electriccoin.co)
+4. Zcash Foundation — Zebra client and governance — [zfnd.org](https://zfnd.org)
+5. Shielded Labs — Crosslink Proof-of-Stake proposal — [shieldedlabs.net](https://shieldedlabs.net)
+6. Network upgrades (NU5, NU6, NU6.1, NU6.2, NU7) — [zips.z.cash](https://zips.z.cash)
+7. Network statistics — [blockchair.com/zcash](https://blockchair.com/zcash)
+
+*Freshness note: Market cap rank, circulating supply, shielded-pool share, and the status of NU7, Project Tachyon, and Crosslink change over time and should be verified quarterly. Crosslink and NU7 were in development — not yet on mainnet — as of June 2026.*
+
+*Last updated: June 13, 2026*
