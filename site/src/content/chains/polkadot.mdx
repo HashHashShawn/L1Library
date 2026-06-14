@@ -1,0 +1,176 @@
+---
+name: "Polkadot"
+ticker: "DOT"
+tagline: "Heterogeneous multichain. Shared security, parachains, agile coretime."
+letter: "P"
+launched: "May 26, 2020"
+consensus: "Nominated Proof of Stake (BABE + GRANDPA)"
+language: "Rust (Polkadot SDK), ink!"
+tps: "Parallel across parachains (100k+ aggregate target)"
+blockTime: "~6 seconds"
+marketCapRank: "38"
+nativeToken: "DOT"
+supply: "~1.68B circulating; 2.1B hard cap (2026)"
+website: "https://polkadot.com"
+explorer: "https://polkadot.subscan.io"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: false
+compareTo: ["cosmos", "ethereum", "avalanche"]
+relatedChains: ["cosmos", "ethereum", "avalanche"]
+lastUpdated: 2026-06-13
+status: "published"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Polkadot is a heterogeneous multichain network designed to provide shared security and native interoperability to many specialized blockchains. Proposed by Gavin Wood — an Ethereum co-founder and the creator of Solidity — in a 2016 whitepaper and launched in May 2020, it is developed by Parity Technologies under the Web3 Foundation. Rather than being a single chain that does everything, Polkadot is a base layer that secures and connects other chains.
+
+The architecture centers on a Relay Chain that coordinates consensus and pools security, plus application-specific chains (parachains) that lease compute from it and inherit its security. Chains communicate through XCM, a trust-minimized cross-consensus messaging format, and are built with the Polkadot SDK (Substrate), whose Wasm runtimes allow forkless upgrades.
+
+The network completed a major redesign known as Polkadot 2.0 in 2025, delivering Agile Coretime (flexible, on-demand blockspace that replaced multi-year parachain slot auctions), Asynchronous Backing, and Elastic Scaling. In June 2026 governance enacted a hard supply cap of 2.1 billion DOT and cut annual issuance by 53.6%. The next step, JAM (the Join-Accumulate Machine), entered testnet in early 2026 and proposes to turn the Relay Chain into a general-purpose decentralized computer.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Polkadot is a network of blockchains that work together and share security. Instead of one chain doing everything, specialized chains (called parachains) plug into a central Relay Chain that protects them all and lets them exchange messages and assets.
+
+DOT, the network's token, is used for three things: staking to help secure the network, voting in governance, and paying for "coretime" — the blockspace a chain needs to run. There is no mining; security comes from staked DOT.
+
+Because every parachain is secured by the same shared validator set, a new chain doesn't have to bootstrap its own security from scratch — it inherits Polkadot's on day one.
+
+### Intermediate
+
+The **Relay Chain** provides consensus and pooled security; it deliberately does little else. **Parachains** are sovereign, application-specific chains that lease coretime and have their blocks validated by the Relay Chain's validators. This is the difference from Cosmos: Polkadot's chains share one security pool rather than each securing themselves.
+
+Consensus is **Nominated Proof of Stake (NPoS)**: nominators back trustworthy validators with their stake, and an election picks an active validator set that maximizes backing across candidates. Block production and finality are split — **BABE** assigns block-production slots (about six seconds) using a verifiable random function, while **GRANDPA** finalizes chains of blocks in batches, giving fast, provable finality.
+
+**Agile Coretime** replaced the old slot-auction model: developers buy blockspace in bulk or on demand, the way you'd rent cloud compute. **XCM** lets chains move assets and call each other's logic without trusted bridges.
+
+### Builder
+
+Consensus: NPoS with a fixed active set of 297 validators per era, selected by a Phragmén election that balances stake. BABE provides probabilistic block authorship (~6s slots, VRF-based); GRANDPA provides deterministic finality by finalizing prefixes once a supermajority agrees. Nominators back up to 16 validators; nomination pools lower the entry threshold.
+
+Scaling: Asynchronous Backing decouples a parablock's backing from its inclusion, roughly doubling throughput and cutting latency. Elastic Scaling lets a single parachain consume multiple cores in parallel, raising per-chain capacity substantially. Aggregate network throughput scales with the number of cores rather than a single global limit.
+
+Runtime and contracts: chains are built with the Polkadot SDK (Substrate) in Rust; runtimes compile to Wasm, enabling on-chain, forkless upgrades. Smart contracts run on parachains (ink!/Wasm, or EVM chains like Moonbeam) and are coming to Polkadot Hub via PolkaVM (a RISC-V VM) with Solidity support.
+
+2026 economics: a 2.1 billion DOT hard cap with a 53.6% issuance cut; staking unbonding shortened from 28 days to roughly 24–48 hours; a governance proposal would require validators to self-bond 10,000 DOT.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Polkadot uses [Proof of Stake](/concepts/proof-of-stake) in the form of **Nominated Proof of Stake**, with a hybrid consensus that separates block production from finality. **BABE** authors blocks; **GRANDPA**, a [Byzantine Fault Tolerant](/concepts/byzantine-fault-tolerance) finality gadget, finalizes them in batches once a supermajority of validators agrees.
+
+**Key parameters:**
+- Active validators: 297 per era
+- Block time: ~6 seconds (BABE slots)
+- Finality: GRANDPA (provable, finalizes batches of blocks)
+- Unbonding: ~24–48 hours (reduced from 28 days)
+- Issuance: hard-capped at 2.1 billion DOT with a 53.6% issuance cut (enacted June 2026)
+- Nomination: nominators back up to 16 validators; pools lower the threshold
+
+**Why split the roles:** separating probabilistic block production (BABE) from deterministic finality (GRANDPA) lets the chain keep producing blocks quickly while finalizing them with strong guarantees — a design that also underpins how parachain blocks are validated and finalized against the Relay Chain.
+
+*Read the full concept: [Proof of Stake →](/concepts/proof-of-stake)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Application-specific chains** — Teams launch purpose-built parachains with their own logic, fees, and governance while inheriting shared security. Examples include Moonbeam (EVM), Acala (DeFi), Astar, and Hydration.
+- **Cross-chain interoperability** — XCM moves assets and messages between parachains (and, increasingly, external networks) without trusted bridges.
+- **Blockspace markets** — Agile Coretime turns blockspace into a flexible, rentable resource, suited to bursty or experimental workloads.
+- **Smart contracts** — Available via parachains (ink!/Wasm, or EVM parachains) and arriving on Polkadot Hub through PolkaVM and Solidity.
+- **General-purpose compute (emerging)** — JAM proposes running permissionless "services" across many cores, blending smart-contract flexibility with parachain-grade scaling.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Polkadot.js** — Browser extension and the reference web interface
+- **Talisman** — Wallet built for the Polkadot and Ethereum ecosystems
+- **Nova Wallet** — Mobile-first wallet with staking and governance
+
+### Parachains & Apps
+- **Moonbeam** — EVM-compatible smart-contract parachain
+- **Acala / Hydration** — DeFi and liquidity
+- **Astar** — Multi-VM smart contracts (Wasm + EVM)
+- **Bifrost** — Liquid staking
+
+### Infrastructure
+- **Polkadot SDK (Substrate)** — Framework for building chains in Rust
+- **Subscan** — Multi-network block explorer
+- **OpenGov** — Fully on-chain governance
+- **Kusama** — Polkadot's canary network for early, real-stakes testing
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2016** — Gavin Wood publishes the Polkadot whitepaper
+- **2017** — Web3 Foundation formed; DOT token sale
+- **2019** — Kusama canary network launches
+- **2020** — Polkadot mainnet launches (May 26), transitioning from proof-of-authority to NPoS
+- **2021** — Parachains go live; the first slot auctions onboard Acala, Moonbeam, and others
+- **2023** — OpenGov replaces council-based governance with fully on-chain referenda
+- **2024** — Agile Coretime and Asynchronous Backing introduced
+- **2025** — Polkadot 2.0 completed (SDK 2509): Agile Coretime, Asynchronous Backing, and Elastic Scaling live
+- **2026** — Hard cap of 2.1 billion DOT and a 53.6% issuance cut enacted (June); JAM testnet live (January), with a mainnet governance proposal expected later in the year
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Polkadot | Cosmos | Ethereum |
+|---|---|---|---|
+| **Model** | Shared security (parachains) | Sovereign chains (IBC) | Monolithic + L2 rollups |
+| **Consensus** | NPoS (BABE + GRANDPA) | CometBFT (per chain) | Casper PoS |
+| **Interoperability** | XCM (native, trust-minimized) | IBC | Bridges / L2s |
+| **Block time** | ~6 sec | ~6 sec | ~12 sec |
+| **Security model** | Pooled from Relay Chain | Each chain secures itself | Single chain |
+| **Smart contracts** | Parachains / Polkadot Hub | CosmWasm / per chain | Native (EVM) |
+| **Governance** | OpenGov (on-chain) | Per-chain on-chain | Off-chain / social |
+| **Primary strength** | Shared security + interop | Sovereignty + flexibility | Ecosystem + security |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Cosmos](/chains/cosmos)** — The other major "internet of blockchains," but it favors sovereign chains that secure themselves over Polkadot's pooled security.
+- **[Ethereum](/chains/ethereum)** — Gavin Wood co-founded Ethereum before building Polkadot; Polkadot scales through many chains rather than Layer 2 rollups.
+- **[Avalanche](/chains/avalanche)** — Also multi-chain (sovereign L1s), offering a useful contrast between shared and self-sovereign security.
+- **Kusama** — Polkadot's canary network: the same technology, faster-moving, with real economic stakes.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- Wood, G. "Polkadot: Vision for a Heterogeneous Multi-Chain Framework" (2016)
+- Wood, G. "JAM: The Join-Accumulate Machine" (Gray Paper, 2024) — [graypaper.com](https://graypaper.com)
+- Polkadot Wiki — [wiki.polkadot.network](https://wiki.polkadot.network)
+- *Concept pages:* [Proof of Stake](/concepts/proof-of-stake) · [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance) · [Distributed Consensus](/concepts/distributed-consensus)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Wood, G. (2016). "Polkadot: Vision for a Heterogeneous Multi-Chain Framework."
+2. Polkadot documentation and wiki — [wiki.polkadot.network](https://wiki.polkadot.network)
+3. Polkadot 2.0 (SDK 2509): Agile Coretime, Asynchronous Backing, Elastic Scaling.
+4. Wood, G. JAM Gray Paper — [graypaper.com](https://graypaper.com)
+5. OpenGov referenda: 2.1 billion DOT cap and issuance reduction (June 2026).
+6. Network statistics — [polkadot.subscan.io](https://polkadot.subscan.io)
+
+*Freshness note: Market cap rank, circulating supply, validator self-bond rules, and JAM's status change over time and should be verified quarterly. JAM was in testnet — not yet on mainnet — as of June 2026.*
+
+*Last updated: June 13, 2026*

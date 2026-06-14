@@ -1,160 +1,161 @@
 # Contributing to L1 Library
 
-Thank you for helping build the blockchain reference wiki. This guide covers how to contribute chain profiles, concept pages, bug fixes, and design improvements.
+Thank you for helping build a credible, neutral reference for how blockchains actually work. This guide covers how to contribute chain profiles, concept pages, and fixes — and, just as importantly, the editorial standards we hold every contribution to.
+
+L1 Library is an encyclopedia, not a marketing site. The thing that makes it worth reading — and worth linking to — is that every page is factual, structured, sourced, and free of hype. Please read the rules below before you start; PRs that ignore them will be sent back for revision.
 
 ## Quick Start
 
 1. Fork the repo
-2. Create a branch: `git checkout -b add/chain-ethereum` or `fix/typo-proof-of-work`
-3. Make your changes
-4. Open a pull request
+2. Create a branch: `git checkout -b add/chain-solana` (see Branch Naming)
+3. Copy the template at [`templates/chain-profile-template.mdx`](templates/chain-profile-template.mdx) into `site/src/content/chains/<slug>.mdx` and fill it in
+4. Run the build locally (`cd site && npm install && npm run build`) — it must pass
+5. Open a pull request (you cannot push to `main` directly; see Pull Request Process)
 
 ## Branch Naming
 
-Use prefixes to signal intent:
-
 - `add/chain-{slug}` — New chain profile
 - `add/concept-{slug}` — New concept page
-- `fix/{description}` — Bug fix or correction
+- `fix/{description}` — Correction or bug fix
 - `improve/{description}` — Design, performance, or UX improvement
 - `docs/{description}` — Documentation changes
 
+## Editorial Rules (read this first)
+
+These apply to all content. They are the point of the project.
+
+- **Neutral and encyclopedic.** Write like a reference entry, not an advocate. No hype words ("revolutionary," "game-changer," "the best"), no emoji, no exclamation marks.
+- **No price or investment content.** No price predictions, price history, market commentary, "should you buy," or token-as-investment framing. Market-cap *rank* is allowed as a neutral stat; dollar prices are not.
+- **No taking sides.** When comparing chains, describe trade-offs factually. Don't declare a winner. A profile should read the same whether or not you hold the token.
+- **Cite primary sources.** Link to whitepapers, protocol specifications, and official documentation. Prefer primary sources over news articles or price sites.
+- **Every claim is verifiable.** If you can't source it, don't state it. Flag genuinely uncertain or contested facts as such.
+- **Distinguish shipped from proposed.** Be explicit about what is live on mainnet versus in testnet, audit, or governance. Date-stamp anything volatile.
+- **Three depth levels.** The "How It Works" section must be written at three levels — Beginner (plain language, no jargon), Intermediate (technical but accessible), and Builder (implementation detail). A non-technical reader should follow the Beginner level completely.
+- **Add a freshness note.** Volatile figures (market-cap rank, validator counts, supply, upgrade status) change. End each profile with a short freshness note and a "Last updated" line, and set `lastUpdated` in frontmatter.
+- **Match the existing bar.** Use the published profiles (Bitcoin, Ethereum, Solana, Cardano, Avalanche, Zcash, Polkadot, Cosmos, Algorand) as your reference for depth, structure, and tone.
+
+## MDX Rules (so the build doesn't break)
+
+Content is MDX, which is Markdown plus JSX. Two characters will break the build if misused:
+
+- **Never write a bare `<` before a number or space.** MDX reads `<` as the start of a JSX tag, so `<1 sec` fails the build. Write `under 1 sec` or `~1 sec` instead.
+- **Curly braces `{ }` are JSX.** Only use them for section markers like `{/* Section 4 */}`. Don't put stray `{` or `}` in prose.
+- **Internal links must resolve.** Use `/chains/<slug>` and `/concepts/<slug>` only for pages that exist. For a chain or concept that isn't on the site yet, use plain bold text (e.g., `**Monero**`), not a link.
+- **Run the build before opening a PR.** `cd site && npm run build`. A single malformed MDX file fails the entire build.
+
 ## Adding a Chain Profile
 
-Chain profiles live in `site/src/content/chains/`. Each is an MDX file with 11 sections.
+Chain profiles live in `site/src/content/chains/`. Each is an MDX file with the 11 sections below. The slug is the chain's common name, lowercase and hyphenated (`ethereum.mdx`, `bitcoin-cash.mdx`).
 
-### 1. Create the file
+### Frontmatter
 
-```
-site/src/content/chains/{slug}.mdx
-```
-
-Slug should be the chain's common name in lowercase, hyphenated (e.g., `ethereum.mdx`, `solana.mdx`).
-
-### 2. Add frontmatter
-
-Use Bitcoin as your reference (`site/src/content/chains/bitcoin.mdx`). Required fields:
+The schema is defined in `site/src/content/config.ts` — match it exactly. Use the exact enum values shown (they are lowercase).
 
 ```yaml
 ---
-name: "Ethereum"
-ticker: "ETH"
-letter: "E"
-status: "draft"
-launched: 2015
-consensus: "Proof of Stake"
-category: "Smart Contract Platform"
-consensusType: "PoS"
-tagline: "One-sentence description"
+name: "Solana"                              # canonical name, not the ticker
+ticker: "SOL"
+tagline: "One neutral sentence. No hype."
+letter: "S"                                 # single character, for the A–Z directory
+launched: "March 16, 2020"                  # string, human-readable
+consensus: "Proof of History + Tower BFT (Proof of Stake)"
+language: "Rust, C"                          # optional
+tps: "~1,000–4,000"                          # optional
+blockTime: "~400 ms"                         # optional
+marketCapRank: "7"                           # optional, string
+nativeToken: "SOL"
+supply: "~600M+ circulating; no hard cap"    # optional
+website: "https://solana.com"                # required, must be a valid URL
+explorer: "https://explorer.solana.com"      # optional, valid URL
+category: "layer-1"          # layer-1 | layer-2 | sidechain | rollup | appchain
+consensusType: "pos"         # pow | pos | dpos | poa | dag | other
+evmCompatible: false         # boolean
+compareTo: ["ethereum", "avalanche"]         # slugs used in the Comparison table
+relatedChains: ["bitcoin", "ethereum"]       # slugs used in Related Chains
+lastUpdated: 2026-06-13      # date, unquoted YYYY-MM-DD
+status: "draft"              # always "draft" on submission; a maintainer publishes
 ---
 ```
 
-Set `status: "draft"` — reviewers will flip to `"published"` after editorial review.
+### The 11 sections
 
-### 3. Write the 11 sections
+Use the exact section order and headings (the template has them scaffolded):
 
-Follow the template structure from Bitcoin. Every section is required:
-
-1. Overview
-2. Architecture
-3. Consensus Mechanism
-4. Ecosystem
-5. Governance
-6. Token Economics
-7. History & Timeline
-8. Technical Specifications
-9. Developer Resources
-10. Comparisons
-11. Sources
-
-### 4. Editorial standards for chain profiles
-
-- Use the chain's canonical name, not its ticker (e.g., "Ethereum" not "ETH")
-- Cite sources — link to official documentation, whitepapers, or research papers
-- Do not include price data, market cap, or investment commentary
-- If information comes from outside the MIT curriculum, flag it with an MDX comment: `{/* Beyond MIT source */}`
-- Keep the tone neutral and educational — this is a reference wiki, not advocacy
+1. **Overview** — Three short paragraphs: what it is, its core design idea, and where it stands today.
+2. **Key Stats** — Rendered automatically from frontmatter. Leave the `{/* Section 2 */}` marker; don't write a table here.
+3. **How It Works** — Beginner / Intermediate / Builder (all three required).
+4. **Consensus Mechanism** — How blocks are produced and finalized, with key parameters; link to the relevant concept page.
+5. **Use Cases** — What people actually do with it.
+6. **Ecosystem** — Wallets, infrastructure, notable apps/chains, organizations.
+7. **History & Timeline** — Dated milestones.
+8. **Comparison** — A table against two relevant peers.
+9. **Related Chains** — Short, linked descriptions of neighbors.
+10. **Learning Resources** — Whitepaper, docs, and cross-links to concept pages.
+11. **Sources & Citations** — Numbered list, then the freshness note and "Last updated" line.
 
 ## Adding a Concept Page
 
-Concept pages live in `site/src/content/concepts/`. Each has 7 sections.
+Concept pages live in `site/src/content/concepts/`. Each has 7 sections. Match the schema in `site/src/content/config.ts`.
 
-### 1. Create the file
-
-```
-site/src/content/concepts/{slug}.mdx
-```
-
-### 2. Add frontmatter
-
-Use Proof of Work as your reference (`site/src/content/concepts/proof-of-work.mdx`). Required fields:
+### Frontmatter
 
 ```yaml
 ---
-title: "Your Concept Title"
+title: "Proof of Work"
 definition: "One-sentence definition that appears in the pull-quote block."
-category: "Consensus" | "Cryptography" | "Economics" | "Architecture" | "Security" | "Scaling" | "Applications"
-status: "draft"
-usedBy: ["Bitcoin", "Litecoin"]
+category: "consensus"   # consensus | cryptography | economics | governance |
+                        # scaling | security | smart-contracts | data-structures | networking
+usedBy: ["bitcoin"]                          # chain slugs
 relatedConcepts: ["proof-of-stake", "mining-economics"]
+alternativeTo: "proof-of-stake"              # optional
+lastUpdated: 2026-06-13
+status: "draft"
 ---
 ```
 
-### 3. Write the 7 sections
+### The 7 sections
 
-1. **Why It Matters** — Why should someone care about this concept?
-2. **How It Works: Beginner** — Plain language, no jargon
-3. **How It Works: Intermediate** — Technical but accessible
-4. **How It Works: Builder** — Implementation details, code-level
-5. **Examples** — Real chains or protocols that use this concept
-6. **Tradeoffs** — Advantages and disadvantages
-7. **Related Concepts** — Cross-links to other concept pages
+1. **Definition** — The pull-quote; one sentence a non-technical reader understands.
+2. **Why It Matters** — Why anyone should care.
+3. **How It Works** — Beginner / Intermediate / Builder.
+4. **Examples** — Real chains or protocols that use it.
+5. **Tradeoffs** — Advantages and disadvantages, fairly stated.
+6. **Related Concepts** — Cross-link to at least 2–3 other concept pages.
+7. **Sources** — Citations and the "Last updated" line.
 
-### 4. Editorial standards for concept pages
-
-- The definition field should be a single sentence that a nontechnical reader can understand
-- Beginner sections must avoid jargon entirely — if you use a technical term, link to its concept page
-- Builder sections can include pseudocode or references to specific implementations
-- Cross-link generously — every concept should link to at least 2-3 related concepts
+Use `proof-of-work.mdx` as your reference.
 
 ## Fixing Errors
 
-If you find incorrect information, outdated claims, or broken links:
+Accuracy is the product. If you find an incorrect or outdated claim or a broken link:
 
-1. Open an issue describing the error with a source that shows the correct information
-2. Or submit a PR with the fix — include the source in your PR description
-
-We take accuracy seriously. Every factual claim should be verifiable.
+1. Open an issue using the **Correction / bug** template, with a source showing the correct information, or
+2. Submit a PR with the fix and the source in the description.
 
 ## Design and Code Changes
 
 For changes to the Astro site (components, CSS, layouts, pages):
 
-- Follow the existing design system in `site/src/styles/global.css`
-- Use the L1 design tokens (CSS custom properties) — don't introduce new colors outside the B&W palette
-- Typography: IBM Plex Mono for headings/labels, Inter for body text
-- Test your changes at desktop and mobile widths
-
-## Code Style
-
-- Astro components: `.astro` files with Astro template syntax
-- Content: MDX with YAML frontmatter
-- CSS: Tailwind utilities + custom component classes in `global.css`
-- No client-side JavaScript unless absolutely necessary (Astro's zero-JS-by-default philosophy)
+- Follow the design system in `site/src/styles/global.css`; use the existing tokens and the black-and-white palette.
+- Typography: IBM Plex Mono for headings/labels, Inter for body.
+- Keep it zero-JS by default (Astro philosophy); test at desktop and mobile widths.
 
 ## Pull Request Process
 
-1. **Title**: Use a clear, descriptive title (e.g., "Add Ethereum chain profile" not "Update")
-2. **Description**: Explain what you changed and why. Link to relevant issues.
-3. **Sources**: If you're adding content, include your sources
-4. **Status**: All new content should be `status: "draft"` — maintainers review before publishing
+`main` is protected — direct pushes are rejected. All changes go through a pull request.
 
-PRs are reviewed for accuracy, consistency with the editorial style, and technical correctness. We aim to review within a few days.
+1. Push your branch and open a PR (the PR template includes a checklist — complete it).
+2. **Title:** clear and descriptive ("Add Solana chain profile," not "Update").
+3. **Description:** what changed and why; link any related issue; list your sources.
+4. **Status:** new content ships as `status: "draft"`. A maintainer reviews for accuracy, neutrality, and structure, then flips it to `"published"`.
+5. **Build:** confirm `npm run build` passes locally before requesting review.
+
+PRs are reviewed for accuracy, consistency with these editorial rules, and technical correctness. We aim to review within a few days.
 
 ## Content License
 
-By contributing content (MDX files), you agree to license your contributions under [CC-BY-SA 4.0](LICENSE-CONTENT). Code contributions are licensed under [MIT](LICENSE).
+By contributing content (MDX files), you agree to license it under [CC-BY-SA 4.0](LICENSE-CONTENT). Code contributions are licensed under [MIT](LICENSE).
 
 ## Questions?
 
-Open an issue or start a discussion. We're building this together.
+Open an issue or start a discussion. We're building this together — thank you for keeping it accurate and neutral.

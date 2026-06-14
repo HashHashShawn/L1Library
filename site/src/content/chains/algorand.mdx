@@ -1,0 +1,171 @@
+---
+name: "Algorand"
+ticker: "ALGO"
+tagline: "Pure Proof of Stake Layer 1. Instant finality, low fees, academic roots."
+letter: "A"
+launched: "June 2019"
+consensus: "Pure Proof of Stake (PPoS)"
+language: "Algorand Python, TypeScript (AlgoKit), TEAL"
+tps: "~6,000 (10,000 target)"
+blockTime: "~2.8 seconds"
+marketCapRank: "82"
+nativeToken: "ALGO"
+supply: "10,000,000,000 max; ~8.9B circulating"
+website: "https://algorand.co"
+explorer: "https://allo.info"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: false
+compareTo: ["ethereum", "solana", "cardano"]
+relatedChains: ["ethereum", "solana", "cardano"]
+lastUpdated: 2026-06-13
+status: "published"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Algorand is a Layer 1 blockchain built around a consensus protocol designed to be secure, scalable, and decentralized at the same time — the "blockchain trilemma" its founder set out to solve. It was created by Silvio Micali, an MIT professor and 2012 Turing Award laureate for foundational work in cryptography, and launched in June 2019, with stewardship from the Algorand Foundation.
+
+Its core innovation is **Pure Proof of Stake (PPoS)**. Using cryptographic sortition — a private, stake-weighted lottery run locally by each participant — Algorand selects a fresh, unpredictable committee to propose and certify every block. The result is a chain with no forks and immediate finality: once a block appears, it is final and cannot be rolled back. Participation is deliberately low-barrier; holding a single ALGO is enough to take part in consensus.
+
+After a period focused on protocol fundamentals, Algorand's 2025–2026 direction emphasizes developer reach and real-world assets. A staking-rewards program launched in late 2024 broadened consensus participation, and the **AlgoKit** toolchain now lets developers write smart contracts in native Python and TypeScript rather than a specialized language — an explicit bid for mainstream developer adoption.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Algorand is a fast, low-cost blockchain. Blocks are produced in under three seconds, transactions are final the moment they're confirmed, and fees are a tiny fraction of a cent.
+
+It runs on Pure Proof of Stake. Instead of miners competing with energy, the network runs a secret lottery among token holders to pick who proposes and approves each block. You only need one ALGO to take part, which keeps participation open rather than concentrated.
+
+Because the lottery is secret until each round, an attacker can't know who to target in advance — a key reason the network avoids forks and reverses.
+
+### Intermediate
+
+**Cryptographic sortition** is the heart of PPoS. Each account uses a verifiable random function (VRF) and its stake to privately determine whether it has been selected for a given role in a given round. Selection is self-checking: a participant learns it was chosen, acts, and publishes a proof others can verify — but no one can predict the committee ahead of time.
+
+Consensus runs in two phases — a proposer is chosen, then a randomly selected committee votes to certify the block using a Byzantine-agreement protocol. Committees are "player-replaceable," meaning a fresh set is drawn for each step, which is what gives Algorand its resistance to targeted attacks and its immediate finality.
+
+Smart contracts run in the **Algorand Virtual Machine (AVM)**. Native features — **Algorand Standard Assets (ASAs)** for tokens and **atomic transfers** for all-or-nothing multi-party transactions — are built into the protocol rather than bolted on through contracts.
+
+### Builder
+
+Consensus: Pure Proof of Stake with VRF-based cryptographic sortition; block time averages about 2.8 seconds with sub-three-second deterministic finality (no rollback). Security holds under an honest-majority-of-stake assumption, and committees are resampled per step (player replaceability) to resist adaptive adversaries. A peer-to-peer gossip network and the 2024 staking-rewards program have widened participation — the Foundation's share of stake fell from roughly 63% to 21% as validator participation more than doubled.
+
+Execution: the AVM runs smart contracts compiled from Algorand Python (via the Puya compiler) or TypeScript through AlgoKit, as well as lower-level TEAL. Fees are flat and minimal (on the order of 0.001 ALGO). State proofs provide cross-chain, quantum-resistant attestations of Algorand's state to external systems.
+
+Economics: a fixed maximum supply of 10 billion ALGO minted at genesis, with roughly 8.9 billion in circulation. The 2026 roadmap (AlgoKit 4.0, the Rocca wallet, and "Project King Safety") centers on developer onboarding, real-world assets, and long-term economic sustainability.
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+Algorand runs on [Pure Proof of Stake](/concepts/pure-proof-of-stake), a [Proof-of-Stake](/concepts/proof-of-stake) design that uses cryptographic sortition to select block proposers and voting committees privately and unpredictably. There is no mining, no staking lock-up to participate, and no forking — blocks are final on certification.
+
+**Key parameters:**
+- Minimum to participate: 1 ALGO
+- Block time: ~2.8 seconds
+- Finality: immediate and deterministic (no rollback)
+- Selection: VRF-based cryptographic sortition, player-replaceable committees
+- Reward rate: ~4–5% via the staking-rewards program
+- Security: honest-majority-of-stake assumption
+
+**Why it resists attacks:** because each committee is chosen secretly and replaced every step, an adversary cannot identify or bribe the validators of an upcoming block in time to influence it. This is the property that lets Algorand combine open participation with immediate finality.
+
+*Read the full concept: [Pure Proof of Stake →](/concepts/pure-proof-of-stake)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Real-world assets (RWA)** — Low, predictable fees and instant finality suit tokenized bonds, funds, carbon credits, and stablecoins; a central focus of the current roadmap.
+- **Payments and stablecoins** — Sub-cent fees and ~3-second settlement support consumer payments; USDC and other stablecoins issue natively.
+- **Tokenization** — Algorand Standard Assets make issuing and managing tokens a first-class, protocol-level operation.
+- **DeFi** — Atomic transfers enable trustless multi-party swaps; protocols include Folks Finance, Tinyman, and Pact.
+- **Mainstream developer apps** — Native Python and TypeScript via AlgoKit lower the barrier for Web2 developers.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Pera** — The leading Algorand mobile and web wallet
+- **Defly** — Wallet focused on DeFi and trading
+- **Rocca** — Open-source, white-label, Web2-style self-custody wallet (2026)
+
+### DeFi & Apps
+- **Folks Finance** — Lending and liquid governance
+- **Tinyman / Pact** — Automated market makers
+- **Lofty / others** — Tokenized real-world assets
+
+### Developer Tooling
+- **AlgoKit** — Toolchain for Algorand Python, TypeScript, and more
+- **Algorand Python (Puya)** — Write contracts in native Python
+- **State Proofs** — Quantum-resistant cross-chain attestations
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2017** — Silvio Micali and collaborators publish the Algorand consensus papers
+- **2019** — Algorand mainnet launches (June)
+- **2020** — Smart contracts and Algorand Standard Assets expand the platform
+- **2021** — AVM and broader smart-contract capabilities roll out
+- **2023** — State Proofs deliver trustless cross-chain interoperability
+- **2024** — Staking-rewards program launches; peer-to-peer gossip network broadens decentralization
+- **2025** — AlgoKit and native Python smart contracts; roadmap pivots to real-world assets and developer reach
+- **2026** — AlgoKit 4.0, the Rocca wallet, and "Project King Safety" advance developer onboarding and economic sustainability
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Algorand | Ethereum | Solana |
+|---|---|---|---|
+| **Consensus** | Pure Proof of Stake | Casper PoS | PoH + Tower BFT |
+| **Finality** | Instant (no fork) | ~12.8 min | ~12.8 sec |
+| **Block time** | ~2.8 sec | ~12 sec | ~400 ms |
+| **TPS** | ~6,000 | ~15–25 | ~1,000–4,000 |
+| **Min to participate** | 1 ALGO | 32 ETH (validator) | High hardware |
+| **Smart contract language** | Python / TypeScript (AVM) | Solidity / Vyper | Rust |
+| **Supply** | 10B max (fixed) | No hard cap | No hard cap |
+| **Primary strength** | Finality + low barrier + low fees | Ecosystem + security | Raw throughput |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Cardano](/chains/cardano)** — The other research-first, academically grounded Proof-of-Stake chain; both prize peer-reviewed design, with different consensus families.
+- **[Solana](/chains/solana)** — A high-throughput peer; Solana maximizes raw speed, while Algorand emphasizes immediate finality and open, low-barrier participation.
+- **[Ethereum](/chains/ethereum)** — The smart-contract incumbent; Algorand offers instant finality and native tokenization as points of contrast.
+- **Tezos** — Another academically oriented chain with on-chain governance and formal methods.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- Chen, J., Micali, S. "Algorand: A Secure and Efficient Distributed Ledger" (2017)
+- Gilad, Y., et al. "Algorand: Scaling Byzantine Agreements for Cryptocurrencies" (2017)
+- Algorand developer documentation — [dev.algorand.co](https://dev.algorand.co)
+- *Concept pages:* [Pure Proof of Stake](/concepts/pure-proof-of-stake) · [Proof of Stake](/concepts/proof-of-stake) · [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Chen, J., Micali, S. (2017). "Algorand: A Secure and Efficient Distributed Ledger."
+2. Gilad, Y., et al. (2017). "Algorand: Scaling Byzantine Agreements for Cryptocurrencies."
+3. Algorand Foundation — technology and Pure Proof of Stake — [algorand.co/technology](https://algorand.co/technology/pure-proof-of-stake)
+4. Algorand 2025–2026 roadmap — [algorand.co/blog](https://algorand.co/blog)
+5. AlgoKit and Algorand Python — [algorand.co/algokit](https://algorand.co/algokit)
+6. Network statistics — [allo.info](https://allo.info)
+
+*Freshness note: Market cap rank, circulating supply, staking participation, and reward rates change over time and should be verified quarterly. AlgoKit 4.0 and the Rocca wallet were roadmap items in progress as of June 2026.*
+
+*Last updated: June 13, 2026*

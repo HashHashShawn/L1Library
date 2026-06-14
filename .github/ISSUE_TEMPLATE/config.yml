@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contributing guide
+    url: https://github.com/HashHashShawn/L1Library/blob/main/CONTRIBUTING.md
+    about: Read the editorial rules, frontmatter schema, and templates before opening an issue.

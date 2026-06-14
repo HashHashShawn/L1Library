@@ -1,0 +1,117 @@
+---
+name: "Chain Name"
+ticker: "TICKER"
+tagline: "One neutral sentence describing the chain. No hype, no emoji."
+letter: "C"
+launched: "Month Day, Year"
+consensus: "e.g. Proof of Stake (mechanism details)"
+language: "Primary language(s)"
+tps: "Approximate, or a short note"
+blockTime: "e.g. ~12 seconds"
+marketCapRank: "Rank as a string, e.g. 12"
+nativeToken: "TICKER"
+supply: "e.g. 21,000,000 max; ~19M circulating"
+website: "https://example.org"
+explorer: "https://explorer.example.org"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: false
+compareTo: ["peer-one", "peer-two"]
+relatedChains: ["peer-one", "bitcoin"]
+lastUpdated: 2026-01-01
+status: "draft"
+---
+
+{/*
+  HOW TO USE THIS TEMPLATE
+  1. Copy this file to site/src/content/chains/<slug>.mdx (lowercase, hyphenated).
+  2. Match the frontmatter schema in site/src/content/config.ts exactly.
+     - category:      layer-1 | layer-2 | sidechain | rollup | appchain
+     - consensusType: pow | pos | dpos | poa | dag | other
+     - lastUpdated:   unquoted date, YYYY-MM-DD
+     - status:        leave as "draft" — a maintainer publishes after review
+  3. Fill in all 11 sections. Read CONTRIBUTING.md for the editorial rules.
+  MDX SAFETY: never write a bare "<" before a number or space (use "under 1 sec",
+  not "<1 sec"). Only use curly braces for {/* comments *‍/}. Link only to pages
+  that exist; otherwise use plain bold text.
+*/}
+
+## Overview
+
+{/* Section 1 — three short paragraphs: what it is; the core design idea; where it stands today. Neutral and factual. */}
+
+## How It Works
+
+{/* Section 2: Key Stats renders automatically from frontmatter — leave the marker below and do NOT add a table here. */}
+{/* Section 3 */}
+
+### Beginner
+
+{/* Plain language, no jargon. A non-technical reader should follow this completely. */}
+
+### Intermediate
+
+{/* Technical but accessible. Introduce the real mechanisms and name them. */}
+
+### Builder
+
+{/* Implementation-level detail: parameters, data structures, client software, recent upgrades. */}
+
+## Consensus Mechanism
+
+{/* Section 4 — how blocks are produced and finalized, with key parameters. Link to the relevant concept page, e.g. [Proof of Stake](/concepts/proof-of-stake). */}
+
+**Key parameters:**
+- Parameter: value
+- Parameter: value
+
+*Read the full concept: [Concept Name →](/concepts/concept-slug)*
+
+## Use Cases
+
+{/* Section 5 — what people actually do with it. */}
+
+## Ecosystem
+
+{/* Section 6 — wallets, infrastructure, notable apps/chains, organizations. Group with ### subheadings. */}
+
+## History & Timeline
+
+{/* Section 7 — dated milestones, oldest first. */}
+
+- **Year** — Milestone
+
+## Comparison
+
+{/* Section 8 — a table against two relevant peers. Avoid a bare "<" in cells. */}
+
+| | This Chain | Peer One | Peer Two |
+|---|---|---|---|
+| **Consensus** | | | |
+| **Block time** | | | |
+| **Primary strength** | | | |
+
+## Related Chains
+
+{/* Section 9 — short, linked descriptions of neighbors. Link only to chains that exist. */}
+
+- **[Peer One](/chains/peer-one)** — One-line relationship.
+
+## Learning Resources
+
+{/* Section 10 — whitepaper, official docs, and cross-links to concept pages. */}
+
+- Author. "Whitepaper Title" (Year)
+- Official documentation — [example.org](https://example.org)
+- *Concept pages:* [Concept](/concepts/concept-slug)
+
+## Sources & Citations
+
+{/* Section 11 — numbered primary sources, then the freshness note and last-updated line. */}
+
+1. Author. (Year). "Source Title."
+2. Official documentation — [example.org](https://example.org)
+
+*Freshness note: List the volatile figures (market-cap rank, validator count, upgrade status) that should be verified quarterly. State what is mainnet vs. testnet/proposed.*
+
+*Last updated: Month Day, Year*

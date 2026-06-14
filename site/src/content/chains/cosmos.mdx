@@ -1,0 +1,175 @@
+---
+name: "Cosmos"
+ticker: "ATOM"
+tagline: "The Internet of Blockchains. Sovereign app-chains connected by IBC."
+letter: "C"
+launched: "March 13, 2019"
+consensus: "CometBFT (Tendermint BFT, Proof of Stake)"
+language: "Go (Cosmos SDK), CosmWasm (Rust)"
+tps: "~thousands (CometBFT; 10,000+ target)"
+blockTime: "~6 seconds"
+marketCapRank: "63"
+nativeToken: "ATOM"
+supply: "~475M circulating; uncapped (inflationary)"
+website: "https://cosmos.network"
+explorer: "https://www.mintscan.io/cosmos"
+category: "layer-1"
+consensusType: "pos"
+evmCompatible: false
+compareTo: ["polkadot", "ethereum", "avalanche"]
+relatedChains: ["polkadot", "ethereum", "avalanche"]
+lastUpdated: 2026-06-13
+status: "published"
+---
+
+## Overview
+
+{/* Section 1 */}
+
+Cosmos is an ecosystem of independent, interoperable blockchains — often called "the Internet of Blockchains." Rather than scaling one chain, it gives developers a toolkit to launch their own sovereign chain that can still communicate freely with the others. The Cosmos Hub, launched in March 2019 and secured by the ATOM token, was the first chain in this network; it was founded by Jae Kwon and Ethan Buchman and is stewarded by the Interchain Foundation.
+
+The design rests on three pieces, collectively the **Interchain Stack**: **CometBFT** (the Byzantine-fault-tolerant consensus engine, formerly Tendermint Core), the **Cosmos SDK** (a framework for building application-specific chains in Go), and **IBC** (the Inter-Blockchain Communication protocol for moving tokens and messages between chains). The philosophy is the opposite of Polkadot's pooled security: each Cosmos chain is fully sovereign and secures itself, trading shared security for maximum autonomy.
+
+The ecosystem has grown to include major chains such as Osmosis, Celestia, dYdX, and Injective. A 2025 upgrade, **IBC Eureka** (IBC v2), extended IBC beyond Cosmos for the first time — connecting Cosmos chains directly to Ethereum using zero-knowledge light-client verification, with Solana and Layer 2 integrations in development. The Cosmos Hub's own roadmap is shifting from high inflation toward "real yield," Partial Set Security, and higher CometBFT throughput.
+
+{/* Section 2: Key Stats — rendered by the template's stat grid */}
+
+## How It Works
+
+{/* Section 3 */}
+
+### Beginner
+
+Cosmos isn't a single blockchain — it's a way to build many blockchains that can talk to each other. Each project runs its own chain, tuned for its own needs, and they connect through a shared messaging standard called IBC, the way websites connect over the internet.
+
+The Cosmos Hub is the original chain in this network, and ATOM is its token. ATOM is staked to help secure the Hub and to vote on its governance. There is no mining; security comes from staked tokens.
+
+The big trade-off versus a network like Polkadot: Cosmos chains are fully independent. They get more freedom and control, but each one is responsible for recruiting its own validators and security.
+
+### Intermediate
+
+A Cosmos chain is typically built from three layers. **CometBFT** handles consensus and networking using a Byzantine-fault-tolerant Proof-of-Stake protocol that finalizes each block instantly — once a block is committed, it is final, with no waiting for confirmations. The **Cosmos SDK** provides reusable modules (staking, governance, tokens) so teams ship a chain without writing consensus from scratch. **IBC** connects the finished chains.
+
+Because finality is instant and single-slot, IBC can rely on light-client proofs: one chain verifies another's block headers and accepts packets trustlessly, without a third-party bridge. This is what makes Cosmos interoperability native rather than bolted on.
+
+The Cosmos Hub offers **Interchain Security** (now evolving toward **Partial Set Security**), letting smaller "consumer" chains rent some or all of the Hub's validator set instead of bootstrapping their own.
+
+### Builder
+
+Consensus: CometBFT, a BFT Proof-of-Stake engine descended from Tendermint. The Cosmos Hub runs a capped active set (180 validators) selected by stake; blocks commit in roughly six seconds with immediate, deterministic finality (safe under up to one-third Byzantine voting power). Development is consolidating on CometBFT v0.38, with v0.39 adding performance work and BLS signatures.
+
+Application layer: chains are written in Go against the Cosmos SDK; smart contracts are commonly added via CosmWasm (Rust). The Hub itself is intentionally minimal. Throughput goals target 10,000+ TPS, and recent release candidates have demonstrated 2,000+ sustained TPS — several times prior performance.
+
+Interoperability: IBC moves fungible tokens (ICS-20) and arbitrary packets between chains via light-client verification. **IBC Eureka (IBC v2)** extends this to non-Cosmos chains — notably Ethereum — using zero-knowledge proofs to verify consensus cheaply, with Solana, Base, and Arbitrum integrations in progress.
+
+Economics: ATOM issuance is inflationary (historically a dynamic 7–20% APR tied to the staked ratio); the 2022 "ATOM 2.0" tokenomics overhaul was rejected by governance, and the current direction emphasizes lower inflation and fee-based "real yield."
+
+## Consensus Mechanism
+
+{/* Section 4 */}
+
+The Cosmos Hub runs on **CometBFT**, a [Byzantine Fault Tolerant](/concepts/byzantine-fault-tolerance) [Proof-of-Stake](/concepts/proof-of-stake) engine (formerly Tendermint Core). Validators take turns proposing blocks, and a two-round voting process commits each block with immediate finality, tolerating up to one-third of voting power behaving maliciously.
+
+**Key parameters:**
+- Active validators (Cosmos Hub): 180, ranked by stake
+- Block time: ~6 seconds
+- Finality: instant and deterministic (single-slot)
+- Fault tolerance: safe with up to 1/3 Byzantine voting power
+- Issuance: inflationary, historically ~7–20% APR (trending toward lower, fee-based yield)
+
+**Instant finality matters for interoperability:** because a committed block can never be reverted, other chains can trust a light-client proof of it. That property is what lets IBC connect sovereign chains without trusted bridges — and what IBC Eureka now extends to networks like Ethereum.
+
+*Read the full concept: [Byzantine Fault Tolerance →](/concepts/byzantine-fault-tolerance)*
+
+## Use Cases
+
+{/* Section 5 */}
+
+- **Sovereign application chains** — Teams launch purpose-built chains (DeFi, gaming, infrastructure) with full control over validators, fees, and governance. Examples: Osmosis, Injective, dYdX.
+- **Cross-chain transfers** — IBC moves assets and data between hundreds of chains; IBC Eureka extends that to Ethereum and beyond.
+- **Modular data availability** — Celestia, built with Cosmos tooling, pioneered a dedicated data-availability layer for rollups.
+- **Rented security** — Interchain / Partial Set Security lets new chains borrow the Cosmos Hub's validators instead of bootstrapping their own.
+- **Custom smart-contract platforms** — CosmWasm chains offer Rust-based contracts with chain-specific tuning.
+
+## Ecosystem
+
+{/* Section 6 */}
+
+### Wallets
+- **Keplr** — The dominant Cosmos-ecosystem wallet (browser and mobile)
+- **Leap** — Multi-chain Cosmos wallet
+- **Ledger** — Hardware support for ATOM and IBC assets
+
+### Major Chains
+- **Osmosis** — Leading Cosmos DEX and liquidity hub
+- **Celestia** — Modular data-availability network
+- **dYdX** — Derivatives exchange (migrated to its own Cosmos chain)
+- **Injective** — Finance-focused L1
+
+### Stack & Infrastructure
+- **CometBFT** — BFT consensus engine
+- **Cosmos SDK** — Application-chain framework (Go)
+- **IBC / IBC Eureka** — Inter-Blockchain Communication
+- **Mintscan** — Multi-chain explorer for the ecosystem
+
+## History & Timeline
+
+{/* Section 7 */}
+
+- **2014** — Tendermint introduces practical BFT consensus for blockchains
+- **2016** — The Cosmos whitepaper outlines the Hub-and-Zones, IBC vision
+- **2017** — ATOM fundraiser
+- **2019** — Cosmos Hub mainnet launches (March); IBC development continues
+- **2021** — IBC goes live, enabling transfers across Cosmos chains
+- **2022** — "ATOM 2.0" tokenomics proposal is rejected by governance; Interchain Security development advances
+- **2023** — Replicated (Interchain) Security launches; the stack modularizes
+- **2025** — IBC Eureka (IBC v2) connects Cosmos to Ethereum via zero-knowledge verification (April)
+- **2026** — CometBFT performance work and the shift toward "real yield" and Partial Set Security advance; Solana and L2 connections near completion
+
+## Comparison
+
+{/* Section 8 */}
+
+| | Cosmos | Polkadot | Ethereum |
+|---|---|---|---|
+| **Model** | Sovereign chains (IBC) | Shared security (parachains) | Monolithic + L2 rollups |
+| **Consensus** | CometBFT (per chain) | NPoS (BABE + GRANDPA) | Casper PoS |
+| **Finality** | Instant (single-slot) | GRANDPA (batched) | ~12.8 min |
+| **Interoperability** | IBC (native) | XCM (native) | Bridges / L2s |
+| **Security model** | Each chain secures itself | Pooled from Relay Chain | Single chain |
+| **Smart contracts** | CosmWasm / per chain | Parachains / Polkadot Hub | Native (EVM) |
+| **Block time** | ~6 sec | ~6 sec | ~12 sec |
+| **Primary strength** | Sovereignty + flexibility | Shared security + interop | Ecosystem + security |
+
+## Related Chains
+
+{/* Section 9 */}
+
+- **[Polkadot](/chains/polkadot)** — The other major multichain vision. Polkadot pools security across parachains; Cosmos keeps each chain sovereign and self-secured.
+- **[Avalanche](/chains/avalanche)** — Also an app-chain ecosystem (sovereign L1s), with its own consensus family rather than IBC.
+- **[Ethereum](/chains/ethereum)** — Increasingly connected to Cosmos via IBC Eureka; a monolithic-plus-rollups contrast to Cosmos's many sovereign chains.
+- **Osmosis / Celestia / Injective** — Prominent Cosmos-SDK chains showing the range of the ecosystem, from DeFi to modular data availability.
+
+## Learning Resources
+
+{/* Section 10 */}
+
+- Kwon, J., Buchman, E. "Cosmos: A Network of Distributed Ledgers" (whitepaper)
+- Buchman, E. "Tendermint: Byzantine Fault Tolerance in the Age of Blockchains" (2016)
+- Cosmos documentation — [docs.cosmos.network](https://docs.cosmos.network)
+- *Concept pages:* [Byzantine Fault Tolerance](/concepts/byzantine-fault-tolerance) · [Proof of Stake](/concepts/proof-of-stake) · [Distributed Consensus](/concepts/distributed-consensus)
+
+## Sources & Citations
+
+{/* Section 11 */}
+
+1. Kwon, J., Buchman, E. "Cosmos Whitepaper: A Network of Distributed Ledgers."
+2. Buchman, E. (2016). "Tendermint: Byzantine Fault Tolerance in the Age of Blockchains."
+3. Cosmos / Interchain documentation — [docs.cosmos.network](https://docs.cosmos.network)
+4. IBC Eureka (IBC v2) — cross-chain to Ethereum via zero-knowledge verification (2025).
+5. Cosmos Stack Roadmap 2026 — [cosmos.network/blog](https://cosmos.network/blog)
+6. Network statistics — [mintscan.io/cosmos](https://www.mintscan.io/cosmos)
+
+*Freshness note: Market cap rank (varies by source, roughly #63–84), validator count, inflation rate, and IBC Eureka's external connections change over time and should be verified quarterly.*
+
+*Last updated: June 13, 2026*
